@@ -7,3 +7,6 @@
 [submodule "nosql_repository"]
 	path = nosql_repository
 	url = git@github.com:squarealfa/nosql_repository.git
+[submodule "arango_repository"]
+	path = arango_repository
+	url = git@github.com:squarealfa/arango_repository.git
