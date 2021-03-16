@@ -1,0 +1,9 @@
+[submodule "security"]
+	path = security
+	url = git@github.com:squarealfa/dart_security.git
+[submodule "arango_driver"]
+	path = arango_driver
+	url = git@github.com:squarealfa/arango_driver.git
+[submodule "nosql_repository"]
+	path = nosql_repository
+	url = git@github.com:squarealfa/nosql_repository.git
