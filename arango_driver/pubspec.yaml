@@ -2,7 +2,7 @@ name: arango_driver
 description: ArangoDB driver, working on top of ArangoDB HTTP API. This package is a fork of the dart_arango_min package.
 repository: https://github.com/squarealfa/dart_framework
 homepage: https://github.com/squarealfa/dart_framework/tree/main/arango_driver
-version: 1.0.1
+version: 1.0.2
 
 environment:
   sdk: '>=2.12.0 <3.0.0'

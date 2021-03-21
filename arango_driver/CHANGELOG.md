@@ -175,3 +175,7 @@ Fix pedantic warning again
 ## 1.0.1
 
 - Changed license to MIT
+
+## 1.0.2
+
+- Moved code to monorepo

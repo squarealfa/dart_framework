@@ -21,3 +21,7 @@
 ## 1.0.2
 
 - Changed License to MIT
+
+## 1.0.3
+
+- Moved code to monorepo
