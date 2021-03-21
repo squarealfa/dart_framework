@@ -1,7 +1,8 @@
 name: proto_annotations
-description: 
-homepage: https://github.com/squarealfa/dart_proto_mapper
-repository: https://github.com/squarealfa/dart_proto_mapper
+description: proto_annotations
+homepage: https://github.com/squarealfa/dart_framework/tree/main/proto_mapper/proto_annotations
+repository: https://github.com/squarealfa/dart_framework
+
 environment:
   sdk: ">=2.12.0-0 <3.0.0"
 
