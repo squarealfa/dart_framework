@@ -1,0 +1,27 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+// **************************************************************************
+// ProtoGenerator
+// **************************************************************************
+
+syntax = "proto3";
+
+import 'component.proto';
+
+
+
+
+message GIngredient
+{
+  string description = 1;
+  string quantity = 2;
+  double precision = 3;
+  double cookingDuration = 4;
+  GComponent mainComponent = 5;
+  repeated GComponent otherComponents = 6;
+  GComponent alternativeComponent = 7;
+  bool alternativeComponentHasValue = 8;
+  repeated GComponent secondaryComponents = 9;
+  bool secondaryComponentsHasValue = 10;
+
+}

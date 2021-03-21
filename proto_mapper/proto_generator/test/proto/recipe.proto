@@ -1,0 +1,39 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+// **************************************************************************
+// ProtoGenerator
+// **************************************************************************
+
+syntax = "proto3";
+
+import 'category.proto';
+import 'ingredient.proto';
+import 'appliance_type.proto';
+
+
+
+
+message GRecipe
+{
+  string title = 1;
+  string description = 2;
+  bool descriptionHasValue = 3;
+  GCategory category = 4;
+  repeated GIngredient ingredients = 5;
+  int64 publishDate = 6;
+  int64 expiryDate = 7;
+  bool expiryDateHasValue = 8;
+  double preparationDuration = 9;
+  double totalDuration = 10;
+  bool totalDurationHasValue = 11;
+  bool isPublished = 12;
+  bool requiresRobot = 13;
+  bool requiresRobotHasValue = 14;
+  GApplianceType mainApplianceType = 15;
+  GApplianceType secondaryApplianceType = 16;
+  bool secondaryApplianceTypeHasValue = 17;
+  repeated string tags = 18;
+  repeated string extraTags = 19;
+  bool extraTagsHasValue = 20;
+
+}

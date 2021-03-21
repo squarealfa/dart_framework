@@ -1,0 +1,41 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+// **************************************************************************
+// ProtoGenerator
+// **************************************************************************
+
+syntax = "proto3";
+
+import 'appliance_type.proto';
+
+
+
+
+message GListsHost
+{
+  repeated bool vbools = 1;
+  repeated bool nvbools = 2;
+  bool nvboolsHasValue = 3;
+  repeated string vstrings = 4;
+  repeated string nvstrings = 5;
+  bool nvstringsHasValue = 6;
+  repeated double vdurations = 7;
+  repeated double nvdurations = 8;
+  bool nvdurationsHasValue = 9;
+  repeated int64 vdatetimes = 10;
+  repeated int64 nvdatetimes = 11;
+  bool nvdatetimesHasValue = 12;
+  repeated string vdecimals = 13;
+  repeated string nvdecimals = 14;
+  bool nvdecimalsHasValue = 15;
+  repeated int32 vints = 16;
+  repeated int32 nvints = 17;
+  bool nvintsHasValue = 18;
+  repeated double vdoubles = 19;
+  repeated double nvdoubles = 20;
+  bool nvdoublesHasValue = 21;
+  repeated GApplianceType vapplianceTypes = 22;
+  repeated GApplianceType nvapplianceTypes = 23;
+  bool nvapplianceTypesHasValue = 24;
+
+}

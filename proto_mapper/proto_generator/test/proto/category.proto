@@ -1,0 +1,24 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+// **************************************************************************
+// ProtoGenerator
+// **************************************************************************
+
+syntax = "proto3";
+
+import 'component.proto';
+
+
+
+
+message GCategory
+{
+  string title = 1;
+  GComponent mainComponent = 2;
+  GComponent alternativeComponent = 3;
+  bool alternativeComponentHasValue = 4;
+  repeated GComponent otherComponents = 5;
+  repeated GComponent secondaryComponents = 6;
+  bool secondaryComponentsHasValue = 7;
+
+}

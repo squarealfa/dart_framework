@@ -1,0 +1,32 @@
+
+;
+category.proto"!
+	GCategory
+title (	Rtitlebproto3
+û
+google/protobuf/duration.protogoogle.protobuf":
+Duration
+seconds (Rseconds
+nanos (RnanosBƒ
+com.google.protobufBDurationProtoPZ1google.golang.org/protobuf/types/known/durationpbø¢GPBªGoogle.Protobuf.WellKnownTypesbproto3
+ÿ
+google/protobuf/timestamp.protogoogle.protobuf";
+	Timestamp
+seconds (Rseconds
+nanos (RnanosB…
+com.google.protobufBTimestampProtoPZ2google.golang.org/protobuf/types/known/timestamppbø¢GPBªGoogle.Protobuf.WellKnownTypesbproto3
+¸
+ingredient.protogoogle/protobuf/duration.protogoogle/protobuf/timestamp.proto"Ú
+GIngredient 
+description (	Rdescription
+quantity (	Rquantity
+	precision (R	precision5
+duration (2.google.protobuf.DurationRduration8
+	startDate (2.google.protobuf.TimestampR	startDatebproto3
+±
+recipe.protocategory.protoingredient.proto"w
+GRecipe
+title (	Rtitle&
+category (2
+.GCategoryRcategory.
+ingredients (2.GIngredientRingredientsbproto3
