@@ -1,6 +1,6 @@
 /// This library contains helper classes and extensions
 /// to facilitate the construction of dart code generators
-library generators_common;
+library squarealfa_generators_common;
 
 export 'src/class_element_extensions.dart';
 export 'src/element_extensions.dart';

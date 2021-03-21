@@ -1,7 +1,7 @@
 name: squarealfa_generators_common
-description: Common framework for SquareAlfa Dart generators
-homepage: 
-repository: 
+description: This package provides a set of helpers and extensions to facilitate the reflection over classes that serving as the basis for code generation.
+homepage: https://github.com/squarealfa/dart_framework/tree/main/generators_common
+repository: https://github.com/squarealfa/dart_framework
 version: 1.0.0
 
 
@@ -10,6 +10,7 @@ environment:
 
 dependencies:
   source_gen: ^1.0.0
+  analyzer: ^1.1.0
   
 dev_dependencies:
   pedantic: ^1.11.0
