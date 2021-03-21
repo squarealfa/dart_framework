@@ -1,0 +1,1 @@
+class JwtException implements Exception {}
