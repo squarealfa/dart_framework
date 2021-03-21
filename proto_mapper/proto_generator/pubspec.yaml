@@ -10,8 +10,7 @@ dependencies:
   source_gen: ^1.0.0
   proto_annotations:
     path: ../proto_annotations
-  generators_common:
-    path: ../generators_common
+  squarealfa_generators_common: ^1.0.0
   decimal: ^1.0.0
   grpc: ^3.0.0
 
