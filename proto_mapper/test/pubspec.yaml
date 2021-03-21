@@ -4,14 +4,13 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  proto_annotations:
-    path: ../../proto_annotations
+  proto_annotations: ^1.0.0
   decimal: ^1.0.0
   fixnum: ^1.0.0
 
 dev_dependencies:
   proto_generator:
-    path: ..
+    path: ../proto_generator
   build_runner: ^1.10.2
   build_verify: ^2.0.0
   pedantic: ^1.11.0

@@ -3,7 +3,7 @@ import '../field_descriptor.dart';
 
 class GenericFieldCodeGenerator extends FieldCodeGenerator {
   GenericFieldCodeGenerator(FieldDescriptor fieldDescriptor, int lineNumber)
-      : super(fieldDescriptor, lineNumber) {}
+      : super(fieldDescriptor, lineNumber);
 
   @override
   String get fieldType => 'string';

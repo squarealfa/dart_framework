@@ -14,7 +14,7 @@ class FieldDescriptor extends FieldDescriptorBase {
     this.protoMapperAnnotation, {
     this.protoFieldAnnotation,
     this.protoIgnoreAnnotation,
-  }) : super(classElement, fieldElement) {}
+  }) : super(classElement, fieldElement);
 
   factory FieldDescriptor.fromFieldElement(
     ClassElement classElement,
@@ -35,6 +35,7 @@ class FieldDescriptor extends FieldDescriptorBase {
 
   String get prefix => protoMapperAnnotation.prefix ?? '';
 
+  @override
   bool get isRepeated => listParameterType != null;
   bool get _hasProtoIgnore => protoIgnoreAnnotation != null;
   bool get _hasProtoField => protoFieldAnnotation != null;
@@ -47,11 +48,12 @@ class FieldDescriptor extends FieldDescriptorBase {
 
   bool get typeHasMapProtoAnnotation {
     var annotation = TypeChecker.fromRuntime(MapProtoBase)
-        .firstAnnotationOf(this.fieldElement.type.element!);
+        .firstAnnotationOf(fieldElement.type.element!);
     return annotation != null;
   }
 
-  bool get parameterTypeIsEnum => parameterType.element!.kind.name == "ENUM";
+  @override
+  bool get parameterTypeIsEnum => parameterType.element!.kind.name == 'ENUM';
 }
 
 const _protoFieldChecker = TypeChecker.fromRuntime(ProtoField);

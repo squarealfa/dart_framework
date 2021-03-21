@@ -8,6 +8,7 @@
 import 'dart:core' as $core;
 import 'dart:convert' as $convert;
 import 'dart:typed_data' as $typed_data;
+
 @$core.Deprecated('Use gComponentDescriptor instead')
 const GComponent$json = const {
   '1': 'GComponent',
@@ -17,4 +18,5 @@ const GComponent$json = const {
 };
 
 /// Descriptor for `GComponent`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List gComponentDescriptor = $convert.base64Decode('CgpHQ29tcG9uZW50EiAKC2Rlc2NyaXB0aW9uGAEgASgJUgtkZXNjcmlwdGlvbg==');
+final $typed_data.Uint8List gComponentDescriptor = $convert.base64Decode(
+    'CgpHQ29tcG9uZW50EiAKC2Rlc2NyaXB0aW9uGAEgASgJUgtkZXNjcmlwdGlvbg==');

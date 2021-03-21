@@ -40,7 +40,7 @@ abstract class ProtoMapperGeneratorBase<
     _prefix = annotation.prefix ?? _prefix;
 
     _classElement = element.asClassElement();
-    if (_classElement!.kind.name == "ENUM") return renderEnumMapper();
+    if (_classElement!.kind.name == 'ENUM') return renderEnumMapper();
 
     final fieldDescriptors = _getFieldDescriptors(_classElement!, annotation);
 

@@ -1,15 +1,15 @@
 name: proto_generator
-description: A starting point for Dart libraries or applications.
-# version: 1.0.0
-# homepage: https://www.example.com
+description: Code generation of .proto and Dart mapper classes to facilitate the usage of PODOs (plain-old-dart-objects) with gRPC
+homepage: https://github.com/squarealfa/dart_framework/tree/main/proto_mapper/proto_generator
+repository: https://github.com/squarealfa/dart_framework
+version: 1.0.0
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
  
 dependencies:
   source_gen: ^1.0.0
-  proto_annotations:
-    path: ../proto_annotations
+  proto_annotations: ^1.0.0
   squarealfa_generators_common: ^1.0.0
   decimal: ^1.0.0
   grpc: ^3.0.0

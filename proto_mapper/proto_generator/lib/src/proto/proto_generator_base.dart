@@ -32,12 +32,11 @@ abstract class ProtoGeneratorBase<TProto extends ProtoBase>
     var classElement = element.asClassElement();
     var packageName = annotation.packageName != '' ? '' : _defaultPackage;
 
-    final packageDeclaration =
-        packageName != '' ? 'package ${packageName};' : '';
+    final packageDeclaration = packageName != '' ? 'package $packageName;' : '';
 
     var fieldDescriptors = _getFieldDescriptors(classElement, annotation);
 
-    String ret = classElement.kind.name == "ENUM"
+    var ret = classElement.kind.name == 'ENUM'
         ? _generateForEnum(classElement, fieldDescriptors, packageDeclaration)
         : _generateForClass(classElement, fieldDescriptors, packageDeclaration);
 
@@ -50,9 +49,9 @@ abstract class ProtoGeneratorBase<TProto extends ProtoBase>
     String packageDeclaration,
   ) {
     var fieldBuffer = StringBuffer();
-    List<String> externalProtoNames = [];
+    var externalProtoNames = <String>[];
 
-    int lineNumber = 1;
+    var lineNumber = 1;
     for (var fieldDescriptor in fieldDescriptors) {
       var fieldCodeGenerator = FieldCodeGenerator.fromFieldDescriptor(
         fieldDescriptor,
@@ -107,7 +106,7 @@ $fieldBuffer
   ) {
     var fieldBuffer = StringBuffer();
 
-    int lineNumber = 0;
+    var lineNumber = 0;
     for (var fieldDescriptor in fieldDescriptors) {
       fieldBuffer
           .writeln('  ${fieldDescriptor.protoFieldName} = ${lineNumber++};');

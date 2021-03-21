@@ -2,7 +2,6 @@ import 'package:decimal/decimal.dart';
 import 'package:proto_generator_test/proto_generator_test.dart';
 import 'package:proto_generator_test/src/appliance_type.dart';
 import 'package:proto_generator_test/src/component.dart';
-import 'package:proto_generator_test/src/lists_host.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -225,7 +224,6 @@ void main() {
       expect(recipe2.extraTags!.last, recipe2.extraTags!.last);
     });
   });
-
 }
 
 Category _eggsCategory({
@@ -290,4 +288,3 @@ Recipe _scrambledEggsRecipe({
       tags: ['tag1', 'tag2'],
       extraTags: extraTags,
     );
-

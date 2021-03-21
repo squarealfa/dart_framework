@@ -2,7 +2,6 @@ import 'package:decimal/decimal.dart';
 import 'package:proto_annotations/proto_annotations.dart';
 import 'package:proto_generator_test/grpc/lists_host.pb.dart';
 import 'package:proto_generator_test/src/appliance_type.dart';
-import 'package:proto_generator_test/src/category.dart';
 
 part 'lists_host.g.dart';
 

@@ -5,7 +5,7 @@ import '../field_descriptor.dart';
 
 class ListFieldCodeGenerator extends FieldCodeGenerator {
   ListFieldCodeGenerator(FieldDescriptor fieldDescriptor)
-      : super(fieldDescriptor) {}
+      : super(fieldDescriptor);
 
   String get _valueToProto {
     final fieldTypeName = fieldDescriptor.listParameterType!

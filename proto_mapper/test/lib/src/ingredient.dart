@@ -1,4 +1,3 @@
-import 'package:fixnum/fixnum.dart';
 import 'package:proto_annotations/proto_annotations.dart';
 import 'package:proto_generator_test/grpc/ingredient.pb.dart';
 import 'package:decimal/decimal.dart';

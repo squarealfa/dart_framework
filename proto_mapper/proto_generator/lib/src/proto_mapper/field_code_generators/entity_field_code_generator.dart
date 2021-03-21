@@ -3,13 +3,13 @@ import '../field_descriptor.dart';
 
 class EntityFieldCodeGenerator extends FieldCodeGenerator {
   EntityFieldCodeGenerator(FieldDescriptor fieldDescriptor)
-      : super(fieldDescriptor) {}
+      : super(fieldDescriptor);
 
   @override
   String get toProtoExpression =>
-      '${fieldDescriptor.fieldElementTypeName}ProtoMapper().toProto($instanceReference)';
+      '''${fieldDescriptor.fieldElementTypeName}ProtoMapper().toProto($instanceReference)''';
 
   @override
   String get fromProtoNonNullableExpression =>
-      '${fieldDescriptor.fieldElementTypeName}ProtoMapper().fromProto(instance.$fieldName)';
+      '''${fieldDescriptor.fieldElementTypeName}ProtoMapper().fromProto(instance.$fieldName)''';
 }

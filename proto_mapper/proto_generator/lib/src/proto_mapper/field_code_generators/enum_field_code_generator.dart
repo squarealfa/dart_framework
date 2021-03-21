@@ -10,7 +10,7 @@ class EnumFieldCodeGenerator extends FieldCodeGenerator {
 
   @override
   String get fromProtoNonNullableExpression =>
-      '${fieldDescriptor.fieldElementTypeName}.values[instance.$fieldName.value]';
+      '''${fieldDescriptor.fieldElementTypeName}.values[instance.$fieldName.value]''';
 
   @override
   String get toProtoExpression =>

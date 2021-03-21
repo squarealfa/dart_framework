@@ -19,9 +19,9 @@ class EntityFieldCodeGenerator extends FieldCodeGenerator
         annotation?.getField('packageName')?.toStringValue() ?? '';
 
     var fieldElementTypeName =
-        '${fieldDescriptor.prefix}${fieldElementType.getDisplayString(withNullability: false)}';
+        '''${fieldDescriptor.prefix}${fieldElementType.getDisplayString(withNullability: false)}''';
     _fieldType = packageName != ''
-        ? '$packageName.${fieldElementTypeName}'
+        ? '$packageName.$fieldElementTypeName'
         : fieldElementTypeName;
 
     var segments = fieldElementType.element!.source!.uri.pathSegments.toList();
@@ -35,6 +35,7 @@ class EntityFieldCodeGenerator extends FieldCodeGenerator
   }
 
   String? _externalProtoName;
+  @override
   String? get externalProtoName => _externalProtoName;
 
   String? _fieldType;

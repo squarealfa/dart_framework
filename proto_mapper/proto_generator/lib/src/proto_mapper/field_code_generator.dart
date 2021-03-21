@@ -48,33 +48,42 @@ abstract class FieldCodeGenerator {
   }
 
   String get fromProtoNullableExpression =>
-      '(instance.${protoFieldName}HasValue ? ($fromProtoNonNullableExpression) : null)';
+      '''(instance.${protoFieldName}HasValue ? ($fromProtoNonNullableExpression) : null)''';
 
   String get fromProtoNonNullableExpression => 'instance.$protoFieldName';
 
-  String get fieldName => this.fieldDescriptor.fieldElement.name;
-  String get protoFieldName => this.fieldDescriptor.protoFieldName;
+  String get fieldName => fieldDescriptor.fieldElement.name;
+  String get protoFieldName => fieldDescriptor.protoFieldName;
 
   factory FieldCodeGenerator.fromFieldDescriptor(
       FieldDescriptor fieldDescriptor) {
-    if (fieldDescriptor.fieldElement.type.isDartCoreString)
+    if (fieldDescriptor.fieldElement.type.isDartCoreString) {
       return StringFieldCodeGenerator(fieldDescriptor);
-    if (fieldDescriptor.fieldElement.type.isDartCoreBool)
+    }
+    if (fieldDescriptor.fieldElement.type.isDartCoreBool) {
       return BoolFieldCodeGenerator(fieldDescriptor);
-    if (fieldDescriptor.fieldElement.type.isDartCoreInt)
+    }
+    if (fieldDescriptor.fieldElement.type.isDartCoreInt) {
       return IntFieldCodeGenerator(fieldDescriptor);
-    if (fieldDescriptor.fieldElement.type.isDartCoreList)
+    }
+    if (fieldDescriptor.fieldElement.type.isDartCoreList) {
       return ListFieldCodeGenerator(fieldDescriptor);
-    if (fieldDescriptor.typeIsEnum)
+    }
+    if (fieldDescriptor.typeIsEnum) {
       return EnumFieldCodeGenerator(fieldDescriptor);
-    if (fieldDescriptor.fieldElementTypeName == (DateTime).toString())
+    }
+    if (fieldDescriptor.fieldElementTypeName == (DateTime).toString()) {
       return DateTimeFieldCodeGenerator(fieldDescriptor);
-    if (fieldDescriptor.fieldElementTypeName == (Decimal).toString())
+    }
+    if (fieldDescriptor.fieldElementTypeName == (Decimal).toString()) {
       return DecimalFieldCodeGenerator(fieldDescriptor);
-    if (fieldDescriptor.fieldElementTypeName == (Duration).toString())
+    }
+    if (fieldDescriptor.fieldElementTypeName == (Duration).toString()) {
       return DurationFieldCodeGenerator(fieldDescriptor);
-    if (fieldDescriptor.typeHasMapProtoAnnotation)
+    }
+    if (fieldDescriptor.typeHasMapProtoAnnotation) {
       return EntityFieldCodeGenerator(fieldDescriptor);
+    }
     return GenericFieldCodeGenerator(fieldDescriptor);
   }
 }

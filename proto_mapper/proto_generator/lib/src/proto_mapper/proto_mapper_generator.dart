@@ -1,7 +1,8 @@
 import 'package:build/src/builder/builder.dart';
 import 'package:proto_annotations/proto_annotations.dart';
-import 'proto_mapper_generator_base.dart';
 import 'package:source_gen/src/constants/reader.dart';
+
+import 'proto_mapper_generator_base.dart';
 
 class ProtoMapperGenerator extends ProtoMapperGeneratorBase<MapProto> {
   ProtoMapperGenerator(BuilderOptions options) : super(options);

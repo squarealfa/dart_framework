@@ -18,10 +18,10 @@ abstract class FieldCodeGenerator {
   FieldCodeGenerator(this.fieldDescriptor, this.lineNumber);
 
   String get fieldLine =>
-      '$fieldType ${this.fieldDescriptor.protoFieldName} = $lineNumber;';
+      '$fieldType ${fieldDescriptor.protoFieldName} = $lineNumber;';
 
-  String? get hasValueLine => this.fieldDescriptor.isNullable
-      ? 'bool ${this.fieldDescriptor.protoFieldName}HasValue = ${lineNumber + 1};'
+  String? get hasValueLine => fieldDescriptor.isNullable
+      ? 'bool ${fieldDescriptor.protoFieldName}HasValue = ${lineNumber + 1};'
       : null;
 
   String? get fieldType;
@@ -32,21 +32,28 @@ abstract class FieldCodeGenerator {
     var typeName =
         fieldDescriptor.itemType.getDisplayString(withNullability: false);
 
-    if (type.isDartCoreString)
+    if (type.isDartCoreString) {
       return StringFieldCodeGenerator(fieldDescriptor, lineNumber);
-    if (type.isDartCoreBool)
+    }
+    if (type.isDartCoreBool) {
       return BoolFieldCodeGenerator(fieldDescriptor, lineNumber);
-    if (type.isDartCoreInt)
+    }
+    if (type.isDartCoreInt) {
       return IntFieldCodeGenerator(fieldDescriptor, lineNumber);
-    if (type.isDartCoreDouble)
+    }
+    if (type.isDartCoreDouble) {
       return DoubleFieldCodeGenerator(fieldDescriptor, lineNumber);
-    if (typeName == (DateTime).toString())
+    }
+    if (typeName == (DateTime).toString()) {
       return DateTimeFieldCodeGenerator(fieldDescriptor, lineNumber);
-    if (typeName == (Duration).toString())
+    }
+    if (typeName == (Duration).toString()) {
       return DurationFieldCodeGenerator(fieldDescriptor, lineNumber);
+    }
     if (TypeChecker.fromRuntime(ProtoBase).firstAnnotationOf(type.element!) !=
-        null)
+        null) {
       return EntityFieldCodeGenerator(fieldDescriptor, lineNumber, filePrefix);
+    }
     return GenericFieldCodeGenerator(fieldDescriptor, lineNumber);
   }
 }
