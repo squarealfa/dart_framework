@@ -1,8 +1,9 @@
 import 'package:proto_annotations/proto_annotations.dart';
+import 'grpc/recipe.pb.dart';
 
 import 'ingredient.dart';
 
-
+part 'recipe.g.dart';
 
 @proto // generate .proto message based on this .dart file
 // generate mapping code between the protoc generated code and this class.
