@@ -1,5 +1,5 @@
 name: proto_annotations
-description: proto_annotations
+description: Annotations to mark and configure business model classes for code generation of .proto and Dart mapper classes
 homepage: https://github.com/squarealfa/dart_framework/tree/main/proto_mapper/proto_annotations
 repository: https://github.com/squarealfa/dart_framework
 version: 1.0.0
