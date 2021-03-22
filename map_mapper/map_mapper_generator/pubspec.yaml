@@ -1,0 +1,15 @@
+name: map_mapper_generator
+description: Generates maps between entities and proto and maps
+
+environment:
+  sdk: '>=2.12.0 <3.0.0'
+
+dependencies:
+  source_gen: ^1.0.0
+  decimal: ^1.0.0
+  map_mapper_annotations:
+    path: ../map_mapper_annotations
+  squarealfa_generators_common: ^1.0.0
+
+dev_dependencies:
+  pedantic: ^1.9.0
