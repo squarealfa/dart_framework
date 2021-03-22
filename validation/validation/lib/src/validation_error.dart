@@ -1,5 +1,7 @@
+/// Represents a validation error
 class ValidationError {
-  final String fieldName;
+  /// The name of the field with the error
+  final String propertyName;
 
-  const ValidationError(this.fieldName);
+  const ValidationError(this.propertyName);
 }
