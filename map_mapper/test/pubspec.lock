@@ -98,7 +98,7 @@ packages:
       name: built_value
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "8.0.3"
+    version: "8.0.4"
   charcode:
     dependency: transitive
     description:
@@ -147,7 +147,7 @@ packages:
       name: coverage
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.1"
+    version: "1.0.2"
   crypto:
     dependency: transitive
     description:
@@ -231,7 +231,7 @@ packages:
       name: json_annotation
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.0"
+    version: "4.0.1"
   logging:
     dependency: transitive
     description:
@@ -242,17 +242,17 @@ packages:
   map_mapper_annotations:
     dependency: "direct main"
     description:
-      path: "../map_mapper_annotations"
-      relative: true
-    source: path
-    version: "1.0.0-dev.0"
+      name: map_mapper_annotations
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   map_mapper_generator:
     dependency: "direct dev"
     description:
-      path: "../map_mapper_generator"
-      relative: true
-    source: path
-    version: "0.0.0"
+      name: map_mapper_generator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1"
   matcher:
     dependency: transitive
     description:

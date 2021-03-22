@@ -4,14 +4,12 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  map_mapper_annotations:
-    path: ../map_mapper_annotations
+  map_mapper_annotations: ^1.0.0
   decimal: ^1.0.0
   fixnum: ^1.0.0
 
 dev_dependencies:
-  map_mapper_generator:
-    path: ../map_mapper_generator
+  map_mapper_generator: ^1.0.0
   build_runner: ^1.10.2
   build_verify: ^2.0.0
   pedantic: ^1.11.0

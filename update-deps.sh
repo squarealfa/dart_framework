@@ -1,22 +1,39 @@
-# cd ./generators/generators_common/ 
-# dart pub get
-# cd ../../
+cd ./generators_common
+dart pub get
+cd ../
 
-# cd ./generators/map_mapper
-# dart pub get
-# cd ../../
+cd ./proto_mapper/proto_annotations/ 
+dart pub get
+cd ../../
 
-# cd ./generators/map_map_generator
-# dart pub get
-# cd ../../
+cd ./proto_mapper/proto_generator/ 
+dart pub get
+cd ../../
 
-# cd ./generators/proto_annotations
-# dart pub get
-# cd ../../
+cd ./proto_mapper/proto_mapper_example/ 
+dart pub get
+cd ../../
 
-# cd ./generators/proto_generator
-# dart pub get
-# cd ../../
+cd ./proto_mapper/test/ 
+dart pub get
+cd ../../
+
+cd ./map_mapper/map_mapper_annotations
+dart pub get
+cd ../../
+
+cd ./map_mapper/map_mapper_generator
+dart pub get
+cd ../../
+
+cd ./map_mapper/map_mapper_example
+dart pub get
+cd ../../
+
+cd ./map_mapper/test
+dart pub get
+cd ../../
+
 
 # cd ./generators/validation
 # dart pub get
