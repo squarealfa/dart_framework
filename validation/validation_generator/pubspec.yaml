@@ -1,0 +1,16 @@
+name: validation_generator
+description: Generates maps between entities and proto and maps
+
+environment:
+  sdk: '>=2.8.1 <3.0.0'
+
+dependencies:
+  source_gen: ^1.0.0
+  decimal: ^1.0.0
+  validation:
+    path: ../validation
+  squarealfa_generators_common: ^1.0.0
+
+dev_dependencies:
+  pedantic: ^1.9.0
+

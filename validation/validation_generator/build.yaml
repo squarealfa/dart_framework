@@ -1,0 +1,18 @@
+# Read about `build.yaml` at https://pub.dev/packages/build_config
+builders:
+
+  validation_generator:
+    import: "package:validation_generator/validation_generator.dart"
+    builder_factories: ["validationGeneratorBuilder"]
+    build_extensions: {".dart": ["validation.g.part"]}
+    auto_apply: dependents
+    build_to: cache
+    applies_builders: ["source_gen|combining_builder"]
+
+#  map_mapper_generator:
+#    import: "package:entity_mapper/entity_mapper.dart"
+#    builder_factories: ["mapMapperBuilder"]
+#    build_extensions: {".dart": ["map_map.g.part"]}
+#    auto_apply: dependents
+#    build_to: cache
+#    applies_builders: ["source_gen|combining_builder"]
