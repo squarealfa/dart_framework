@@ -3,3 +3,5 @@
 class MapIgnore {
   const MapIgnore();
 }
+
+const mapIgnore = MapIgnore();

@@ -6,8 +6,8 @@
 /// It can be great. You should try it out.
 library map_mapper;
 
-export 'src/annotations/map_map.dart';
-export 'src/annotations/map_map_base.dart';
 export 'src/annotations/map_field.dart';
 export 'src/annotations/map_ignore.dart';
+export 'src/annotations/map_map.dart';
+export 'src/annotations/map_map_base.dart';
 export 'src/map_mapper.dart';

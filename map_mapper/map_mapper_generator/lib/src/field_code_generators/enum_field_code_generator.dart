@@ -14,5 +14,5 @@ class EnumFieldCodeGenerator extends FieldCodeGenerator {
 
   @override
   String fromMapExpression(String sourceExpression) =>
-      '${fieldDescriptor.fieldElementTypeName}.values[$sourceExpression as int]';
+      '''${fieldDescriptor.fieldElementTypeName}.values[$sourceExpression as int]''';
 }

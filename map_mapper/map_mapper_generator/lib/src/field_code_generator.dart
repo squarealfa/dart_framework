@@ -19,7 +19,7 @@ abstract class FieldCodeGenerator {
   FieldCodeGenerator(this.fieldDescriptor, this.hasDefaultsProvider);
 
   String get toMapMap =>
-      'map[\'$mapName\'] = ${fieldDescriptor.isNullable ? toNullableMapExpression : toMapExpression} ;';
+      '''map[\'$mapName\'] = ${fieldDescriptor.isNullable ? toNullableMapExpression : toMapExpression} ;''';
 
   String get _defaultProviderExpression {
     var ret = '''getValueOrDefault(
@@ -28,10 +28,10 @@ abstract class FieldCodeGenerator {
   }
 
   String get constructorMap =>
-      '$fieldName: ${fieldDescriptor.isNullable ? fromNullableMapExpression : (hasDefaultsProvider ? _defaultProviderExpression : fromMapExpression('map[\'$mapName\']'))},';
+      '''$fieldName: ${fieldDescriptor.isNullable ? fromNullableMapExpression : (hasDefaultsProvider ? _defaultProviderExpression : fromMapExpression('map[\'$mapName\']'))},''';
 
   String get fromMapMap =>
-      '..$fieldName = ${fieldDescriptor.isNullable ? fromNullableMapExpression : fromMapExpression('map[\'$mapName\']')} ';
+      '''..$fieldName = ${fieldDescriptor.isNullable ? fromNullableMapExpression : fromMapExpression('map[\'$mapName\']')} ''';
 
   String get toMapExpression => 'instance.$fieldName';
 
@@ -41,24 +41,30 @@ abstract class FieldCodeGenerator {
       '$sourceExpression as ${fieldDescriptor.fieldElementTypeName}';
 
   String get fromNullableMapExpression =>
-      'map[\'$mapName\'] == null ? null : ${this.fromMapExpression('map[\'$mapName\']')}';
+      '''map[\'$mapName\'] == null ? null : ${fromMapExpression('map[\'$mapName\']')}''';
 
-  String get fieldName => this.fieldDescriptor.fieldElement.name;
+  String get fieldName => fieldDescriptor.fieldElement.name;
 
   factory FieldCodeGenerator.fromFieldDescriptor(
       FieldDescriptor fieldDescriptor, bool hasDefaultsProvider) {
-    if (fieldDescriptor.fieldElementTypeName == (Decimal).toString())
+    if (fieldDescriptor.fieldElementTypeName == (Decimal).toString()) {
       return DecimalFieldCodeGenerator(fieldDescriptor, hasDefaultsProvider);
-    if (fieldDescriptor.fieldElementTypeName == (DateTime).toString())
+    }
+    if (fieldDescriptor.fieldElementTypeName == (DateTime).toString()) {
       return DateTimeFieldCodeGenerator(fieldDescriptor, hasDefaultsProvider);
-    if (fieldDescriptor.fieldElementTypeName == (Duration).toString())
+    }
+    if (fieldDescriptor.fieldElementTypeName == (Duration).toString()) {
       return DurationFieldCodeGenerator(fieldDescriptor, hasDefaultsProvider);
-    if (fieldDescriptor.typeHasMapMapAnnotation)
+    }
+    if (fieldDescriptor.typeHasMapMapAnnotation) {
       return EntityFieldCodeGenerator(fieldDescriptor, hasDefaultsProvider);
-    if (fieldDescriptor.fieldElement.type.isDartCoreList)
+    }
+    if (fieldDescriptor.fieldElement.type.isDartCoreList) {
       return ListFieldCodeGenerator(fieldDescriptor, hasDefaultsProvider);
-    if (fieldDescriptor.typeIsEnum)
+    }
+    if (fieldDescriptor.typeIsEnum) {
       return EnumFieldCodeGenerator(fieldDescriptor, hasDefaultsProvider);
+    }
     return GenericFieldCodeGenerator(fieldDescriptor, hasDefaultsProvider);
   }
 }

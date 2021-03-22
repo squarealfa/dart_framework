@@ -30,7 +30,7 @@ abstract class MapMapGeneratorBase<TMapMap extends MapMapBase>
     _classElement = element;
     _className = element.name;
 
-    if (_classElement!.kind.name == "ENUM") {
+    if (_classElement!.kind.name == 'ENUM') {
       return renderEnumMapper();
     }
 
@@ -39,9 +39,9 @@ abstract class MapMapGeneratorBase<TMapMap extends MapMapBase>
     var constructorFieldBuffer = StringBuffer();
 
     var fieldDescriptors = _getFieldDescriptors(_classElement!, annotation);
-    String? defaultProviderClassName =
+    var defaultProviderClassName =
         getDefaultProvider(_classElement, annotation, fieldDescriptors);
-    bool hasDefaultsProvider = defaultProviderClassName != null;
+    var hasDefaultsProvider = defaultProviderClassName != null;
 
     for (var fieldDescriptor in fieldDescriptors) {
       var fieldCodeGenerator = FieldCodeGenerator.fromFieldDescriptor(

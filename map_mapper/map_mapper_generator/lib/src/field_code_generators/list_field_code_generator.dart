@@ -4,14 +4,14 @@ import '../field_descriptor.dart';
 class ListFieldCodeGenerator extends FieldCodeGenerator {
   ListFieldCodeGenerator(
       FieldDescriptor fieldDescriptor, bool hasDefaultsProvider)
-      : super(fieldDescriptor, hasDefaultsProvider) {}
+      : super(fieldDescriptor, hasDefaultsProvider);
 
   String _toMapExpression(bool isNullable) {
     if (fieldDescriptor.parameterTypeHasMapMapAnnotation) {
       final nullEscape = isNullable
           ? 'instance.$fieldName == null ? null : instance.$fieldName!'
           : 'instance.$fieldName';
-      return '''${nullEscape}.map((e) => ${fieldDescriptor.parameterTypeName}MapMapper().toMap(e)).toList();''';
+      return '''$nullEscape.map((e) => ${fieldDescriptor.parameterTypeName}MapMapper().toMap(e)).toList();''';
     }
     return 'instance.$fieldName;';
   }
@@ -24,7 +24,7 @@ class ListFieldCodeGenerator extends FieldCodeGenerator {
 
   String get _fromMapConversion {
     if (fieldDescriptor.parameterTypeHasMapMapAnnotation) {
-      return '.map((e) => ${fieldDescriptor.parameterTypeName}MapMapper().fromMap(e))';
+      return '''.map((e) => ${fieldDescriptor.parameterTypeName}MapMapper().fromMap(e))''';
     }
     return '';
   }

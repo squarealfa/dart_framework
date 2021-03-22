@@ -15,7 +15,7 @@ class FieldDescriptor extends FieldDescriptorBase {
     this.mapMapAnnotation, {
     this.mapFieldAnnotation,
     this.mapIgnoreAnnotation,
-  }) : super(classElement, fieldElement) {}
+  }) : super(classElement, fieldElement);
 
   factory FieldDescriptor.fromFieldElement(
     ClassElement classElement,
@@ -47,7 +47,7 @@ class FieldDescriptor extends FieldDescriptorBase {
 
   bool get typeHasMapMapAnnotation {
     var annotation = TypeChecker.fromRuntime(MapMapBase)
-        .firstAnnotationOf(this.fieldElement.type.element!);
+        .firstAnnotationOf(fieldElement.type.element!);
     return annotation != null;
   }
 

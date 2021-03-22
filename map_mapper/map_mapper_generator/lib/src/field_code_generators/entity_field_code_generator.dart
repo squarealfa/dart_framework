@@ -8,7 +8,7 @@ class EntityFieldCodeGenerator extends FieldCodeGenerator {
 
   @override
   String get toMapExpression =>
-      '${fieldDescriptor.fieldElementTypeName}MapMapper().toMap(instance.$fieldName)';
+      '''${fieldDescriptor.fieldElementTypeName}MapMapper().toMap(instance.$fieldName)''';
 
   @override
   String get toNullableMapExpression => '''
@@ -18,7 +18,7 @@ class EntityFieldCodeGenerator extends FieldCodeGenerator {
 
   @override
   String fromMapExpression(String sourceExpression) =>
-      '${fieldDescriptor.fieldElementTypeName}MapMapper().fromMap($sourceExpression)';
+      '''${fieldDescriptor.fieldElementTypeName}MapMapper().fromMap($sourceExpression)''';
 
   @override
   String get fromNullableMapExpression => '''

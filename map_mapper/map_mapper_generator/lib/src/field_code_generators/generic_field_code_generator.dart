@@ -6,9 +6,11 @@ class GenericFieldCodeGenerator extends FieldCodeGenerator {
       FieldDescriptor fieldDescriptor, bool hasDefaultsProvider)
       : super(fieldDescriptor, hasDefaultsProvider);
 
+  @override
   String fromMapExpression(String sourceExpression) =>
-      '$sourceExpression as ${fieldDescriptor.fieldElementTypeName}${fieldDescriptor.isNullable ? '?' : ''}';
+      '''$sourceExpression as ${fieldDescriptor.fieldElementTypeName}${fieldDescriptor.isNullable ? '?' : ''}''';
 
+  @override
   String get fromNullableMapExpression =>
       fromMapExpression('map[\'$mapName\']');
 }
