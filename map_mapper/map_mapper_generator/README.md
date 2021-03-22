@@ -56,3 +56,13 @@ Instead, because the generated code adds an extension to ```Recipe``` and ```Map
 ## Getting started
 
 In order to get started, look at the example project at https://github.com/squarealfa/dart_framework/tree/main/map_mapper/map_mapper_example.
+
+
+
+## History and future improvements
+
+This package was initially created when we were considering using MongoDB. We didn't find an easy way to use json_serializable with MongoDBs very specific ObjectId type. This was our initial motivation. Since we were developing our own serializer, and we were trying to integrate it in a much more streamlined way with the rest of our framework, we introduced several improvements over the original idea we started with, namely the ```MapMapper<TEntity>``` class and the extensions.
+
+However, a later decision was to use ArangoDB, rather than MongoDB, and the former does not use a specific type like an ObjectId. Therefore, we no longer really need custom serialization code, but we still want to keep the nice features we added to what json_serializable presents.
+
+A future improvement will be to keep this package, but replace some of its implementation with a dependency to json_serializable, without however introducing any breaking change to whatever code has been using the package. Pull-requests are welcome.
