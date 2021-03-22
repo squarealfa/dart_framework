@@ -112,7 +112,7 @@ packages:
       path: "../map_mapper_annotations"
       relative: true
     source: path
-    version: "1.0.0-dev.0"
+    version: "1.0.0"
   meta:
     dependency: transitive
     description:

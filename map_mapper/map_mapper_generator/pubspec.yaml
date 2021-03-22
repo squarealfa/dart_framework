@@ -1,5 +1,5 @@
 name: map_mapper_generator
-description: Generates maps between entities and proto and maps
+description: Generates maps between entities and maps
 
 environment:
   sdk: '>=2.12.0 <3.0.0'

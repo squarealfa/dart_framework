@@ -1,4 +1,4 @@
-/// Support for doing something awesome.
-///
-/// More dartdocs go here.
-library proto_mapper_example;
+/// Library containing a demonstration of map_mapper_annotations and
+/// map_mapper_generator usage
+
+library map_mapper_example;

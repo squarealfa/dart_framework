@@ -20,17 +20,11 @@ void main(List<String> args) {
     ],
   );
 
-  /// protoRecipe is a proto class, which
-  /// could be returned as a gRPC service
-  /// return type. To map from the
-  /// Recipe class to its corresponding proto
-  /// class, the toProto is used.
+  // here we map from the recipe to a Map<String, dynamic>
   final recipeMap = recipe.toMap();
 
-  /// When a gRPC receives a protoRecipe as
-  /// a parameter, it can be mapped back to
-  /// an instance of a Recipe class using the
-  /// toRecipe() method.
+  // and here, we use the extension on Map<String, dynamic> to
+  // map it back to a new Recipe instance.
   final receivedRecipe = recipeMap.toRecipe();
 
   print(' ${receivedRecipe.title} is expected to be Scrambled eggs');
