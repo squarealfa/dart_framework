@@ -1,4 +1,4 @@
-name: validation
+name: squarealfa_validation
 description: Contains annotations to drive validation and classes to represent validation results
 homepage: https://github.com/squarealfa/dart_framework/tree/main/validation/validation
 repository: https://github.com/squarealfa/dart_framework
