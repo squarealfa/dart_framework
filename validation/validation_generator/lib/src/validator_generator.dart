@@ -8,7 +8,7 @@ class ValidatorGenerator extends ValidatorGeneratorBase<Validatable> {
   Validatable hydrateAnnotation(ConstantReader reader) {
     var validatable = Validatable(
       createValidatableBaseClass:
-          reader.read('createValidatableBaseClass').literalValue as bool ??
+          reader.read('createValidatableBaseClass').literalValue as bool? ??
               false,
     );
     return validatable;

@@ -17,7 +17,6 @@ abstract class ValidatorGeneratorBase<TValidatable extends ValidatableBase>
     BuildStep buildStep,
   ) {
     var validatable = hydrateAnnotation(reader);
-    if (validatable == null) return '';
     var createBaseClass = validatable.createValidatableBaseClass;
 
     try {
@@ -31,7 +30,7 @@ abstract class ValidatorGeneratorBase<TValidatable extends ValidatableBase>
   static String generateValidator(Element element, bool createBaseClass) {
     var classElement = element.asClassElement();
     if (classElement.kind.name == "ENUM") return '';
-    var superTypeElement = classElement.supertype.element;
+    var superTypeElement = classElement.supertype!.element;
 
     var annotation = TypeChecker.fromRuntime(ValidatableBase)
         .firstAnnotationOf(superTypeElement);
@@ -144,7 +143,7 @@ abstract class ValidatorGeneratorBase<TValidatable extends ValidatableBase>
       $nullEscape
   
       var errorLists = value.map((entity) {
-        var errors = ${fieldDescriptor.listParameterType.getDisplayString(withNullability: false)}Validator().validate(entity);
+        var errors = ${fieldDescriptor.listParameterType!.getDisplayString(withNullability: false)}Validator().validate(entity);
         var itemErrors = ListItemErrorList(value, entity, errors);
         return itemErrors;
       }).where((p) => p.errorList.validationErrors.isNotEmpty).toList();
@@ -203,7 +202,7 @@ Iterable<FieldDescriptor> _getFieldDescriptors(ClassElement classElement) {
   final fieldDescriptors =
       fieldSet.map((fieldElement) => FieldDescriptor.fromFieldElement(
             classElement,
-            fieldElement,
+            fieldElement!,
           ));
   return fieldDescriptors;
 }

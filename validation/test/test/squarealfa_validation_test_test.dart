@@ -1,6 +1,6 @@
-import 'package:test/test.dart';
+import 'package:squarealfa_validation_test/squarealfa_validation_test.dart';
 
-import '../lib/map_mapper_generator_test.dart';
+import 'package:test/test.dart';
 
 void main() {
   group('main group', () {

@@ -1,5 +1,5 @@
-name: squarealfa_validation_test
-description: A starting point for Dart libraries or applications.
+name: squarealfa_validation_example
+description: Example for squarealfa_validation_generator
 environment:
   sdk: ">=2.12.0 <3.0.0"
 

@@ -5,7 +5,7 @@ import 'package:squarealfa_generators_common/squarealfa_generators_common.dart';
 import 'field_element_annotation_extension.dart';
 
 class FieldDescriptor extends FieldDescriptorBase {
-  final Required requiredAnnotation;
+  final Required? requiredAnnotation;
 
   FieldDescriptor._(
     ClassElement classElement,
@@ -30,14 +30,13 @@ class FieldDescriptor extends FieldDescriptorBase {
 
   bool get typeIsValidatable {
     var annotation = TypeChecker.fromRuntime(ValidatableBase)
-        .firstAnnotationOf(fieldElement.type.element);
+        .firstAnnotationOf(fieldElement.type.element!);
     return annotation != null;
   }
 
   bool get parameterTypeIsValidatable {
-    if (parameterType == null) return null;
     var annotation = TypeChecker.fromRuntime(ValidatableBase)
-        .firstAnnotationOf(parameterType.element);
+        .firstAnnotationOf(parameterType.element!);
     return annotation != null;
   }
 }

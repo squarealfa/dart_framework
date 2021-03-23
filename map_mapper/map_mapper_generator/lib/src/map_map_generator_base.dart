@@ -22,9 +22,6 @@ abstract class MapMapGeneratorBase<TMapMap extends MapMapBase>
     BuildStep buildStep,
   ) {
     final annotation = hydrateAnnotation(reader);
-    // if (annotation == null) {
-    //   return null;
-    // }
 
     if (element is! ClassElement) return null;
     _classElement = element;
