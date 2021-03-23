@@ -4,13 +4,16 @@ homepage: https://github.com/squarealfa/dart_framework/tree/main/validation/vali
 repository: https://github.com/squarealfa/dart_framework
 version: 1.0.0
 
+publish_to: none
+
 environment:
   sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   source_gen: ^1.0.0
   decimal: ^1.0.0
-  squarealfa_validation: ^1.0.0
+  squarealfa_validation: 
+    path: ../validation
   squarealfa_generators_common: ^1.0.0
   analyzer: ^1.2.0
   build: ^2.0.0

@@ -172,10 +172,10 @@ packages:
   squarealfa_validation:
     dependency: "direct main"
     description:
-      name: squarealfa_validation
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0"
+      path: "../validation"
+      relative: true
+    source: path
+    version: "1.0.1"
   string_scanner:
     dependency: transitive
     description:

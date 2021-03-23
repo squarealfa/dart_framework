@@ -1,4 +1,6 @@
+import 'package:decimal/decimal.dart';
 import 'package:squarealfa_validation_test/squarealfa_validation_test.dart';
+import 'package:squarealfa_validation_test/src/ingredient.dart';
 
 import 'package:test/test.dart';
 
@@ -70,6 +72,217 @@ void main() {
       expect(descritionError?.propertyName, 'description');
       expect(recipeErrors.validationErrors.length, 2);
       expect(recipeErrors.hasErrors, true);
+    });
+
+    test('No range error', () {
+      final ingredient = Ingredient(
+        description: 'this is big enough',
+        precision: Decimal.fromInt(15),
+        quantity: 15,
+        intQuantity: 15,
+        rInt: 15,
+      );
+
+      final validator = IngredientValidator();
+      final errors = validator.validate(ingredient);
+
+      expect(errors.hasErrors, false);
+    });
+
+    test('Description too small', () {
+      final ingredient = Ingredient(
+        description: '',
+        precision: Decimal.fromInt(15),
+        quantity: 15,
+        intQuantity: 15,
+        rInt: 15,
+      );
+
+      final validator = IngredientValidator();
+      final errors = validator.validate(ingredient);
+
+      expect(errors.validationErrors.first.propertyName, 'description');
+    });
+
+    test('Notes is too big', () {
+      final ingredient = Ingredient(
+        description: 'this is big enough',
+        notes: 'this is just too big',
+        precision: Decimal.fromInt(15),
+        quantity: 15,
+        intQuantity: 15,
+        rInt: 15,
+      );
+
+      final validator = IngredientValidator();
+      final errors = validator.validate(ingredient);
+
+      expect(errors.validationErrors.first.propertyName, 'notes');
+    });
+
+    test('too small tag', () {
+      final ingredient = Ingredient(
+        description: 'this is big enough',
+        tag: '',
+        precision: Decimal.fromInt(15),
+        quantity: 15,
+        intQuantity: 15,
+        rInt: 15,
+      );
+
+      final validator = IngredientValidator();
+      final errors = validator.validate(ingredient);
+
+      expect(errors.validationErrors.first.propertyName, 'tag');
+    });
+
+    test('too small quantity', () {
+      final ingredient = Ingredient(
+        description: 'this is big enough',
+        precision: Decimal.fromInt(15),
+        quantity: 5,
+        intQuantity: 15,
+        rInt: 15,
+      );
+
+      final validator = IngredientValidator();
+      final errors = validator.validate(ingredient);
+
+      expect(errors.validationErrors.first.propertyName, 'quantity');
+    });
+
+    test('too big quantity', () {
+      final ingredient = Ingredient(
+        description: 'this is big enough',
+        precision: Decimal.fromInt(15),
+        quantity: 25,
+        intQuantity: 15,
+        rInt: 15,
+      );
+
+      final validator = IngredientValidator();
+      final errors = validator.validate(ingredient);
+
+      expect(errors.validationErrors.first.propertyName, 'quantity');
+    });
+
+    test('too small precision', () {
+      final ingredient = Ingredient(
+        description: 'this is big enough',
+        precision: Decimal.fromInt(5),
+        quantity: 15,
+        intQuantity: 15,
+        rInt: 15,
+      );
+
+      final validator = IngredientValidator();
+      final errors = validator.validate(ingredient);
+
+      expect(errors.validationErrors.first.propertyName, 'precision');
+    });
+
+    test('too small intQuantity', () {
+      final ingredient = Ingredient(
+        description: 'this is big enough',
+        precision: Decimal.fromInt(15),
+        quantity: 15,
+        intQuantity: 5,
+        rInt: 15,
+      );
+
+      final validator = IngredientValidator();
+      final errors = validator.validate(ingredient);
+
+      expect(errors.validationErrors.first.propertyName, 'intQuantity');
+    });
+
+    test('too big intQuantity', () {
+      final ingredient = Ingredient(
+        description: 'this is big enough',
+        precision: Decimal.fromInt(15),
+        quantity: 15,
+        intQuantity: 25,
+        rInt: 15,
+      );
+
+      final validator = IngredientValidator();
+      final errors = validator.validate(ingredient);
+
+      expect(errors.validationErrors.first.propertyName, 'quantity');
+    });
+
+    test('missing rInt', () {
+      final ingredient = Ingredient(
+        description: 'this is big enough',
+        precision: Decimal.fromInt(15),
+        quantity: 15,
+        intQuantity: 15,
+      );
+
+      final validator = IngredientValidator();
+      final errors = validator.validate(ingredient);
+
+      expect(errors.validationErrors.first.propertyName, 'rInt');
+    });
+
+    test('too small rInt', () {
+      final ingredient = Ingredient(
+        description: 'this is big enough',
+        precision: Decimal.fromInt(15),
+        quantity: 15,
+        intQuantity: 15,
+        rInt: 5,
+      );
+
+      final validator = IngredientValidator();
+      final errors = validator.validate(ingredient);
+
+      expect(errors.validationErrors.first.propertyName, 'rInt');
+    });
+
+    test('too big rInt', () {
+      final ingredient = Ingredient(
+        description: 'this is big enough',
+        precision: Decimal.fromInt(15),
+        quantity: 15,
+        intQuantity: 15,
+        rInt: 25,
+      );
+
+      final validator = IngredientValidator();
+      final errors = validator.validate(ingredient);
+
+      expect(errors.validationErrors.first.propertyName, 'rInt');
+    });
+
+    test('too small nIntQuantity', () {
+      final ingredient = Ingredient(
+          description: 'this is big enough',
+          precision: Decimal.fromInt(15),
+          quantity: 15,
+          intQuantity: 15,
+          rInt: 15,
+          nintQuantity: 5);
+
+      final validator = IngredientValidator();
+      final errors = validator.validate(ingredient);
+
+      expect(errors.validationErrors.first.propertyName, 'nIntQuantity');
+    });
+
+    test('too big nIntQuantity', () {
+      final ingredient = Ingredient(
+          description: 'this is big enough',
+          precision: Decimal.fromInt(15),
+          quantity: 15,
+          intQuantity: 15,
+          rInt: 15,
+          nintQuantity: 25);
+
+      final validator = IngredientValidator();
+      final errors = validator.validate(ingredient);
+
+      expect(errors.validationErrors.first.propertyName, 'nIntQuantity');
     });
   });
 }
