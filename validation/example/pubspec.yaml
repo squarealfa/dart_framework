@@ -9,8 +9,7 @@ dependencies:
   fixnum: ^1.0.0
 
 dev_dependencies:
-  squarealfa_validation_generator: 
-    path: ../validation_generator
+  squarealfa_validation_generator: ^1.0.0
   build_runner: ^1.10.2
   build_verify: ^2.0.0
   pedantic: ^1.11.0

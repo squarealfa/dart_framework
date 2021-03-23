@@ -11,7 +11,7 @@ class FieldDescriptor extends FieldDescriptorBase {
     ClassElement classElement,
     FieldElement fieldElement, {
     this.requiredAnnotation,
-  }) : super(classElement, fieldElement) {}
+  }) : super(classElement, fieldElement);
 
   factory FieldDescriptor.fromFieldElement(
     ClassElement classElement,

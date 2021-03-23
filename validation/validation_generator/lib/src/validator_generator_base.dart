@@ -29,7 +29,7 @@ abstract class ValidatorGeneratorBase<TValidatable extends ValidatableBase>
 
   static String generateValidator(Element element, bool createBaseClass) {
     var classElement = element.asClassElement();
-    if (classElement.kind.name == "ENUM") return '';
+    if (classElement.kind.name == 'ENUM') return '';
     var superTypeElement = classElement.supertype!.element;
 
     var annotation = TypeChecker.fromRuntime(ValidatableBase)
@@ -61,7 +61,7 @@ abstract class ValidatorGeneratorBase<TValidatable extends ValidatableBase>
 
     var callToSuperCreate = superClassIsValidatable ? ' : super.create()' : '';
     var construction =
-        '${className}Validator${createBaseClass ? 'Base' : ''}.create()$callToSuperCreate;';
+        '''${className}Validator${createBaseClass ? 'Base' : ''}.create()$callToSuperCreate;''';
 
     var singletonAndFactory = createBaseClass
         ? ''
@@ -183,13 +183,14 @@ abstract class ValidatorGeneratorBase<TValidatable extends ValidatableBase>
     if (!fieldDescriptor.hasRequired) {
       return '';
     }
-    if (fieldDescriptor.fieldElementType.isDartCoreString)
+    if (fieldDescriptor.fieldElementType.isDartCoreString) {
       return '''
           if (${fieldDescriptor.isNullable ? 'value?.isEmpty ?? true' : 'value.isEmpty'} )
           { 
             return RequiredValidationError(\'${fieldDescriptor.name}\');
           }
         ''';
+    }
     return '''
           if (value == null) 
             return RequiredValidationError(\'${fieldDescriptor.name}\');        

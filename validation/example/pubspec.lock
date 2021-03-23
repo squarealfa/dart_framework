@@ -389,9 +389,9 @@ packages:
   squarealfa_validation_generator:
     dependency: "direct dev"
     description:
-      path: "../validation_generator"
-      relative: true
-    source: path
+      name: squarealfa_validation_generator
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "1.0.0"
   stack_trace:
     dependency: transitive
