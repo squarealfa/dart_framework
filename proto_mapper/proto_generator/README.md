@@ -1,5 +1,3 @@
-# proto_annotations
-
 The purpose of this package, alongside its companion proto_annotations package, is to significantly reduce the workload of exposing Dart business model classes as protocol buffer messages to be used with gRPC.
 
 ## Workflow
