@@ -2,7 +2,7 @@
 builders:
 
   validation_generator:
-    import: "package:validation_generator/validation_generator.dart"
+    import: "package:squarealfa_validation_generator/squarealfa_validation_generator.dart"
     builder_factories: ["validationGeneratorBuilder"]
     build_extensions: {".dart": ["validation.g.part"]}
     auto_apply: dependents

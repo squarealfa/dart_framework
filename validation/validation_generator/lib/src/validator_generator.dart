@@ -1,5 +1,5 @@
 import 'package:source_gen/source_gen.dart';
-import 'package:validation/validation.dart';
+import 'package:squarealfa_validation/squarealfa_validation.dart';
 
 import 'validator_generator_base.dart';
 

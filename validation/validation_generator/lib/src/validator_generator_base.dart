@@ -1,7 +1,7 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
-import 'package:validation/validation.dart';
+import 'package:squarealfa_validation/squarealfa_validation.dart';
 import 'package:squarealfa_generators_common/squarealfa_generators_common.dart';
 
 import 'field_descriptor.dart';
