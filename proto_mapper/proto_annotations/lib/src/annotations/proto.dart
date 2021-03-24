@@ -10,7 +10,6 @@ class Proto extends ProtoBase {
           prefix: prefix,
           packageName: packageName,
           includeFieldsByDefault: includeFieldsByDefault,
-          nullableFieldsByDefault: nullableFieldsByDefault,
         );
 }
 

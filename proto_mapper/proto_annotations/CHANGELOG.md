@@ -9,3 +9,7 @@
 ## 1.1.1
 
 - Updated dependencies
+
+## 1.1.2
+
+- Removed deprecated nullableFieldsByDefault property from proto annotation
