@@ -7,11 +7,9 @@ import 'map_map_base.dart';
 class MapMap extends MapMapBase {
   const MapMap({
     bool includeFieldsByDefault = true,
-    bool nullableFieldsByDefault = false,
     bool useDefaultsProvider = false,
   }) : super(
           includeFieldsByDefault: includeFieldsByDefault,
-          nullableFieldsByDefault: nullableFieldsByDefault,
           useDefaultsProvider: useDefaultsProvider,
         );
 }

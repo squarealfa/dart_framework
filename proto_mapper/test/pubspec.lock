@@ -333,9 +333,9 @@ packages:
   proto_annotations:
     dependency: "direct main"
     description:
-      name: proto_annotations
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "../proto_annotations"
+      relative: true
+    source: path
     version: "1.0.0"
   proto_generator:
     dependency: "direct dev"
@@ -343,7 +343,7 @@ packages:
       path: "../proto_generator"
       relative: true
     source: path
-    version: "1.0.0"
+    version: "1.0.1"
   protobuf:
     dependency: transitive
     description:

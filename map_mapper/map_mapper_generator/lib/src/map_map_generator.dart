@@ -12,8 +12,6 @@ class MapMapGenerator extends MapMapGeneratorBase<MapMap> {
     var ret = MapMap(
       includeFieldsByDefault:
           reader.read('includeFieldsByDefault').literalValue as bool,
-      nullableFieldsByDefault:
-          reader.read('nullableFieldsByDefault').literalValue as bool,
       useDefaultsProvider:
           reader.read('useDefaultsProvider').literalValue as bool,
     );

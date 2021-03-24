@@ -5,3 +5,7 @@
 ## 1.0.1
 
 - Removed incorrect header from README
+
+## 1.1.0
+
+- Removed deprecated nullableFieldsByDefault property from annotations
