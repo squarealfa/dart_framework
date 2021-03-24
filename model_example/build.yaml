@@ -1,0 +1,15 @@
+# targets:
+#   $default:
+#     builders:
+#       proto_generator:proto_mapper_generator:
+#         options:
+#           prefix: G # or '' for no prefix
+# #          generateProtoMapper: false
+# #          generateMapMapper: false
+
+
+#       proto_generator:proto_generator:
+#         options:
+#           prefix: G # or '' for no prefix
+#           package: mentoralfa
+      
