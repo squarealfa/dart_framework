@@ -1,4 +1,4 @@
-import 'validation_error.dart';
+import 'errors/validation_error.dart';
 
 /// Contains the results of a validation check
 class ErrorList {

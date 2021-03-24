@@ -1,5 +1,5 @@
+import 'errors/validation_error.dart';
 import 'list_item_error_list.dart';
-import 'validation_error.dart';
 
 /// Validation error applied to properties of List type, composed of
 /// multiple errors

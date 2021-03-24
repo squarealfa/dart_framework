@@ -3,8 +3,13 @@ import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:squarealfa_validation/squarealfa_validation.dart';
 import 'package:squarealfa_generators_common/squarealfa_generators_common.dart';
+import 'package:squarealfa_validation_generator/src/validators/double_range_validator.dart';
+import 'package:squarealfa_validation_generator/src/validators/range_validator.dart';
+import 'package:squarealfa_validation_generator/src/validators/required_validator.dart';
+import 'package:squarealfa_validation_generator/src/validators/string_length_validator.dart';
 
 import 'field_descriptor.dart';
+import 'validators/property_validator.dart';
 
 abstract class ValidatorGeneratorBase<TValidatable extends ValidatableBase>
     extends GeneratorForAnnotation<TValidatable> {
@@ -109,7 +114,23 @@ abstract class ValidatorGeneratorBase<TValidatable extends ValidatableBase>
   }
 
   static String _createValidationMethod(FieldDescriptor fieldDescriptor) {
-    var requiredCode = _createRequiredCode(fieldDescriptor);
+    final validators = <PropertyValidator>[
+      RequiredValidator(),
+      StringLengthValidator(),
+      RangeValidator(),
+      DoubleRangeValidator(),
+    ];
+
+    var propValidation = StringBuffer();
+    var previousNullCheck = false;
+    for (var validator in validators) {
+      final result =
+          validator.createValidatorCode(fieldDescriptor, previousNullCheck);
+      if (result.item2) {
+        previousNullCheck = true;
+      }
+      propValidation.writeln(result.item1);
+    }
 
     var entityCode = _createEntityCode(fieldDescriptor);
 
@@ -119,7 +140,8 @@ abstract class ValidatorGeneratorBase<TValidatable extends ValidatableBase>
 
       ValidationError? validate${fieldDescriptor.pascalName}(${fieldDescriptor.fieldElementType.getDisplayString(withNullability: true)} value)
       {
-        $requiredCode
+        $propValidation
+
         $entityCode
         $listCode
         return null;
@@ -134,9 +156,8 @@ abstract class ValidatorGeneratorBase<TValidatable extends ValidatableBase>
         !fieldDescriptor.parameterTypeIsValidatable ||
         fieldDescriptor.parameterTypeIsEnum) return '';
 
-    var nullEscape = fieldDescriptor.isNullable && !fieldDescriptor.hasRequired
-        ? 'if (value == null) return null;'
-        : '';
+    var nullEscape =
+        fieldDescriptor.isNullable ? 'if (value == null) return null;' : '';
 
     var code = '''     
 
@@ -161,13 +182,14 @@ abstract class ValidatorGeneratorBase<TValidatable extends ValidatableBase>
     if (!fieldDescriptor.typeIsValidatable || fieldDescriptor.typeIsEnum) {
       return '';
     }
-    var nullEscape = fieldDescriptor.isNullable && !fieldDescriptor.hasRequired
-        ? 'value == null ? ErrorList([]) : '
+    var nullEscape = fieldDescriptor.isNullable
+        ? 'if (value == null) { return null; } '
         : '';
 
     var code = ''' 
-    
-        var errors = $nullEscape
+        $nullEscape
+
+        var errors = 
           ${fieldDescriptor.fieldElementType.getDisplayString(withNullability: false)}Validator().validate(value);
         var errorListValidation = PropertyValidation(\'${fieldDescriptor.name}\', errors);
 
@@ -177,24 +199,6 @@ abstract class ValidatorGeneratorBase<TValidatable extends ValidatableBase>
 
     ''';
     return code;
-  }
-
-  static String _createRequiredCode(FieldDescriptor fieldDescriptor) {
-    if (!fieldDescriptor.hasRequired) {
-      return '';
-    }
-    if (fieldDescriptor.fieldElementType.isDartCoreString) {
-      return '''
-          if (${fieldDescriptor.isNullable ? 'value?.isEmpty ?? true' : 'value.isEmpty'} )
-          { 
-            return RequiredValidationError(\'${fieldDescriptor.name}\');
-          }
-        ''';
-    }
-    return '''
-          if (value == null) 
-            return RequiredValidationError(\'${fieldDescriptor.name}\');        
-         ''';
   }
 }
 

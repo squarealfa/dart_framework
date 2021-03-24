@@ -14,10 +14,10 @@ class Ingredient {
   @StringLength(minLength: 2)
   final String? tag;
 
-  @Range(minValue: 10, maxValue: 20)
+  @DoubleRange(minValue: 10, maxValue: 20)
   final double quantity;
 
-  @Range(minValue: 10.0)
+  @Range(minValue: 10)
   final Decimal precision;
 
   @Range(minValue: 10, maxValue: 20)

@@ -13,35 +13,85 @@ class IngredientValidator implements Validator {
   factory IngredientValidator() => _singleton;
 
   ValidationError? validateDescription(String value) {
+    if (value.length < 10) {
+      return StringLengthValidationError('description');
+    }
+
     return null;
   }
 
   ValidationError? validateNotes(String? value) {
+    if (value != null && value.length > 10) {
+      return StringLengthValidationError('notes');
+    }
+
     return null;
   }
 
   ValidationError? validateTag(String? value) {
+    if (value != null && value.length < 2) {
+      return StringLengthValidationError('tag');
+    }
+
     return null;
   }
 
   ValidationError? validateQuantity(double value) {
+    if (value < 10.0) {
+      return RangeValidationError('quantity');
+    }
+
+    if (value > 20.0) {
+      return RangeValidationError('quantity');
+    }
+
     return null;
   }
 
   ValidationError? validatePrecision(Decimal value) {
+    if (value < Decimal.fromInt(10)) {
+      return RangeValidationError('precision');
+    }
+
     return null;
   }
 
   ValidationError? validateIntQuantity(int value) {
+    if (value < 10) {
+      return RangeValidationError('intQuantity');
+    }
+
+    if (value > 20) {
+      return RangeValidationError('intQuantity');
+    }
+
     return null;
   }
 
   ValidationError? validateNintQuantity(int? value) {
+    if (value != null && value < 10) {
+      return RangeValidationError('nintQuantity');
+    }
+
+    if (value != null && value > 20) {
+      return RangeValidationError('nintQuantity');
+    }
+
     return null;
   }
 
   ValidationError? validateRInt(int? value) {
-    if (value == null) return RequiredValidationError('rInt');
+    if (value == null) {
+      return RequiredValidationError('rInt');
+    }
+
+    if (value < 10) {
+      return RangeValidationError('rInt');
+    }
+
+    if (value > 20) {
+      return RangeValidationError('rInt');
+    }
 
     return null;
   }

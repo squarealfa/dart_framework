@@ -1,5 +1,5 @@
 import 'error_list.dart';
-import 'validation_error.dart';
+import 'errors/validation_error.dart';
 
 /// Represents a [ValidationError] specific to a property that can contain
 /// multiple errors

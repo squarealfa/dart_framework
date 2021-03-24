@@ -208,7 +208,7 @@ void main() {
       final validator = IngredientValidator();
       final errors = validator.validate(ingredient);
 
-      expect(errors.validationErrors.first.propertyName, 'quantity');
+      expect(errors.validationErrors.first.propertyName, 'intQuantity');
     });
 
     test('missing rInt', () {
@@ -267,7 +267,7 @@ void main() {
       final validator = IngredientValidator();
       final errors = validator.validate(ingredient);
 
-      expect(errors.validationErrors.first.propertyName, 'nIntQuantity');
+      expect(errors.validationErrors.first.propertyName, 'nintQuantity');
     });
 
     test('too big nIntQuantity', () {
@@ -282,7 +282,7 @@ void main() {
       final validator = IngredientValidator();
       final errors = validator.validate(ingredient);
 
-      expect(errors.validationErrors.first.propertyName, 'nIntQuantity');
+      expect(errors.validationErrors.first.propertyName, 'nintQuantity');
     });
   });
 }
