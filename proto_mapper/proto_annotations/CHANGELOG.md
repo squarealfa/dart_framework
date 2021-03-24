@@ -12,4 +12,8 @@
 
 ## 1.1.2
 
-- Removed deprecated nullableFieldsByDefault property from proto annotation
+- Removed deprecated nullableFieldsByDefault property from protoBase annotation
+
+## 1.1.3
+
+- Removed deprecated nullableFieldsByDefault property from protoBase annotation

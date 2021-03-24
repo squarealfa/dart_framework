@@ -5,7 +5,6 @@ class Proto extends ProtoBase {
     String? prefix,
     String packageName = '',
     bool includeFieldsByDefault = true,
-    bool nullableFieldsByDefault = false,
   }) : super(
           prefix: prefix,
           packageName: packageName,

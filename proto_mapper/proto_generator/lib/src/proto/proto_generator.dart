@@ -12,8 +12,6 @@ class ProtoGenerator extends ProtoGeneratorBase<Proto> {
       prefix: reader.read('prefix').literalValue as String? ?? prefix,
       includeFieldsByDefault:
           reader.read('includeFieldsByDefault').literalValue as bool,
-      nullableFieldsByDefault:
-          reader.read('nullableFieldsByDefault').literalValue as bool,
       packageName: reader.read('packageName').literalValue as String? ?? '',
     );
 
