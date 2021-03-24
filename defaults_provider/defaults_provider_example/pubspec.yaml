@@ -1,0 +1,23 @@
+name: defaults_provider_example
+description: defaults_provider_annotations and defaults_provider_generator packages demonstration project
+homepage: https://github.com/squarealfa/dart_framework/tree/main/defaults_provider/defaults_provider_example
+repository: https://github.com/squarealfa/dart_framework
+version: 1.0.0
+
+publish_to: none
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  defaults_provider_annotations:
+    path: ../defaults_provider_annotations
+
+dev_dependencies:
+  pedantic: ^1.9.0
+  test: ^1.14.4
+
+  defaults_provider_generator:
+    path: ../defaults_provider_generator
+
+  build_runner: ^1.12.2

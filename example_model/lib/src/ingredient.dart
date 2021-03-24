@@ -1,9 +1,11 @@
+import 'package:map_mapper_annotations/map_mapper_annotations.dart';
+import 'package:proto_annotations/proto_annotations.dart';
+
 import 'grpc/ingredient.pb.dart';
 
 part 'ingredient.g.dart';
 
-@X()
-// @mapMap
+@mapEntity
 class Ingredient {
   final String description;
   final double quantity;
@@ -14,23 +16,23 @@ class Ingredient {
   });
 }
 
-class X implements Proto, MapProto, MapMap {
+class MapEntity implements Proto, MapProto, MapMap {
   @override
   final String packageName;
   @override
   final String? prefix;
   @override
-  final bool includeFieldsByDefault;
-  @override
-  final bool nullableFieldsByDefault;
-  @override
   final bool useDefaultsProvider;
 
-  const X({
+  @override
+  final bool includeFieldsByDefault;
+
+  const MapEntity({
     this.prefix = 'G',
     this.packageName = '',
-    this.includeFieldsByDefault = true,
-    this.nullableFieldsByDefault = false,
     this.useDefaultsProvider = false,
+    this.includeFieldsByDefault = true,
   });
 }
+
+const mapEntity = MapEntity();

@@ -1,4 +1,4 @@
-import 'package:model_example/model_example.dart';
+import 'package:example_model/example_model.dart';
 
 void main(List<String> args) {
   final recipe = Recipe(

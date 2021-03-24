@@ -1,0 +1,11 @@
+# Read about `build.yaml` at https://pub.dev/packages/build_config
+builders:
+
+  defaults_provider_generator:
+    import: "package:defaults_provider_generator/defaults_provider_generator.dart"
+    builder_factories: ["DefaultsProviderGeneratorBuilder"]
+    build_extensions: {".dart": ["defaults_provider.g.part"]}
+    auto_apply: dependents
+    build_to: cache
+    applies_builders: ["source_gen|combining_builder"]
+
