@@ -6,12 +6,10 @@ abstract class MapMapBase {
   /// When the value is false, only the fields that have the
   /// [MapField] annotation will be included.
   final bool includeFieldsByDefault;
-  // final bool nullableFieldsByDefault;
   final bool useDefaultsProvider;
 
   const MapMapBase({
     this.includeFieldsByDefault = true,
-    // this.nullableFieldsByDefault = false,
     this.useDefaultsProvider = false,
   });
 }
