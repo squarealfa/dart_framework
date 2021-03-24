@@ -1,6 +1,6 @@
-# map_mapper_annotations and map_mapper_generator packages usage example
+# defaults_provider_annotations and defaults_provider_generator packages usage example
 
-This is an example project that demonstrates the usage of the map_mapper_annotations and map_mapper_generator packages.
+This is an example project that demonstrates the usage of the defaults_provider_annotations and defaults_provider_generator packages.
 
 ## Getting started
 
@@ -8,24 +8,38 @@ While this project is an example of a completely setup project, the steps perfor
 
 ### pubspec.yaml
 
-The first step is to add package map_mapper_annotations to the dependencies section.
+The first step is to add package defaults_provider_annotations to the dependencies section.
 
-Next, the map_mapper_generator and build_runner packages are also to be added to the dev_dependencies section.
+Next, the defaults_provider_generator and build_runner packages are also to be added to the dev_dependencies section.
 
 ### Annotations
 
 
-Decorate each class for which mapping code is to be generated with a @mapMap annotation and add a part statement, if not already present:
+Decorate each class for which mapping code is to be generated with a @defaultsProvider annotation and add a part statement, if not already present:
 
 ```dart
 part 'recipe.g.dart';
 
-@mapMap
+@defaultsProvider
 class Recipe { ... }
 ```
 
-This will create an extension class on Recipe that contains a toMap() function that maps the conversion between Recipe and Map<String, dynamic>. It will also create an extension on the Map<String, dynamic> type-parametrized class that maps the conversion between instances of that class and Recipe.
+This will create a new class with the same name as the class to which is applied, suffixed with DefaultsProvider. In the example above, the new class will be named ```RecipeDefaultsProvider```. The defaults provider class has a property with a getter for each of the Recipe's properties that are not nullable, containing a default value for that property.
 
+The automatic defaults are:
+
+|Type|Default|
+|----|-------|
+|String|''   |
+|int|0|
+|double|throw UnimplementedError()|
+|Decimal|Decimal.zero|
+|class annotated with @defaultsProvider|call to createWithDefaults of that provider|
+|class without @defaultsProvider annotation|throw UnimplementedError()|
+|any other type|throw UnimplementedError()|
+
+Every defaults provider class has a createWithDefaults method that will create an 
+instance of the class to which the annotation is applied, using all of the default values.
 
 ### running the generators
 
@@ -37,4 +51,32 @@ dart run build_runner build
 
 ### customizing code generation
 
-There are other annotations that can be used to further control the code generation process.
+The annotation has an option, createDefaultsProviderBaseClass, that when set to true,
+will generate a defaults class with the same content, but with an extra suffix, ```Base``` added to its name.
+
+For instance:
+
+```dart
+part 'recipe.g.dart';
+
+@DefaultsProvider(createDefaultsProviderBaseClass: true)
+class Recipe { ... }
+```
+
+Will generate:
+
+```dart
+
+class RecipeDefaultsProviderBase { ... }
+
+```
+
+This allows you to create a subclass with your own overrides. As an example, the following code could be manually typed:
+
+```dart
+class RecipeDefaults extends RecipeDefaultsProviderBase
+{
+      @override
+  Category get category => Category(title: 'my category');
+}
+```
