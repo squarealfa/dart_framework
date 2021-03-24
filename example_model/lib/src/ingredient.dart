@@ -1,6 +1,3 @@
-import 'package:map_mapper_annotations/map_mapper_annotations.dart';
-import 'package:proto_annotations/proto_annotations.dart';
-import 'package:proto_annotations/src/annotations/proto.dart';
 import 'grpc/ingredient.pb.dart';
 
 part 'ingredient.g.dart';

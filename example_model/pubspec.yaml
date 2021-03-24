@@ -1,4 +1,4 @@
-name: model_example
+name: example_model
 description: Complete model demonstration project
 homepage: https://github.com/squarealfa/dart_framework/tree/main/proto_mapper/proto_mapper_example
 repository: https://github.com/squarealfa/dart_framework
@@ -10,12 +10,12 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  proto_annotations: ^1.0.0
-  map_mapper_annotations: ^1.0.0
+  proto_annotations: ^1.1.0
+  map_mapper_annotations: ^1.1.0
 
 dev_dependencies:
   build_runner: ^1.12.2
   pedantic: ^1.9.0
-  map_mapper_generator: ^1.0.1
-  proto_generator: ^1.0.0
+  map_mapper_generator: ^1.1.0
+  proto_generator: ^1.1.0
   test: ^1.14.4
