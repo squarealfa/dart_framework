@@ -362,6 +362,16 @@ void main() {
       expect((answer)[0].map['_key'], equals(testMultipleDocumentsKeys[0]));
     });
 
+    test('create transaction', () async {
+      var answer =
+          await testDbClient.createDocument(testCollection, {'Hello': 'World'});
+      if (answer.result.error) {
+        print(answer);
+      }
+      // save document key for next test:
+      testDocumentKey = answer.identifier.key;
+    });
+
     test('drop collection', () async {
       var answer = await testDbClient.dropCollection(testCollection);
       if (answer.result.error) {

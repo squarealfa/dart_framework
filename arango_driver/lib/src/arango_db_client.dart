@@ -10,6 +10,8 @@ import 'package:arango_driver/src/results/create_database_info.dart';
 import 'package:arango_driver/src/results/identifier.dart';
 import 'package:arango_driver/src/results/operation_result.dart';
 import 'package:arango_driver/src/results/result.dart';
+import 'package:arango_driver/src/transactions/transaction_response.dart';
+import 'package:arango_driver/src/transactions/transaction_status.dart';
 
 import 'results/collection_info.dart';
 import 'results/collection_properties_response.dart';
@@ -17,6 +19,8 @@ import 'results/collection_response.dart';
 import 'results/db_info_response.dart';
 import 'results/id_response.dart';
 import 'results/result_response.dart';
+import 'transactions/transaction.dart';
+import 'transactions/transaction_options.dart';
 
 class ArangoDBClient {
   final String scheme;
@@ -154,10 +158,16 @@ class ArangoDBClient {
   }
 
   /// Truncates a collection
-  Future<CollectionResponse> truncateCollection(String name) async {
-    final answer =
-        await _httpPut(['_db', db, '_api', 'collection', name, 'truncate']);
+  Future<CollectionResponse> truncateCollection(
+    String name, {
+    Transaction? transaction,
+  }) async {
+    final answer = await _httpPut(
+      ['_db', db, '_api', 'collection', name, 'truncate'],
+      headers: _addTransactionHeader(transaction),
+    );
     final response = _toCollectionResponse(answer);
+
     return response;
   }
 
@@ -181,9 +191,13 @@ class ArangoDBClient {
   /// Returns number of documents in a collection
   /// https://www.arangodb.com/docs/3.4/http/collection-getting.html#return-number-of-documents-in-a-collection
   Future<CollectionPropertiesResponse> documentsCount(
-      String collectionName) async {
+    String collectionName, {
+    Transaction? transaction,
+  }) async {
     final answer = await _httpGet(
-        ['_db', db, '_api', 'collection', collectionName, 'count']);
+      ['_db', db, '_api', 'collection', collectionName, 'count'],
+      headers: _addTransactionHeader(transaction),
+    );
     final response = _toCollectionPropertiesResult(answer);
     return response;
   }
@@ -228,18 +242,29 @@ class ArangoDBClient {
   /// Creates document
   /// https://www.arangodb.com/docs/3.4/http/document-working-with-documents.html#create-document
   Future<OperationResult> createDocument(
-      String collectionName, Map<String, dynamic> data) async {
-    final answer =
-        await _httpPost(['_db', db, '_api', 'document', collectionName], data)
-            as Map<String, dynamic>;
+    String collectionName,
+    Map<String, dynamic> data, {
+    Transaction? transaction,
+  }) async {
+    final answer = await _httpPost(
+      ['_db', db, '_api', 'document', collectionName],
+      data,
+      headers: _addTransactionHeader(transaction),
+    ) as Map<String, dynamic>;
     final ret = _toOperationResult(answer);
     return ret;
   }
 
   Future<List<OperationResult>> createDocuments(
-      String collectionName, List<Map<String, dynamic>> data) async {
+    String collectionName,
+    List<Map<String, dynamic>> data, {
+    Transaction? transaction,
+  }) async {
     var ret = ((await _httpPost(
-            ['_db', db, '_api', 'document', collectionName], data)) as List)
+      ['_db', db, '_api', 'document', collectionName],
+      data,
+      headers: _addTransactionHeader(transaction),
+    )) as List)
         .map((e) => _toOperationResult(e as Map<String, dynamic>))
         .toList();
     return ret;
@@ -258,20 +283,20 @@ class ArangoDBClient {
   /// then not empty Map will returned,
   /// but with code=412 and error=true and corresponding errorMessage.
   Future<DocumentResponse> getDocumentByKey(
-      String collection, String documentKey,
-      {String? ifNoneMatchRevision, String? ifMatchRevision}) async {
-    var result = await _httpGet([
-      '_db',
-      db,
-      '_api',
-      'document',
-      collection,
-      documentKey
-    ], headers: {
-      'accept': 'application/json',
-      'If-None-Match': ifNoneMatchRevision,
-      'If-Match': ifMatchRevision,
-    });
+    String collection,
+    String documentKey, {
+    String? ifNoneMatchRevision,
+    String? ifMatchRevision,
+    Transaction? transaction,
+  }) async {
+    var result = await _httpGet(
+      ['_db', db, '_api', 'document', collection, documentKey],
+      headers: _addTransactionHeader(transaction, headers: {
+        'accept': 'application/json',
+        'If-None-Match': ifNoneMatchRevision,
+        'If-Match': ifMatchRevision,
+      }),
+    );
     if (result == null || result.length == 0) {
       return DocumentResponse(
           result: Result.empty(), document: <String, dynamic>{});
@@ -286,14 +311,22 @@ class ArangoDBClient {
   /// Replaces document
   /// https://www.arangodb.com/docs/3.4/http/document-working-with-documents.html#replace-document
   Future<OperationResult> replaceDocument(
-      String collectionName, String documentKey, Map<String, dynamic> data,
-      {String? ifMatchRevision,
-      Map<String, dynamic> queryParams = const {}}) async {
+    String collectionName,
+    String documentKey,
+    Map<String, dynamic> data, {
+    String? ifMatchRevision,
+    Map<String, dynamic> queryParams = const {},
+    Transaction? transaction,
+  }) async {
     final answer = await _httpPut(
-        ['_db', db, '_api', 'document', collectionName, documentKey],
-        postData: data,
-        queryParameters: queryParams,
-        headers: {'If-Match': ifMatchRevision});
+      ['_db', db, '_api', 'document', collectionName, documentKey],
+      postData: data,
+      queryParameters: queryParams,
+      headers: _addTransactionHeader(
+        transaction,
+        headers: {'If-Match': ifMatchRevision},
+      ),
+    );
     final ret = _toOperationResult(answer);
     return ret;
   }
@@ -304,11 +337,13 @@ class ArangoDBClient {
     String collectionName,
     List<Map<String, dynamic>> data, {
     Map<String, dynamic> queryParams = const {},
+    Transaction? transaction,
   }) async {
     final answer = ((await _httpPut(
       ['_db', db, '_api', 'document', collectionName],
       postData: data,
       queryParameters: queryParams,
+      headers: _addTransactionHeader(transaction),
     )) as List)
         .map((e) => _toOperationResult(e as Map<String, dynamic>))
         .toList();
@@ -323,10 +358,17 @@ class ArangoDBClient {
     Map<String, dynamic> data, {
     String? ifMatchRevision,
     Map<String, dynamic> queryParams = const {},
+    Transaction? transaction,
   }) async {
     final answer = await _httpPatch(
-        ['_db', db, '_api', 'document', collectionName, documentKey], data,
-        queryParameters: queryParams, headers: {'If-Match': ifMatchRevision});
+      ['_db', db, '_api', 'document', collectionName, documentKey],
+      data,
+      queryParameters: queryParams,
+      headers: _addTransactionHeader(
+        transaction,
+        headers: {'If-Match': ifMatchRevision},
+      ),
+    );
     final ret = _toOperationResult(answer);
     return ret;
   }
@@ -341,11 +383,16 @@ class ArangoDBClient {
     String documentKey, {
     String? ifMatchRevision,
     Map<String, dynamic> queryParams = const {},
+    Transaction? transaction,
   }) async {
     final answer = await _httpDelete(
-        ['_db', db, '_api', 'document', collectionName, documentKey],
-        queryParameters: queryParams,
-        headers: {'If-Match': ifMatchRevision});
+      ['_db', db, '_api', 'document', collectionName, documentKey],
+      queryParameters: queryParams,
+      headers: _addTransactionHeader(
+        transaction,
+        headers: {'If-Match': ifMatchRevision},
+      ),
+    );
     var ret = _toOperationResult(answer);
     return ret;
   }
@@ -353,16 +400,70 @@ class ArangoDBClient {
   /// td: Removes multiple documents
   /// https://www.arangodb.com/docs/3.4/http/document-working-with-documents.html#removes-multiple-documents
   Future<List<OperationResult>> removeDocuments(
-      String collectionName, List<Map<String, dynamic>> data,
-      {Map<String, dynamic> queryParams = const {}}) async {
+    String collectionName,
+    List<Map<String, dynamic>> data, {
+    Map<String, dynamic> queryParams = const {},
+    Transaction? transaction,
+  }) async {
     final answer = (await _httpDelete(
       ['_db', db, '_api', 'document', collectionName],
       postData: data,
       queryParameters: queryParams,
+      headers: _addTransactionHeader(transaction),
     ) as List)
         .map((e) => _toOperationResult(e as Map<String, dynamic>))
         .toList();
     return answer;
+  }
+
+  /// Begins a transaction
+  /// https://www.arangodb.com/docs/stable/http/transaction-stream-transaction.html#begin-a-transaction
+  Future<TransactionResponse> beginTransaction(
+      TransactionOptions options) async {
+    var data = _getTransactionOptionsData(options);
+
+    final answer =
+        await _httpPost(['_db', db, '_api', 'transaction', 'begin'], data)
+            as Map<String, dynamic>;
+    final ret = _toTransactionResponse(answer);
+    return ret;
+  }
+
+  /// Gets a transaction status
+  /// https://www.arangodb.com/docs/stable/http/transaction-stream-transaction.html#get-transaction-status
+  Future<TransactionResponse> getTransaction(String id) async {
+    final answer = await _httpGet(['_db', db, '_api', 'transaction', id])
+        as Map<String, dynamic>;
+    final ret = _toTransactionResponse(answer);
+    return ret;
+  }
+
+  /// Commits a transaction
+  /// https://www.arangodb.com/docs/stable/http/transaction-stream-transaction.html#commit-transaction
+  Future<TransactionResponse> commitTransaction(String id) async {
+    final answer = await _httpPut(['_db', db, '_api', 'transaction', id])
+        as Map<String, dynamic>;
+    final ret = _toTransactionResponse(answer);
+    return ret;
+  }
+
+  /// Aborts a transaction
+  /// https://www.arangodb.com/docs/stable/http/transaction-stream-transaction.html#abort-transaction
+  Future<TransactionResponse> abortTransaction(String id) async {
+    final answer = await _httpDelete(['_db', db, '_api', 'transaction', id])
+        as Map<String, dynamic>;
+    final ret = _toTransactionResponse(answer);
+    return ret;
+  }
+
+  /// Gets currently running transactions
+  /// https://www.arangodb.com/docs/stable/http/transaction-stream-transaction.html#list-currently-ongoing-transactions
+  Future<List<Transaction>> transactions() async {
+    final answer = await _httpGet(['_db', db, '_api', 'transaction'])
+        as Map<String, dynamic>;
+    final trxs = answer['transactions'] as List<Map<String, dynamic>>;
+    final lst = trxs.map((e) => _getTransaction(e)).toList();
+    return lst;
   }
 
   Stream<Map<String, dynamic>> queryToStream(Map<String, Object> data) async* {
@@ -546,6 +647,38 @@ class ArangoDBClient {
         id: map['id'],
       );
 
+  static TransactionResponse _toTransactionResponse(Map<String, dynamic> map) {
+    final transaction = _getTransaction(map['result'] ?? []);
+    final ret = TransactionResponse(
+      result: _toResult(map),
+      transaction: transaction,
+    );
+    return ret;
+  }
+
+  static Transaction _getTransaction(Map<String, dynamic> map) {
+    final id = map['id']?.toString() ?? '';
+    final state = _getTransactionState(map['state']?.toString() ?? '');
+    final transaction = Transaction(
+      id: id,
+      state: state,
+    );
+    return transaction;
+  }
+
+  static TransactionStatuses _getTransactionState(String strState) {
+    switch (strState) {
+      case 'running':
+        return TransactionStatuses.running;
+      case 'committed':
+        return TransactionStatuses.committed;
+      case 'aborted':
+        return TransactionStatuses.aborted;
+      default:
+        return TransactionStatuses.unknown;
+    }
+  }
+
   static CollectionInfo _toCollectionInfo(Map<String, dynamic> map) =>
       CollectionInfo(
         type: map['type'],
@@ -597,4 +730,42 @@ class ArangoDBClient {
         identifier: _toIdentifier(map),
         oldRev: map['_oldRev'] ?? '',
       );
+
+  Map<String, dynamic> _getTransactionOptionsData(TransactionOptions options) {
+    final collections = {};
+    if (options.readCollections.isNotEmpty) {
+      collections['read'] = options.readCollections;
+    }
+    if (options.writeCollections.isNotEmpty) {
+      collections['write'] = options.writeCollections;
+    }
+    if (options.exclusiveCollections.isNotEmpty) {
+      collections['exclusive'] = options.exclusiveCollections;
+    }
+    final data = <String, dynamic>{'collections': collections};
+    if (options.waitForSync != null) {
+      data['waitForSync'] = options.waitForSync.toString();
+    }
+    if (options.allowImplicit != null) {
+      data['allowImplicit'] = options.allowImplicit.toString();
+    }
+    if (options.lockTimeoutSeconds != null) {
+      data['lockTimeout'] = options.lockTimeoutSeconds.toString();
+    }
+    if (options.maxTransactionSizeBytes != null) {
+      data['maxTransactionSize'] = options.maxTransactionSizeBytes.toString();
+    }
+    return data;
+  }
+
+  Map<String, dynamic> _addTransactionHeader(
+    Transaction? transaction, {
+    Map<String, dynamic> headers = const <String, dynamic>{},
+  }) {
+    if (transaction == null) {
+      return headers;
+    }
+    final ret = {...headers, 'x-arango-trx-id': transaction.id};
+    return ret;
+  }
 }
