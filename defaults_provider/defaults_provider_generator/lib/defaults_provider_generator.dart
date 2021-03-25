@@ -8,5 +8,5 @@ import 'src/defaults_provider_generator.dart';
 export 'src/defaults_provider_generator.dart';
 export 'src/defaults_provider_generator_base.dart';
 
-Builder DefaultsProviderGeneratorBuilder(BuilderOptions options) =>
+Builder defaultsProviderGeneratorBuilder(BuilderOptions options) =>
     SharedPartBuilder([DefaultsProviderGenerator()], 'defaults_provider');

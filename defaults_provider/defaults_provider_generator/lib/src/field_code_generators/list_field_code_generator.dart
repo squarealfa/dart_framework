@@ -2,9 +2,9 @@ import '../field_code_generator.dart';
 import '../field_descriptor.dart';
 
 class ListFieldCodeGenerator extends FieldCodeGenerator {
-  ListFieldCodeGenerator(FieldDescriptor fieldDescriptor)
-      : super(fieldDescriptor) {}
+  ListFieldCodeGenerator(FieldDescriptor fieldDescriptor, bool isAbstract)
+      : super(fieldDescriptor, isAbstract);
 
   @override
-  get defaultExpression => '[]';
+  String get defaultExpression => '[]';
 }

@@ -3,12 +3,12 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:source_gen/source_gen.dart';
 
 extension TypeCheckerExtension on TypeChecker {
-  DartObject getFieldAnnotation(FieldElement fieldElement) =>
-      this.firstAnnotationOf(fieldElement) ??
+  DartObject? getFieldAnnotation(FieldElement fieldElement) =>
+      firstAnnotationOf(fieldElement) ??
       (fieldElement.getter == null
           ? null
-          : this.firstAnnotationOf(fieldElement.getter));
+          : firstAnnotationOf(fieldElement.getter!));
 
-  DartObject getClassAnnotation(ClassElement classElement) =>
-      this.firstAnnotationOf(classElement);
+  DartObject? getClassAnnotation(ClassElement classElement) =>
+      firstAnnotationOf(classElement);
 }

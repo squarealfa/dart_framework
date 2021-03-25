@@ -19,7 +19,6 @@ abstract class DefaultsProviderGeneratorBase<
     BuildStep buildStep,
   ) {
     var validatable = hydrateAnnotation(reader);
-    if (validatable == null) return '';
     var createBaseClass = validatable.createDefaultsProviderBaseClass;
 
     try {
@@ -33,8 +32,8 @@ abstract class DefaultsProviderGeneratorBase<
   static String generateDefaultsProvider(
       Element element, bool createBaseClass) {
     var classElement = element.asClassElement();
-    if (classElement.kind.name == "ENUM") return '';
-    var superTypeElement = classElement.supertype.element;
+    if (classElement.kind.name == 'ENUM') return '';
+    var superTypeElement = classElement.supertype!.element;
 
     var annotation = TypeChecker.fromRuntime(DefaultsProviderBase)
         .firstAnnotationOf(superTypeElement);
@@ -44,10 +43,14 @@ abstract class DefaultsProviderGeneratorBase<
     final className = classElement.name;
 
     final constructorFields = _getFieldDescriptors(classElement, true);
+    final parameterFieldBuffer = StringBuffer();
     final constructorFieldBuffer = StringBuffer();
 
     for (var field in constructorFields) {
-      constructorFieldBuffer.writeln('${field.name}: ${field.name},');
+      parameterFieldBuffer
+          .writeln('${field.fieldElementTypeName}? ${field.name},');
+      constructorFieldBuffer
+          .writeln('${field.name}: ${field.name} ?? this.${field.name},');
     }
 
     final propertyFields = _getFieldDescriptors(classElement, false);
@@ -55,12 +58,13 @@ abstract class DefaultsProviderGeneratorBase<
 
     for (var field in constructorFields) {
       if (propertyFields.any((element) => element.name == field.name)) {
-        var gen = FieldCodeGenerator.fromFieldDescriptor(field);
+        var gen =
+            FieldCodeGenerator.fromFieldDescriptor(field, createBaseClass);
         propertyFieldBuffer.writeln(
-            '${field.fieldElementTypeName} get ${field.name} => ${gen.defaultExpression};');
+            '''${field.fieldElementTypeName} get ${field.name} ${createBaseClass && gen.defaultExpression == '' ? '' : ' => ' + gen.defaultExpression};''');
       } else {
         propertyFieldBuffer.writeln(
-            '${field.fieldElementTypeName} get ${field.name} => _superDefaultsProvider.${field.name};');
+            '''${field.fieldElementTypeName} get ${field.name} => _superDefaultsProvider.${field.name};''');
       }
     }
 
@@ -68,13 +72,15 @@ abstract class DefaultsProviderGeneratorBase<
         '${className}DefaultsProvider${createBaseClass ? 'Base' : ''}';
 
     final superDeclaration = superClassHasDefaultsProvider
-        ? 'final _superDefaultsProvider = ${superTypeElement.name}DefaultsProvider();'
+        ? '''final _superDefaultsProvider = ${superTypeElement.name}DefaultsProvider();'''
         : '';
 
     final constructor = classElement.isAbstract
         ? ''
         : '''
-        $className createWithDefaults() {
+        $className createWithDefaults({
+          $parameterFieldBuffer
+        }) {
           return $className(
             $constructorFieldBuffer
           );
@@ -83,7 +89,7 @@ abstract class DefaultsProviderGeneratorBase<
 
     return '''
 
-      class $providerClassName {
+      ${createBaseClass ? 'abstract' : ''} class $providerClassName {
         $superDeclaration
       
         $constructor
@@ -94,163 +100,8 @@ abstract class DefaultsProviderGeneratorBase<
 
     ''';
   }
-  // var errorCallBuffer = StringBuffer();
-  // var validationMethodBuffer = StringBuffer();
-  //
-  // for (var fieldDescriptor in fieldDescriptors) {
-  //   var errorLine = '''
-  //       if ((error = validate${fieldDescriptor.pascalName}(entity.${fieldDescriptor.name})) != null) {
-  //         errors.add(error!);
-  //       }
-  //   ''';
-  //   errorCallBuffer.writeln(errorLine);
-  //
-  //   var validationMethodCode = _createValidationMethod(fieldDescriptor);
-  //   validationMethodBuffer.writeln(validationMethodCode);
-  // }
-  //
-  // var validatorClassName =
-  //     createBaseClass ? '${className}ValidatorBase' : '${className}Validator';
-  //
-  // var callToSuperCreate =
-  //     superClassIsDefaultsProvider ? ' : super.create()' : '';
-  // var construction =
-  //     '${className}Validator${createBaseClass ? 'Base' : ''}.create()$callToSuperCreate;';
-  //
-  // var singletonAndFactory = createBaseClass
-  //     ? ''
-  //     : '''
-  //   static final ${className}Validator _singleton = ${className}Validator.create();
-  //   factory ${className}Validator() => _singleton;
-  //   ''';
-  //
-  // var extendsClause = !superClassIsDefaultsProvider
-  //     ? ''
-  //     : 'extends ${superTypeElement.name}Validator';
-  //
-  // var returnStatement = !superClassIsDefaultsProvider
-  //     ? 'return ErrorList(errors);'
-  //     : 'return ErrorList.merge(super.validate(entity), errors);';
-  //
-  // var ret = '''
-  //
-  // class $validatorClassName $extendsClause  implements Validator {
-  //
-  //     $construction
-  //
-  //     $singletonAndFactory
-  //
-  //     $validationMethodBuffer
-  //
-  //     @override
-  //     ErrorList validate(covariant $className entity) {
-  //       var errors = <ValidationError>[];
-  //       ValidationError? error;
-  //       $errorCallBuffer
-  //
-  //       $returnStatement
-  //     }
-  //
-  //     @override
-  //     void validateThrowing(covariant $className entity) {
-  //       var errors = validate(entity);
-  //       if (errors.validationErrors.isNotEmpty) throw errors;
-  //     }
-  //   }
-  //
-  // ''';
-  // return ret;
 }
 
-//   static String _createValidationMethod(FieldDescriptor fieldDescriptor) {
-//     var requiredCode = _createRequiredCode(fieldDescriptor);
-//
-//     var entityCode = _createEntityCode(fieldDescriptor);
-//
-//     var listCode = _createListCode(fieldDescriptor);
-//
-//     var ret = '''
-//
-//       ValidationError? validate${fieldDescriptor.pascalName}(${fieldDescriptor.fieldElementType.getDisplayString(withNullability: true)} value)
-//       {
-//         $requiredCode
-//         $entityCode
-//         $listCode
-//         return null;
-//       }
-//
-//     ''';
-//     return ret;
-//   }
-//
-//   static String _createListCode(FieldDescriptor fieldDescriptor) {
-//     if (!fieldDescriptor.fieldElementType.isDartCoreList ||
-//         !fieldDescriptor.parameterTypeIsValidatable ||
-//         fieldDescriptor.parameterTypeIsEnum) return '';
-//
-//     var nullEscape = fieldDescriptor.isNullable && !fieldDescriptor.hasRequired
-//         ? 'if (value == null) return null;'
-//         : '';
-//
-//     var code = '''
-//
-//       $nullEscape
-//
-//       var errorLists = value.map((entity) {
-//         var errors = ${fieldDescriptor.listParameterType.getDisplayString(withNullability: false)}Validator().validate(entity);
-//         var itemErrors = ListItemErrorList(value, entity, errors);
-//         return itemErrors;
-//       }).where((p) => p.errorList.validationErrors.isNotEmpty).toList();
-//
-//       if (errorLists.isNotEmpty) {
-//         return ListPropertyValidation(\'${fieldDescriptor.name}\', errorLists);
-//       }
-//
-//
-//     ''';
-//     return code;
-//   }
-//
-//   static String _createEntityCode(FieldDescriptor fieldDescriptor) {
-//     if (!fieldDescriptor.typeIsValidatable || fieldDescriptor.typeIsEnum) {
-//       return '';
-//     }
-//     var nullEscape = fieldDescriptor.isNullable && !fieldDescriptor.hasRequired
-//         ? 'value == null ? ErrorList([]) : '
-//         : '';
-//
-//     var code = '''
-//
-//         var errors = $nullEscape
-//           ${fieldDescriptor.fieldElementType.getDisplayString(withNullability: false)}Validator().validate(value);
-//         var errorListValidation = PropertyValidation(\'${fieldDescriptor.name}\', errors);
-//
-//         if (errorListValidation.errorList.validationErrors.isNotEmpty) {
-//           return errorListValidation;
-//         }
-//
-//     ''';
-//     return code;
-//   }
-//
-//   static String _createRequiredCode(FieldDescriptor fieldDescriptor) {
-//     if (!fieldDescriptor.hasRequired) {
-//       return '';
-//     }
-//     if (fieldDescriptor.fieldElementType.isDartCoreString)
-//       return '''
-//           if (${fieldDescriptor.isNullable ? 'value?.isEmpty ?? true' : 'value.isEmpty'} )
-//           {
-//             return RequiredValidationError(\'${fieldDescriptor.name}\');
-//           }
-//         ''';
-//     return '''
-//           if (value == null)
-//             return RequiredValidationError(\'${fieldDescriptor.name}\');
-//          ''';
-//   }
-// }
-//
 Iterable<FieldDescriptor> _getFieldDescriptors(
     ClassElement classElement, bool includeInherited) {
   final fieldSet =
@@ -258,7 +109,7 @@ Iterable<FieldDescriptor> _getFieldDescriptors(
   final fieldDescriptors = fieldSet
       .map((fieldElement) => FieldDescriptor.fromFieldElement(
             classElement,
-            fieldElement,
+            fieldElement!,
           ))
       .where((element) => !element.isNullable);
   return fieldDescriptors;

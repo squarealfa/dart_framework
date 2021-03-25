@@ -32,7 +32,7 @@ The automatic defaults are:
 |----|-------|
 |String|''   |
 |int|0|
-|double|throw UnimplementedError()|
+|double|0.0|
 |Decimal|Decimal.zero|
 |class annotated with @defaultsProvider|call to createWithDefaults of that provider|
 |class without @defaultsProvider annotation|throw UnimplementedError()|

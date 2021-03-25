@@ -2,9 +2,9 @@ import '../field_code_generator.dart';
 import '../field_descriptor.dart';
 
 class DecimalFieldCodeGenerator extends FieldCodeGenerator {
-  DecimalFieldCodeGenerator(FieldDescriptor fieldDescriptor)
-      : super(fieldDescriptor);
+  DecimalFieldCodeGenerator(FieldDescriptor fieldDescriptor, bool isAbstract)
+      : super(fieldDescriptor, isAbstract);
 
   @override
-  get defaultExpression => 'Decimal.zero';
+  String get defaultExpression => 'Decimal.zero';
 }

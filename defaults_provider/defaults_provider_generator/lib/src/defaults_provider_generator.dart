@@ -8,9 +8,10 @@ class DefaultsProviderGenerator
   @override
   DefaultsProvider hydrateAnnotation(ConstantReader reader) {
     var defaultsProvider = DefaultsProvider(
-      createDefaultsProviderBaseClass:
-          reader.read('createDefaultsProviderBaseClass').literalValue as bool ??
-              false,
+      createDefaultsProviderBaseClass: reader
+              .read('createDefaultsProviderBaseClass')
+              .literalValue as bool? ??
+          false,
     );
     return defaultsProvider;
   }
