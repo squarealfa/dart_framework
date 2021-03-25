@@ -35,13 +35,23 @@ dart pub get
 cd ../../
 
 
-# cd ./generators/validation
-# dart pub get
-# cd ../../
+cd ./validation/validation
+dart pub get
+cd ../../
 
-# cd ./generators/validation
-# dart pub get
-# cd ../../
+
+cd ./validation/validation_generator
+dart pub get
+cd ../../
+
+cd ./validation/example
+dart pub get
+cd ../../
+
+cd ./validation/test
+dart pub get
+cd ../../
+
 
 # cd ./generators/validation_generator
 # dart pub get

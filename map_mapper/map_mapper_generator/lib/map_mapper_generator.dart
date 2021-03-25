@@ -1,3 +1,6 @@
+/// Generates code that maps (converts) between instances of business
+/// classes to Map<String, dynamic> and back.
+
 library map_mapper_generator;
 
 import 'package:build/build.dart';

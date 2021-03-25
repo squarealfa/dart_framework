@@ -1,10 +1,13 @@
 name: defaults_provider_annotations
-description: A starting point for Dart libraries or applications.
+description:
+  Contains annotations to drive the code generator that creates defaults providers.
+homepage: https://github.com/squarealfa/dart_framework/tree/main/defaults_provider/defaults_provider_annotations
+repository: https://github.com/squarealfa/dart_framework
 version: 1.0.0
 
 
 environment:
-  sdk: '>=2.12.0-0 <3.0.0'
+  sdk: '>=2.12.0 <3.0.0'
 
 dev_dependencies:
   pedantic: ^1.11.0

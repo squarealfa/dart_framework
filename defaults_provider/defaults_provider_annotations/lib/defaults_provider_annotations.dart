@@ -1,7 +1,10 @@
-/// Support for doing something awesome.
+/// Contains annotations to drive the code generator that creates defaults
+/// providers.
 ///
-/// More dartdocs go here.
+/// A defaults provider is a class that supplies default values for each
+/// of the non-nullable propertiesof a business object
+
 library defaults_provider_annotations;
 
-export 'src/defaults_provider_base.dart';
 export 'src/defaults_provider.dart';
+export 'src/defaults_provider_base.dart';

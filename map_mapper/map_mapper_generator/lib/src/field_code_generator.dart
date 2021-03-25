@@ -21,14 +21,14 @@ abstract class FieldCodeGenerator {
   String get toMapMap =>
       '''map[\'$mapName\'] = ${fieldDescriptor.isNullable ? toNullableMapExpression : toMapExpression} ;''';
 
-  String get _DefaultsProviderExpression {
+  String get _defaultsProviderExpression {
     var ret = '''getValueOrDefault(
     map[\'$mapName\'], () => defaultsProvider.$fieldName, (mapValue) => ${fromMapExpression('mapValue')})''';
     return ret;
   }
 
   String get constructorMap =>
-      '''$fieldName: ${fieldDescriptor.isNullable ? fromNullableMapExpression : (hasDefaultsProvider ? _DefaultsProviderExpression : fromMapExpression('map[\'$mapName\']'))},''';
+      '''$fieldName: ${fieldDescriptor.isNullable ? fromNullableMapExpression : (hasDefaultsProvider ? _defaultsProviderExpression : fromMapExpression('map[\'$mapName\']'))},''';
 
   String get fromMapMap =>
       '''..$fieldName = ${fieldDescriptor.isNullable ? fromNullableMapExpression : fromMapExpression('map[\'$mapName\']')} ''';

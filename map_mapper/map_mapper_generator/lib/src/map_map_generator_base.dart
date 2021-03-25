@@ -36,9 +36,9 @@ abstract class MapMapGeneratorBase<TMapMap extends MapMapBase>
     var constructorFieldBuffer = StringBuffer();
 
     var fieldDescriptors = _getFieldDescriptors(_classElement!, annotation);
-    var DefaultsProviderClassName =
+    var defaultsProviderClassName =
         getDefaultsProvider(_classElement, annotation, fieldDescriptors);
-    var hasDefaultsProvider = DefaultsProviderClassName != null;
+    var hasDefaultsProvider = defaultsProviderClassName != null;
 
     for (var fieldDescriptor in fieldDescriptors) {
       var fieldCodeGenerator = FieldCodeGenerator.fromFieldDescriptor(
@@ -57,7 +57,7 @@ abstract class MapMapGeneratorBase<TMapMap extends MapMapBase>
     }
 
     var ret = renderMapper(
-      DefaultsProviderClassName,
+      defaultsProviderClassName,
       toMapFieldBuffer,
       fromMapFieldBuffer,
       constructorFieldBuffer,
