@@ -52,6 +52,22 @@ cd ./validation/test
 dart pub get
 cd ../../
 
+cd ./defaults_provider/defaults_provider_annotations
+dart pub get
+cd ../../
+
+cd ./defaults_provider/defaults_provider_generator
+dart pub get
+cd ../../
+
+cd ./defaults_provider/defaults_provider_example
+dart pub get
+cd ../../
+
+
+cd ./defaults_provider/test
+dart pub get
+cd ../../
 
 # cd ./generators/validation_generator
 # dart pub get

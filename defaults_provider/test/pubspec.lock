@@ -175,14 +175,14 @@ packages:
       name: defaults_provider_annotations
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.0"
+    version: "1.0.1"
   defaults_provider_generator:
     dependency: "direct main"
     description:
       path: "../defaults_provider_generator"
       relative: true
     source: path
-    version: "0.0.0"
+    version: "1.0.0"
   file:
     dependency: transitive
     description:
