@@ -527,8 +527,19 @@ void main() {
       if (answer.result.error) {
         print(answer);
       }
-
       final transaction = answer.transaction;
+
+      try {
+        await testDbClient.createDocument(
+          'my',
+          {'hello': 'world'},
+          transaction: transaction,
+        );
+      } catch (ex) {
+        await testDbClient.abortTransaction(transaction);
+      } finally {
+        await testDbClient.commitTransaction(transaction);
+      }
 
       var result = await testDbClient.removeDocument(
         testCollection,

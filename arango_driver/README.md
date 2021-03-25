@@ -106,6 +106,48 @@ This is very important to prevent AQL injection attacks:
 
 ```
 
+## Transactions
+
+This driver supports streaming transactions. 
+
+To following code examplifies how to work with collections:
+
+```dart
+
+      var answer = await testDbClient.beginTransaction(TransactionOptions(
+        writeCollections: [ 'mycollection' ],
+        waitForSync: true,
+        allowImplicit: true,
+      ));
+      if (answer.result.error) {
+        throw Error();
+      }
+      final transaction = answer.transaction;
+
+      try {
+        
+        await testDbClient.createDocument(
+          'mycollection',
+          {'hello': 'world'},
+          transaction: transaction,
+        );
+
+      } catch (ex) {
+        await testDbClient.abortTransaction(transaction);
+      } finally {
+        await testDbClient.commitTransaction(transaction);
+      }
+
+```
+
+A few notes:
+- The lifecycle of the transaction is controlled with the typical 
+  ```beginTransaction```, ```abortTransaction``` and ```commitTransaction``` methods.
+- ```beginTransaction``` returns a ```Transaction``` object. That object is passed to every other method that interacts with the transaction. In the example, we are passing the transaction to ```createDocument```. Other methods, update, delete may also receive the transaction as a parameter and will use that transaction.
+- The best documentation to understand transaction is ArangoDB's documentation at https://www.arangodb.com/docs/stable/http/transaction-stream-transaction.html.
+  
+
+
 ## Attribution
 
 This package is a fork of the [dart_arango_min](https://pub.dev/packages/dart_arango_min) package with the purpose of migrating it to null safety and add a lot of extra type-safety.

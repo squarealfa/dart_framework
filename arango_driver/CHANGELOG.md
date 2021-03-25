@@ -180,6 +180,6 @@ Fix pedantic warning again
 
 - Moved code to monorepo
 
-## 1.0.3
+## 1.1.0
 
-- 
+- Added support for transactions
