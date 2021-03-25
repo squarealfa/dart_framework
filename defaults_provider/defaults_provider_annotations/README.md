@@ -1,4 +1,4 @@
-# map_mapper_annotations
+# defaults_provider_annotations
 
 Defines annotations used by the [defaults_provider_generator](https://pub.dev/packages/defaults_provider_generator) package.
 

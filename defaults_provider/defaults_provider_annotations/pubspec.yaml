@@ -3,7 +3,7 @@ description:
   Contains annotations to drive the code generator that creates defaults providers.
 homepage: https://github.com/squarealfa/dart_framework/tree/main/defaults_provider/defaults_provider_annotations
 repository: https://github.com/squarealfa/dart_framework
-version: 1.0.0
+version: 1.0.1
 
 
 environment:

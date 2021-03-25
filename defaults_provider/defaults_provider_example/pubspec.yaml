@@ -11,8 +11,7 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  defaults_provider_annotations:
-    path: ../defaults_provider_annotations
+  defaults_provider_annotations: ^1.0.1
   decimal: ^1.0.0
 
 dev_dependencies:
