@@ -362,14 +362,190 @@ void main() {
       expect((answer)[0].map['_key'], equals(testMultipleDocumentsKeys[0]));
     });
 
-    test('create transaction', () async {
-      var answer =
-          await testDbClient.createDocument(testCollection, {'Hello': 'World'});
+    test('create and abort transaction', () async {
+      var answer = await testDbClient.beginTransaction(TransactionOptions());
       if (answer.result.error) {
         print(answer);
       }
-      // save document key for next test:
-      testDocumentKey = answer.identifier.key;
+      final abortAnswer =
+          await testDbClient.abortTransaction(answer.transaction);
+      expect(answer.transaction.id, isNotEmpty);
+      expect(answer.transaction.state, TransactionStates.running);
+      expect(abortAnswer.transaction.state, TransactionStates.aborted);
+    });
+
+    test('create and commit transaction', () async {
+      var answer = await testDbClient.beginTransaction(TransactionOptions());
+      if (answer.result.error) {
+        print(answer);
+      }
+      final commitAnswer =
+          await testDbClient.commitTransaction(answer.transaction);
+      expect(answer.transaction.id, isNotEmpty);
+      expect(answer.transaction.state, TransactionStates.running);
+      expect(commitAnswer.transaction.state, TransactionStates.committed);
+    });
+
+    test('create document and rollback', () async {
+      final countResult = await testDbClient.documentsCount(testCollection);
+      final count = countResult.collectionInfo.count ?? 0;
+
+      var answer = await testDbClient.beginTransaction(TransactionOptions(
+        writeCollections: [testCollection],
+        waitForSync: true,
+        allowImplicit: true,
+      ));
+
+      if (answer.result.error) {
+        print(answer);
+      }
+
+      final transaction = answer.transaction;
+
+      await testDbClient.createDocument(
+        testCollection,
+        {'Hello': 'World TRX'},
+        transaction: transaction,
+      );
+
+      final beforeCount = (await testDbClient.documentsCount(
+            testCollection,
+            transaction: transaction,
+          ))
+              .collectionInfo
+              .count ??
+          0;
+
+      final extraCount = (await testDbClient.documentsCount(
+            testCollection,
+          ))
+              .collectionInfo
+              .count ??
+          0;
+
+      await testDbClient.abortTransaction(transaction);
+
+      final abortCount = (await testDbClient.documentsCount(testCollection))
+              .collectionInfo
+              .count ??
+          0;
+
+      expect(beforeCount, count + 1);
+      expect(extraCount, count);
+
+      expect(abortCount, count);
+    });
+
+    test('create document and commit', () async {
+      final countResult = await testDbClient.documentsCount(testCollection);
+      final count = countResult.collectionInfo.count ?? 0;
+
+      var answer = await testDbClient.beginTransaction(TransactionOptions(
+        writeCollections: [testCollection],
+        waitForSync: true,
+        allowImplicit: true,
+      ));
+      if (answer.result.error) {
+        print(answer);
+      }
+
+      final transaction = answer.transaction;
+
+      await testDbClient.createDocument(
+        testCollection,
+        {'Hello': 'World TRX'},
+        transaction: transaction,
+      );
+
+      await testDbClient.commitTransaction(transaction);
+
+      final commitCount = (await testDbClient.documentsCount(testCollection))
+              .collectionInfo
+              .count ??
+          0;
+
+      expect(commitCount, count + 1);
+    });
+
+    test('delete document and abort', () async {
+      final doc = await testDbClient.createDocument(
+        testCollection,
+        {'Hello': 'World For Delete and Abort'},
+      );
+
+      final key = doc.identifier.key;
+
+      final countResult = await testDbClient.documentsCount(testCollection);
+      final count = countResult.collectionInfo.count ?? 0;
+
+      var answer = await testDbClient.beginTransaction(TransactionOptions(
+        writeCollections: [testCollection],
+        waitForSync: true,
+        allowImplicit: true,
+      ));
+      if (answer.result.error) {
+        print(answer);
+      }
+
+      final transaction = answer.transaction;
+
+      var result = await testDbClient.removeDocument(
+        testCollection,
+        key,
+        transaction: transaction,
+      );
+      if (result.result.error) {
+        print(result.result.errorMessage);
+      }
+
+      await testDbClient.abortTransaction(transaction);
+
+      final afterCount = (await testDbClient.documentsCount(testCollection))
+              .collectionInfo
+              .count ??
+          0;
+
+      expect(afterCount, count);
+    });
+
+    test('delete document and commit', () async {
+      final doc = await testDbClient.createDocument(
+        testCollection,
+        {'Hello': 'World For Delete and Commit'},
+      );
+
+      final key = doc.identifier.key;
+
+      final countResult = await testDbClient.documentsCount(testCollection);
+      final count = countResult.collectionInfo.count ?? 0;
+
+      var answer = await testDbClient.beginTransaction(TransactionOptions(
+        writeCollections: [testCollection],
+        waitForSync: true,
+        allowImplicit: true,
+      ));
+      if (answer.result.error) {
+        print(answer);
+      }
+
+      final transaction = answer.transaction;
+
+      var result = await testDbClient.removeDocument(
+        testCollection,
+        key,
+        transaction: transaction,
+      );
+
+      print(result);
+
+      await testDbClient.commitTransaction(transaction);
+
+      final afterCount = (await testDbClient.documentsCount(testCollection))
+              .collectionInfo
+              .count ??
+          0;
+
+      expect(afterCount, count - 1);
     });
 
     test('drop collection', () async {

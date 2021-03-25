@@ -5,6 +5,7 @@ class CollectionInfo {
   final String globallyUniqueId;
   final String name;
   final int status;
+  final int? count;
 
   const CollectionInfo({
     required this.type,
@@ -13,5 +14,6 @@ class CollectionInfo {
     required this.globallyUniqueId,
     required this.name,
     required this.status,
+    required this.count,
   });
 }

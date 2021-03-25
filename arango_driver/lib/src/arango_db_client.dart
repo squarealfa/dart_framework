@@ -11,7 +11,7 @@ import 'package:arango_driver/src/results/identifier.dart';
 import 'package:arango_driver/src/results/operation_result.dart';
 import 'package:arango_driver/src/results/result.dart';
 import 'package:arango_driver/src/transactions/transaction_response.dart';
-import 'package:arango_driver/src/transactions/transaction_status.dart';
+import 'package:arango_driver/src/transactions/transaction_states.dart';
 
 import 'results/collection_info.dart';
 import 'results/collection_properties_response.dart';
@@ -440,18 +440,20 @@ class ArangoDBClient {
 
   /// Commits a transaction
   /// https://www.arangodb.com/docs/stable/http/transaction-stream-transaction.html#commit-transaction
-  Future<TransactionResponse> commitTransaction(String id) async {
-    final answer = await _httpPut(['_db', db, '_api', 'transaction', id])
-        as Map<String, dynamic>;
+  Future<TransactionResponse> commitTransaction(Transaction transaction) async {
+    final answer =
+        await _httpPut(['_db', db, '_api', 'transaction', transaction.id])
+            as Map<String, dynamic>;
     final ret = _toTransactionResponse(answer);
     return ret;
   }
 
   /// Aborts a transaction
   /// https://www.arangodb.com/docs/stable/http/transaction-stream-transaction.html#abort-transaction
-  Future<TransactionResponse> abortTransaction(String id) async {
-    final answer = await _httpDelete(['_db', db, '_api', 'transaction', id])
-        as Map<String, dynamic>;
+  Future<TransactionResponse> abortTransaction(Transaction transaction) async {
+    final answer =
+        await _httpDelete(['_db', db, '_api', 'transaction', transaction.id])
+            as Map<String, dynamic>;
     final ret = _toTransactionResponse(answer);
     return ret;
   }
@@ -658,7 +660,7 @@ class ArangoDBClient {
 
   static Transaction _getTransaction(Map<String, dynamic> map) {
     final id = map['id']?.toString() ?? '';
-    final state = _getTransactionState(map['state']?.toString() ?? '');
+    final state = _getTransactionState(map['status']?.toString() ?? '');
     final transaction = Transaction(
       id: id,
       state: state,
@@ -666,16 +668,16 @@ class ArangoDBClient {
     return transaction;
   }
 
-  static TransactionStatuses _getTransactionState(String strState) {
+  static TransactionStates _getTransactionState(String strState) {
     switch (strState) {
       case 'running':
-        return TransactionStatuses.running;
+        return TransactionStates.running;
       case 'committed':
-        return TransactionStatuses.committed;
+        return TransactionStates.committed;
       case 'aborted':
-        return TransactionStatuses.aborted;
+        return TransactionStates.aborted;
       default:
-        return TransactionStatuses.unknown;
+        return TransactionStates.unknown;
     }
   }
 
@@ -687,6 +689,7 @@ class ArangoDBClient {
         globallyUniqueId: map['globallyUniqueId'],
         name: map['name'],
         status: map['status'],
+        count: map['count'],
       );
 
   static CollectionResponse _toCollectionResponse(Map<String, dynamic> map) =>

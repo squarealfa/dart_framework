@@ -1,4 +1,4 @@
-enum TransactionStatuses {
+enum TransactionStates {
   unknown,
   running,
   committed,
