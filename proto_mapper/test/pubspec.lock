@@ -7,14 +7,14 @@ packages:
       name: _fe_analyzer_shared
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "18.0.0"
+    version: "19.0.0"
   analyzer:
     dependency: transitive
     description:
       name: analyzer
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.0"
+    version: "1.3.0"
   archive:
     dependency: transitive
     description:
@@ -105,7 +105,7 @@ packages:
       name: built_value
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "8.0.3"
+    version: "8.0.4"
   charcode:
     dependency: transitive
     description:
@@ -154,7 +154,7 @@ packages:
       name: coverage
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.1"
+    version: "1.0.2"
   crypto:
     dependency: transitive
     description:
@@ -196,7 +196,7 @@ packages:
       name: glob
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0"
+    version: "2.0.1"
   googleapis_auth:
     dependency: transitive
     description:
@@ -266,7 +266,7 @@ packages:
       name: json_annotation
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.0"
+    version: "4.0.1"
   logging:
     dependency: transitive
     description:
@@ -331,19 +331,19 @@ packages:
     source: hosted
     version: "1.5.0"
   proto_annotations:
-    dependency: "direct main"
+    dependency: transitive
     description:
-      path: "../proto_annotations"
-      relative: true
-    source: path
-    version: "1.0.0"
+      name: proto_annotations
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.3"
   proto_generator:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       path: "../proto_generator"
       relative: true
     source: path
-    version: "1.0.1"
+    version: "1.1.3"
   protobuf:
     dependency: transitive
     description:
@@ -434,7 +434,7 @@ packages:
       name: squarealfa_generators_common
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.0"
+    version: "1.0.1"
   stack_trace:
     dependency: transitive
     description:

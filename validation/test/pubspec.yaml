@@ -4,14 +4,12 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  squarealfa_validation:
-    path: ../validation
+  squarealfa_validation_generator:
+    path: ../validation_generator
   decimal: ^1.0.0
   fixnum: ^1.0.0
 
 dev_dependencies:
-  squarealfa_validation_generator:
-    path: ../validation_generator
   build_runner: ^1.10.2
   build_verify: ^2.0.0
   pedantic: ^1.11.0
