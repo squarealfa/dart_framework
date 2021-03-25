@@ -1,0 +1,49 @@
+builders:
+
+  entity_validation_generator:
+    import: "package:entity_adapter_generator/entity_adapter_generator.dart"
+    builder_factories: ["entityValidationGeneratorBuilder"]
+    build_extensions: {".dart": ["entity_validation.g.part"]}
+    auto_apply: dependents
+    build_to: cache
+    applies_builders: ["source_gen|combining_builder"]
+
+  proto_mapper_generator:
+    import: "package:entity_adapter_generator/entity_adapter_generator.dart"
+    builder_factories: ["entityProtoMapperBuilder"]
+    build_extensions: {".dart": ["entity_proto_map.g.part"]}
+    auto_apply: dependents
+    build_to: cache
+    applies_builders: ["source_gen|combining_builder"]
+
+  proto_generator:
+    import: "package:entity_adapter_generator/entity_adapter_generator.dart"
+    builder_factories: ["entityProtoBuilder"]
+    build_extensions: {".dart": ["entity.proto"]}
+    auto_apply: dependents
+    build_to: source
+
+
+  map_map_generator:
+    import: "package:entity_adapter_generator/entity_adapter_generator.dart"
+    builder_factories: ["entityMapMapBuilder"]
+    build_extensions: {".dart": ["entity_map.g.part"]}
+    auto_apply: dependents
+    build_to: cache
+    applies_builders: ["source_gen|combining_builder"]
+
+  builder_generator:
+    import: "package:entity_adapter_generator/entity_adapter_generator.dart"
+    builder_factories: ["entityBuilder"]
+    build_extensions: {".dart": ["entity_builder.g.part"]}
+    auto_apply: dependents
+    build_to: cache
+    applies_builders: ["source_gen|combining_builder"]
+
+  entity_adapter_generator:
+    import: "package:entity_adapter_generator/entity_adapter_generator.dart"
+    builder_factories: ["entityAdapterBuilder"]
+    build_extensions: {".dart": ["entity_mapper.g.part"]}
+    auto_apply: dependents
+    build_to: cache
+    applies_builders: ["source_gen|combining_builder"]
