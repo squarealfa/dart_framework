@@ -49,3 +49,7 @@
 ## 1.0.2
 
 - Moved code to monorepo
+
+## 1.1.0
+
+- Version bump
