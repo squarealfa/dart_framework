@@ -16,3 +16,11 @@ builders:
     auto_apply: dependents
     build_to: cache
     applies_builders: ["source_gen|combining_builder"]
+
+  copywith_generator:
+    import: "package:squarealfa_entity_generator/squarealfa_entity_generator.dart"
+    builder_factories: ["copyWithBuilder"]
+    build_extensions: {".dart": ["copywith.g.part"]}
+    auto_apply: dependents
+    build_to: cache
+    applies_builders: ["source_gen|combining_builder"]

@@ -29,46 +29,46 @@ class BuilderGenerator extends GeneratorForAnnotation<BuildBuilder> {
     if (fieldDescriptors.isEmpty) return '';
 
     var renderBuffer = StringBuffer();
-    renderBuffer.writeln(_renderCopyWithExtension(fieldDescriptors));
+    //renderBuffer.writeln(_renderCopyWithExtension(fieldDescriptors));
 
     renderBuffer.writeln(_renderBuilder(fieldDescriptors));
 
     return renderBuffer.toString();
   }
 
-  String _renderCopyWithExtension(Iterable<FieldDescriptor> fieldDescriptors) {
-    var className = _className;
-    var copyWithParameterFieldBuffer = StringBuffer();
-    var copyWithAssignmentFieldBuffer = StringBuffer();
+  // String _renderCopyWithExtension(Iterable<FieldDescriptor> fieldDescriptors) {
+  //   var className = _className;
+  //   var copyWithParameterFieldBuffer = StringBuffer();
+  //   var copyWithAssignmentFieldBuffer = StringBuffer();
 
-    for (var fieldDescriptor in fieldDescriptors) {
-      copyWithParameterFieldBuffer.writeln(
-          '${fieldDescriptor.fieldElementTypeName}? ${fieldDescriptor.name},');
-      var resetFieldName = fieldDescriptor.isNullable
-          ? 'set${fieldDescriptor.pascalName}ToNull'
-          : null;
-      if (resetFieldName != null) {
-        copyWithParameterFieldBuffer.writeln('bool $resetFieldName = false,');
-      }
-      copyWithAssignmentFieldBuffer.writeln(
-        '''${fieldDescriptor.name}: ${resetFieldName == null ? '' : '$resetFieldName ? null :'} ${fieldDescriptor.name} ?? this.${fieldDescriptor.name},''',
-      );
-    }
+  //   for (var fieldDescriptor in fieldDescriptors) {
+  //     copyWithParameterFieldBuffer.writeln(
+  //         '${fieldDescriptor.fieldElementTypeName}? ${fieldDescriptor.name},');
+  //     var resetFieldName = fieldDescriptor.isNullable
+  //         ? 'set${fieldDescriptor.pascalName}ToNull'
+  //         : null;
+  //     if (resetFieldName != null) {
+  //       copyWithParameterFieldBuffer.writeln('bool $resetFieldName = false,');
+  //     }
+  //     copyWithAssignmentFieldBuffer.writeln(
+  //       '''${fieldDescriptor.name}: ${resetFieldName == null ? '' : '$resetFieldName ? null :'} ${fieldDescriptor.name} ?? this.${fieldDescriptor.name},''',
+  //     );
+  //   }
 
-    var copyWithExtension = '''
-          extension ${className}CopyWithExtension on $className {
-        $className copyWith({
-          $copyWithParameterFieldBuffer
-        }) {
-        return $className(
-          $copyWithAssignmentFieldBuffer
-          );
-      }
-    }
-    ''';
+  //   var copyWithExtension = '''
+  //         extension ${className}CopyWithExtension on $className {
+  //       $className copyWith({
+  //         $copyWithParameterFieldBuffer
+  //       }) {
+  //       return $className(
+  //         $copyWithAssignmentFieldBuffer
+  //         );
+  //     }
+  //   }
+  //   ''';
 
-    return copyWithExtension;
-  }
+  //   return copyWithExtension;
+  // }
 
   String _renderBuilder(
     Iterable<FieldDescriptor> fieldDescriptors,

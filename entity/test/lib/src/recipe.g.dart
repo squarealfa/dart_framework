@@ -6,20 +6,6 @@ part of 'recipe.dart';
 // BuilderGenerator
 // **************************************************************************
 
-extension RecipeCopyWithExtension on Recipe {
-  Recipe copyWith({
-    String? title,
-    String? description,
-    bool setDescriptionToNull = false,
-  }) {
-    return Recipe(
-      title: title ?? this.title,
-      description:
-          setDescriptionToNull ? null : description ?? this.description,
-    );
-  }
-}
-
 class RecipeBuilder implements Builder<Recipe> {
   String title;
   String? description;
@@ -44,6 +30,24 @@ class RecipeBuilder implements Builder<Recipe> {
     );
     RecipeValidator().validateThrowing(entity);
     return entity;
+  }
+}
+
+// **************************************************************************
+// CopyWithGenerator
+// **************************************************************************
+
+extension RecipeCopyWithExtension on Recipe {
+  Recipe copyWith({
+    String? title,
+    String? description,
+    bool setDescriptionToNull = false,
+  }) {
+    return Recipe(
+      title: title ?? this.title,
+      description:
+          setDescriptionToNull ? null : description ?? this.description,
+    );
   }
 }
 

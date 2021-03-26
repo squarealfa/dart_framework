@@ -4,6 +4,7 @@ part 'recipe.g.dart';
 
 @validatable
 @builder
+@copyWith
 class Recipe {
   @required
   final String title;
