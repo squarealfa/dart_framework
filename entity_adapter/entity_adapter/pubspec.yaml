@@ -4,12 +4,15 @@ homepage: https://www.example.com
 
 version: 1.0.0
 
+publish_to: none
+
 environment:
   sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   squarealfa_entity_annotations: ^1.0.1
-  proto_annotations: ^1.0.0
+  proto_annotations: #^1.0.0
+    path: ../../proto_mapper/proto_annotations
   map_mapper_annotations: ^1.0.0
   defaults_provider_annotations: ^1.0.0
 

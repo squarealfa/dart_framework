@@ -7,12 +7,12 @@ import 'package:squarealfa_entity_annotations/squarealfa_entity_annotations.dart
 
 part 'recipe.g.dart';
 
+const entity = AdaptEntity(rootEntityType: Entity);
+
 class Entity {}
 
-@AdaptEntity(Entity)
-@MapMap(useDefaultsProvider: true)
-@proto
-@mapProto
+@entity
+//@mapProto
 @validatable
 @defaultsProvider
 @builder

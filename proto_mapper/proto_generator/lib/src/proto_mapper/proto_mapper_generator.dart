@@ -11,7 +11,7 @@ class ProtoMapperGenerator extends ProtoMapperGeneratorBase<MapProto> {
   MapProto? hydrateAnnotation(ConstantReader reader, {String? prefix}) {
     var ret = MapProto(
       prefix: reader.read('prefix').literalValue as String? ?? prefix,
-      packageName: reader.read('packageName').literalValue as String?,
+      packageName: reader.read('packageName').literalValue as String,
     );
 
     return ret;

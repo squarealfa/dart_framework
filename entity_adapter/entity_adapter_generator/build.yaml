@@ -8,10 +8,25 @@ builders:
     build_to: cache
     applies_builders: ["source_gen|combining_builder"]
 
-  # validation_generator:
-  #   import: "package:squarealfa_entity_generator/squarealfa_entity_generator.dart"
-  #   builder_factories: ["validationGeneratorBuilder"]
-  #   build_extensions: {".dart": ["validation.g.part"]}
-  #   auto_apply: dependents
-  #   build_to: cache
-  #   applies_builders: ["source_gen|combining_builder"]
+  map_map_generator:
+    import: "package:map_mapper_generator/map_mapper_generator.dart"
+    builder_factories: ["mapMapBuilder"]
+    build_extensions: {".dart": ["entity_map.g.part"]}
+    auto_apply: dependents
+    build_to: cache
+    applies_builders: ["source_gen|combining_builder"]
+
+  proto_mapper_generator:
+    import: "package:proto_generator/proto_generator.dart"
+    builder_factories: ["protoMapperBuilder"]
+    build_extensions: {".dart": ["entity_proto_map.g.part"]}
+    auto_apply: dependents
+    build_to: cache
+    applies_builders: ["source_gen|combining_builder"]
+
+  proto_generator:
+    import: "package:proto_generator/proto_generator.dart"
+    builder_factories: ["protoBuilder"]
+    build_extensions: {".dart": [".entity.proto"]}
+    auto_apply: dependents
+    build_to: source
