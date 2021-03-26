@@ -1,0 +1,21 @@
+name: squarealfa_entity_adapter_generator
+description: A starting point for Dart libraries or applications.
+homepage: https://www.example.com
+
+version: 1.0.0
+
+publish_to: none
+
+environment:
+  sdk: '>=2.12.0 <3.0.0'
+
+dependencies:
+  source_gen: ^1.0.0
+  squarealfa_generators_common: ^1.0.0
+  squarealfa_entity_adapter:
+    path: ../entity_adapter
+  map_mapper_generator: ^1.1.1
+
+dev_dependencies:
+  pedantic: ^1.9.0
+  test: ^1.14.4

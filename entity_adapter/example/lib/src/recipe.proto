@@ -1,0 +1,19 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+// **************************************************************************
+// ProtoGenerator
+// **************************************************************************
+
+syntax = "proto3";
+
+
+
+
+
+message GRecipe
+{
+  string title = 1;
+  string description = 2;
+  bool descriptionHasValue = 3;
+
+}

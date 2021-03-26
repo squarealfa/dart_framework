@@ -2,7 +2,6 @@
 export 'src/annotations/build_builder.dart';
 export 'src/annotations/copy_with.dart';
 export 'src/builder.dart';
-export 'src/entity_permissions.dart';
 export 'src/validations/annotations/double_range.dart';
 export 'src/validations/annotations/range.dart';
 export 'src/validations/annotations/required.dart';

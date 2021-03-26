@@ -2,3 +2,6 @@
 
 - Initial
 
+## 1.0.1
+
+- Removed entity permissions

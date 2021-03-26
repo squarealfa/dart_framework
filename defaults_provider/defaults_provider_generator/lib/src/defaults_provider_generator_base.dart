@@ -57,7 +57,8 @@ abstract class DefaultsProviderGeneratorBase<
     final propertyFieldBuffer = StringBuffer();
 
     for (var field in constructorFields) {
-      if (propertyFields.any((element) => element.name == field.name)) {
+      if (!superClassHasDefaultsProvider ||
+          propertyFields.any((element) => element.name == field.name)) {
         var gen =
             FieldCodeGenerator.fromFieldDescriptor(field, createBaseClass);
         propertyFieldBuffer.writeln(

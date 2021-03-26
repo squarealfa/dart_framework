@@ -3,7 +3,7 @@ description: Generates validator classes that check each property for business
   rule violations and lifecycle helpers
 homepage: https://github.com/squarealfa/dart_framework/tree/entity/entity/entity_generator
 repository: https://github.com/squarealfa/dart_framework
-version: 1.0.1
+version: 1.0.2
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -13,7 +13,7 @@ dependencies:
   build: ^2.0.0
   decimal: ^1.0.0
   source_gen: ^1.0.0
-  squarealfa_entity_annotations: ^1.0.0
+  squarealfa_entity_annotations: ^1.0.1
   squarealfa_generators_common: ^1.0.0
   tuple: ^2.0.0
 
