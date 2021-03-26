@@ -1,13 +1,11 @@
 import 'package:analyzer/dart/element/element.dart';
-import 'package:squarealfa_generators_common/squarealfa_generators_common.dart';
-import 'package:squarealfa_entity_annotations/squarealfa_entity_annotations.dart';
 import 'package:source_gen/source_gen.dart';
+import 'package:squarealfa_entity_annotations/squarealfa_entity_annotations.dart';
+import 'package:squarealfa_generators_common/squarealfa_generators_common.dart';
 
 class FieldDescriptor extends FieldDescriptorBase {
-  FieldDescriptor._(
-    ClassElement classElement,
-    FieldElement fieldElement,
-  ) : super(classElement, fieldElement);
+  FieldDescriptor._(ClassElement classElement, FieldElement fieldElement)
+      : super(classElement, fieldElement);
 
   factory FieldDescriptor.fromFieldElement(
     ClassElement classElement,
@@ -19,14 +17,14 @@ class FieldDescriptor extends FieldDescriptorBase {
     );
   }
 
-  bool get typeHasEntityMapAnnotation {
-    var annotation = TypeChecker.fromRuntime(BuildBuilder)
+  bool get typeIsValidatable {
+    var annotation = TypeChecker.fromRuntime(ValidatableBase)
         .firstAnnotationOf(fieldElement.type.element!);
     return annotation != null;
   }
 
-  bool get parameterTypeHasEntityMapAnnotation {
-    var annotation = TypeChecker.fromRuntime(BuildBuilder)
+  bool get parameterTypeIsValidatable {
+    var annotation = TypeChecker.fromRuntime(ValidatableBase)
         .firstAnnotationOf(parameterType.element!);
     return annotation != null;
   }

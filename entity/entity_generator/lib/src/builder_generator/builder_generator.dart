@@ -1,15 +1,14 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
-import 'package:entity_adapter/entity_adapter.dart';
 import 'package:source_gen/source_gen.dart';
+import 'package:squarealfa_entity_annotations/squarealfa_entity_annotations.dart';
 import 'package:squarealfa_generators_common/squarealfa_generators_common.dart';
 
 import 'field_code_generator.dart';
 import 'field_descriptor.dart';
 
-class BuilderGenerator extends GeneratorForAnnotation<MapEntity> {
-  ClassElement _classElement;
-  String _className;
+class BuilderGenerator extends GeneratorForAnnotation<BuildBuilder> {
+  late String _className;
 
   BuilderGenerator(BuilderOptions options);
 
@@ -19,13 +18,13 @@ class BuilderGenerator extends GeneratorForAnnotation<MapEntity> {
     ConstantReader reader,
     BuildStep buildStep,
   ) {
-    if (element is! ClassElement) return '';
-    _classElement = element as ClassElement;
-    _className = _classElement.name;
+    var classElement = element.asClassElement();
+    if (classElement.kind.name == 'ENUM') return '';
+    _className = classElement.name;
 
-    if (_classElement.kind.name == 'ENUM') return '';
+    if (classElement.kind.name == 'ENUM') return '';
 
-    var fieldDescriptors = _getFieldDescriptors(_classElement);
+    var fieldDescriptors = _getFieldDescriptors(classElement);
 
     if (fieldDescriptors.isEmpty) return '';
 
@@ -52,7 +51,8 @@ class BuilderGenerator extends GeneratorForAnnotation<MapEntity> {
         copyWithParameterFieldBuffer.writeln('bool $resetFieldName = false,');
       }
       copyWithAssignmentFieldBuffer.writeln(
-          '${fieldDescriptor.name}: ${resetFieldName == null ? '' : '$resetFieldName ? null :'} ${fieldDescriptor.name} ?? this.${fieldDescriptor.name},');
+        '''${fieldDescriptor.name}: ${resetFieldName == null ? '' : '$resetFieldName ? null :'} ${fieldDescriptor.name} ?? this.${fieldDescriptor.name},''',
+      );
     }
 
     var copyWithExtension = '''
@@ -122,7 +122,7 @@ Iterable<FieldDescriptor> _getFieldDescriptors(ClassElement classElement) {
   final fieldDescriptors =
       fieldSet.map((fieldElement) => FieldDescriptor.fromFieldElement(
             classElement,
-            fieldElement,
+            fieldElement!,
           ));
   return fieldDescriptors;
 }

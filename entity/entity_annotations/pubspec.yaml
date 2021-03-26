@@ -1,17 +1,14 @@
-name: entity_annotations
-description: 
-  Contains annotations to drive the code generator that creates utilities and extensions to Dart classes 
-  that are used as entities stored in a database
+name: squarealfa_entity_annotations
+description: Annotations and classes to drive code generation for validation and entity life cycle.
+#homepage: https://github.com/squarealfa/dart_framework/tree/main/validation/validation
+#repository: https://github.com/squarealfa/dart_framework
 version: 1.0.0
-# homepage: https://www.example.com
-environment:
-  sdk: '>=2.12.0 <3.0.0'
 
-dependencies:
-  squarealfa_validation: ^1.0.0
-  proto_annotations: ^1.0.0
-  map_mapper_annotations: ^1.0.0
-  defaults_provider_annotations: ^1.0.0
+environment:
+  sdk: ">=2.12.0 <3.0.0"
 
 dev_dependencies:
   pedantic: ^1.9.0
+  
+dependencies:
+  decimal: ^1.0.0
