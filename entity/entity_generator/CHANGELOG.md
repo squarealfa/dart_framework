@@ -2,6 +2,6 @@
 
 - Initial
 
-## 1.1.0
+## 1.0.1
 
-- Added Range, DoubleRange and StringLength validation implementation
+- Removed wrong build configuration

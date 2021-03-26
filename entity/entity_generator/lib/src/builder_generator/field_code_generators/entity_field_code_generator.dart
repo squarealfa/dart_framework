@@ -10,8 +10,8 @@ class EntityFieldCodeGenerator extends FieldCodeGenerator {
 
   @override
   String get toBuilderExpression => fieldDescriptor.isNullable
-      ? 'entity.${fieldDescriptor.name} == null ? null : ${fieldDescriptor.fieldElementTypeName}Builder.from${fieldDescriptor.fieldElementTypeName}(entity.${fieldDescriptor.name}!)'
-      : '${fieldDescriptor.fieldElementTypeName}Builder.from${fieldDescriptor.fieldElementTypeName}(entity.${fieldDescriptor.name})';
+      ? '''entity.${fieldDescriptor.name} == null ? null : ${fieldDescriptor.fieldElementTypeName}Builder.from${fieldDescriptor.fieldElementTypeName}(entity.${fieldDescriptor.name}!)'''
+      : '''${fieldDescriptor.fieldElementTypeName}Builder.from${fieldDescriptor.fieldElementTypeName}(entity.${fieldDescriptor.name})''';
 
   @override
   String get constructorExpression =>

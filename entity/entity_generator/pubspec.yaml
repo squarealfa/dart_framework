@@ -1,25 +1,21 @@
 name: squarealfa_entity_generator
 description: Generates validator classes that check each property for business
-  rule violations
-homepage: https://github.com/squarealfa/dart_framework/tree/main/validation/validation_generator
+  rule violations and lifecycle helpers
+homepage: https://github.com/squarealfa/dart_framework/tree/entity/entity/entity_generator
 repository: https://github.com/squarealfa/dart_framework
-version: 1.1.0
-
-publish_to: none
+version: 1.0.1
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  #squarealfa_validation: ^1.1.0
-  squarealfa_entity_annotations:
-    path: ../entity_annotations
   analyzer: ^1.2.0
   build: ^2.0.0
   decimal: ^1.0.0
   source_gen: ^1.0.0
+  squarealfa_entity_annotations: ^1.0.0
   squarealfa_generators_common: ^1.0.0
   tuple: ^2.0.0
 
 dev_dependencies:
-  pedantic: ^1.9.0
+  pedantic: ^1.11.0

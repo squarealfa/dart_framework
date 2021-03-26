@@ -3,6 +3,55 @@
 part of 'recipe.dart';
 
 // **************************************************************************
+// BuilderGenerator
+// **************************************************************************
+
+class RecipeBuilder implements Builder<Recipe> {
+  String title;
+  String? description;
+
+  RecipeBuilder({
+    required this.title,
+    this.description,
+  });
+
+  factory RecipeBuilder.fromRecipe(Recipe entity) {
+    return RecipeBuilder(
+      title: entity.title,
+      description: entity.description,
+    );
+  }
+
+  @override
+  Recipe build() {
+    var entity = Recipe(
+      title: title,
+      description: description,
+    );
+    RecipeValidator().validateThrowing(entity);
+    return entity;
+  }
+}
+
+// **************************************************************************
+// CopyWithGenerator
+// **************************************************************************
+
+extension RecipeCopyWithExtension on Recipe {
+  Recipe copyWith({
+    String? title,
+    String? description,
+    bool setDescriptionToNull = false,
+  }) {
+    return Recipe(
+      title: title ?? this.title,
+      description:
+          setDescriptionToNull ? null : description ?? this.description,
+    );
+  }
+}
+
+// **************************************************************************
 // ValidatorGenerator
 // **************************************************************************
 

@@ -1,8 +1,10 @@
-import 'package:squarealfa_validation/squarealfa_validation.dart';
+import 'package:squarealfa_entity_annotations/squarealfa_entity_annotations.dart';
 
 part 'recipe.g.dart';
 
 @validatable
+@builder
+@copyWith
 class Recipe {
   @required
   final String title;

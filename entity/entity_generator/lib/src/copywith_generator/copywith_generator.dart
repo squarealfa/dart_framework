@@ -29,7 +29,6 @@ class CopyWithGenerator extends GeneratorForAnnotation<CopyWith> {
     var renderBuffer = StringBuffer();
     renderBuffer.writeln(_renderCopyWithExtension(fieldDescriptors));
 
-
     return renderBuffer.toString();
   }
 
@@ -66,7 +65,6 @@ class CopyWithGenerator extends GeneratorForAnnotation<CopyWith> {
 
     return copyWithExtension;
   }
-
 }
 
 Iterable<FieldDescriptor> _getFieldDescriptors(ClassElement classElement) {

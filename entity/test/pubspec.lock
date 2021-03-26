@@ -382,9 +382,9 @@ packages:
   squarealfa_entity_annotations:
     dependency: transitive
     description:
-      path: "../entity_annotations"
-      relative: true
-    source: path
+      name: squarealfa_entity_annotations
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "1.0.0"
   squarealfa_entity_generator:
     dependency: "direct main"
@@ -392,7 +392,7 @@ packages:
       path: "../entity_generator"
       relative: true
     source: path
-    version: "1.1.0"
+    version: "1.0.0"
   squarealfa_generators_common:
     dependency: transitive
     description:
