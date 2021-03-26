@@ -1,6 +1,5 @@
 /// Validation annotations and classes
 export 'src/annotations/build_builder.dart';
-export 'src/annotations/build_permissions.dart';
 export 'src/annotations/copy_with.dart';
 export 'src/builder.dart';
 export 'src/entity_permissions.dart';
