@@ -1,9 +1,8 @@
-import '../defaults_provider_annotations.dart';
-
-class DefaultsProvider extends DefaultsProviderBase {
+class DefaultsProvider {
   const DefaultsProvider({
-    bool createDefaultsProviderBaseClass = false,
-  }) : super(createDefaultsProviderBaseClass: createDefaultsProviderBaseClass);
+    this.createDefaultsProviderBaseClass = false,
+  });
+  final bool createDefaultsProviderBaseClass;
 }
 
 const defaultsProvider = DefaultsProvider();

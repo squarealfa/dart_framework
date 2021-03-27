@@ -4,13 +4,16 @@ homepage: https://github.com/squarealfa/dart_framework/tree/main/defaults_provid
 repository: https://github.com/squarealfa/dart_framework
 version: 1.0.0
 
+publish_to: none
+
 environment:
   sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   source_gen: ^1.0.0
   decimal: ^1.0.0
-  defaults_provider_annotations: ^1.0.1
+  defaults_provider_annotations: #^1.0.1
+    path: ../defaults_provider_annotations
   squarealfa_generators_common: ^1.0.0
   analyzer: ^1.3.0
   build: ^2.0.0

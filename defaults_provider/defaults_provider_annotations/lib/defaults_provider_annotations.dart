@@ -7,4 +7,3 @@
 library defaults_provider_annotations;
 
 export 'src/defaults_provider.dart';
-export 'src/defaults_provider_base.dart';
