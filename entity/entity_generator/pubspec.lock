@@ -179,10 +179,10 @@ packages:
   squarealfa_entity_annotations:
     dependency: "direct main"
     description:
-      path: "../entity_annotations"
-      relative: true
-    source: path
-    version: "1.0.1"
+      name: squarealfa_entity_annotations
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.0"
   squarealfa_generators_common:
     dependency: "direct main"
     description:

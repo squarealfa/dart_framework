@@ -11,10 +11,10 @@ packages:
   defaults_provider_annotations:
     dependency: "direct main"
     description:
-      path: "../../defaults_provider/defaults_provider_annotations"
-      relative: true
-    source: path
-    version: "1.0.1"
+      name: defaults_provider_annotations
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.0"
   fixnum:
     dependency: transitive
     description:
@@ -25,10 +25,10 @@ packages:
   map_mapper_annotations:
     dependency: "direct main"
     description:
-      path: "../../map_mapper/map_mapper_annotations"
-      relative: true
-    source: path
-    version: "1.1.0"
+      name: map_mapper_annotations
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.0"
   pedantic:
     dependency: "direct dev"
     description:
@@ -39,9 +39,9 @@ packages:
   proto_annotations:
     dependency: "direct main"
     description:
-      path: "../../proto_mapper/proto_annotations"
-      relative: true
-    source: path
+      name: proto_annotations
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "1.1.4"
   rational:
     dependency: transitive
@@ -53,9 +53,9 @@ packages:
   squarealfa_entity_annotations:
     dependency: "direct main"
     description:
-      path: "../../entity/entity_annotations"
-      relative: true
-    source: path
-    version: "1.0.1"
+      name: squarealfa_entity_annotations
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.0"
 sdks:
   dart: ">=2.12.0 <3.0.0"

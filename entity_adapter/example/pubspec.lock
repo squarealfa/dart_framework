@@ -179,17 +179,17 @@ packages:
   defaults_provider_annotations:
     dependency: transitive
     description:
-      path: "../../defaults_provider/defaults_provider_annotations"
-      relative: true
-    source: path
-    version: "1.0.1"
+      name: defaults_provider_annotations
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.0"
   defaults_provider_generator:
     dependency: transitive
     description:
-      path: "../../defaults_provider/defaults_provider_generator"
-      relative: true
-    source: path
-    version: "1.0.0"
+      name: defaults_provider_generator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.0"
   file:
     dependency: transitive
     description:
@@ -291,17 +291,17 @@ packages:
   map_mapper_annotations:
     dependency: transitive
     description:
-      path: "../../map_mapper/map_mapper_annotations"
-      relative: true
-    source: path
-    version: "1.1.0"
+      name: map_mapper_annotations
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.0"
   map_mapper_generator:
     dependency: transitive
     description:
-      path: "../../map_mapper/map_mapper_generator"
-      relative: true
-    source: path
-    version: "1.1.1"
+      name: map_mapper_generator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.0"
   matcher:
     dependency: transitive
     description:
@@ -361,17 +361,17 @@ packages:
   proto_annotations:
     dependency: transitive
     description:
-      path: "../../proto_mapper/proto_annotations"
-      relative: true
-    source: path
+      name: proto_annotations
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "1.1.4"
   proto_generator:
     dependency: transitive
     description:
-      path: "../../proto_mapper/proto_generator"
-      relative: true
-    source: path
-    version: "1.1.3"
+      name: proto_generator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.0"
   protobuf:
     dependency: transitive
     description:
@@ -480,17 +480,17 @@ packages:
   squarealfa_entity_annotations:
     dependency: transitive
     description:
-      path: "../../entity/entity_annotations"
-      relative: true
-    source: path
-    version: "1.0.1"
+      name: squarealfa_entity_annotations
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.0"
   squarealfa_entity_generator:
     dependency: transitive
     description:
-      path: "../../entity/entity_generator"
-      relative: true
-    source: path
-    version: "1.0.2"
+      name: squarealfa_entity_generator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.0"
   squarealfa_generators_common:
     dependency: transitive
     description:

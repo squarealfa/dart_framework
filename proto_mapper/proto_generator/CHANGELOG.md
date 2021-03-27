@@ -22,3 +22,6 @@
 
 - Removed deprecated nullableFieldsByDefault property from proto annotation
 
+## 1.2.0
+
+- Removed redundant base classes

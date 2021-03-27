@@ -8,10 +8,6 @@ dependencies:
     path: ../entity_adapter
   decimal: ^1.0.0
   fixnum: ^1.0.0
-  #map_mapper_annotations: ^1.1.0
-  #proto_annotations: ^1.1.3
-  #squarealfa_entity_annotations: ^1.0.1
-  # defaults_provider_annotations: ^1.0.1
 
 dev_dependencies:
   squarealfa_entity_adapter_generator:

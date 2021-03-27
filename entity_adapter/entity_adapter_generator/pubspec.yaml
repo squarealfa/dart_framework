@@ -14,14 +14,10 @@ dependencies:
   squarealfa_generators_common: ^1.0.0
   squarealfa_entity_adapter:
     path: ../entity_adapter
-  map_mapper_generator: #^1.1.1
-    path: ../../map_mapper/map_mapper_generator/
-  proto_generator: 
-    path: ../../proto_mapper/proto_generator
-  defaults_provider_generator: #^1.0.1
-    path: ../../defaults_provider/defaults_provider_generator
-  squarealfa_entity_generator:
-    path: ../../entity/entity_generator/
+  map_mapper_generator: ^1.2.0
+  proto_generator: ^1.2.0
+  defaults_provider_generator: ^1.1.0
+  squarealfa_entity_generator: ^1.1.0
 
 
 dev_dependencies:

@@ -20,4 +20,4 @@
 
 ## 1.1.4
 
-- 
+- Removed redundant base classes

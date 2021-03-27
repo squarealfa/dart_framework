@@ -5,3 +5,7 @@
 ## 1.1.0
 
 - Removed deprecated nullableFieldsByDefault property from annotations
+
+## 1.2.0
+
+- Removed redundant base classes

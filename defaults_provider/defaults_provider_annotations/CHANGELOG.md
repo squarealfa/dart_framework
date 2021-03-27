@@ -5,3 +5,7 @@
 ## 1.0.1
 
 - Fixed typo in README.md
+
+## 1.1.0
+
+- Removed redundant base classes

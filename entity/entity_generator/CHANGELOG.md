@@ -9,3 +9,7 @@
 ## 1.0.2
 
 - Updated dependencies
+
+## 1.1.0
+
+- Removed redundant base classes
