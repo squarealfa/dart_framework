@@ -25,9 +25,9 @@ packages:
   map_mapper_annotations:
     dependency: "direct main"
     description:
-      name: map_mapper_annotations
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "../../map_mapper/map_mapper_annotations"
+      relative: true
+    source: path
     version: "1.1.0"
   pedantic:
     dependency: "direct dev"
@@ -53,9 +53,9 @@ packages:
   squarealfa_entity_annotations:
     dependency: "direct main"
     description:
-      name: squarealfa_entity_annotations
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "../../entity/entity_annotations"
+      relative: true
+    source: path
     version: "1.0.1"
 sdks:
   dart: ">=2.12.0 <3.0.0"

@@ -184,7 +184,7 @@ packages:
     source: path
     version: "1.0.1"
   defaults_provider_generator:
-    dependency: "direct dev"
+    dependency: transitive
     description:
       path: "../../defaults_provider/defaults_provider_generator"
       relative: true
@@ -291,16 +291,16 @@ packages:
   map_mapper_annotations:
     dependency: transitive
     description:
-      name: map_mapper_annotations
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "../../map_mapper/map_mapper_annotations"
+      relative: true
+    source: path
     version: "1.1.0"
   map_mapper_generator:
     dependency: transitive
     description:
-      name: map_mapper_generator
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "../../map_mapper/map_mapper_generator"
+      relative: true
+    source: path
     version: "1.1.1"
   matcher:
     dependency: transitive
@@ -478,18 +478,18 @@ packages:
     source: path
     version: "1.0.0"
   squarealfa_entity_annotations:
-    dependency: "direct main"
+    dependency: transitive
     description:
-      name: squarealfa_entity_annotations
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "../../entity/entity_annotations"
+      relative: true
+    source: path
     version: "1.0.1"
   squarealfa_entity_generator:
-    dependency: "direct dev"
+    dependency: transitive
     description:
-      name: squarealfa_entity_generator
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "../../entity/entity_generator"
+      relative: true
+    source: path
     version: "1.0.2"
   squarealfa_generators_common:
     dependency: transitive

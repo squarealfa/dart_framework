@@ -38,3 +38,28 @@ builders:
     auto_apply: dependents
     build_to: cache
     applies_builders: ["source_gen|combining_builder"]
+
+  validation_generator:
+    import: "package:squarealfa_entity_generator/squarealfa_entity_generator.dart"
+    builder_factories: ["validationGeneratorBuilder"]
+    build_extensions: {".dart": ["entity_validation.g.part"]}
+    auto_apply: dependents
+    build_to: cache
+    applies_builders: ["source_gen|combining_builder"]
+
+  builder_generator:
+    import: "package:squarealfa_entity_generator/squarealfa_entity_generator.dart"
+    builder_factories: ["builderBuilder"]
+    build_extensions: {".dart": ["entity_builder.g.part"]}
+    auto_apply: dependents
+    build_to: cache
+    applies_builders: ["source_gen|combining_builder"]
+
+  copywith_generator:
+    import: "package:squarealfa_entity_generator/squarealfa_entity_generator.dart"
+    builder_factories: ["copyWithBuilder"]
+    build_extensions: {".dart": ["entity_copywith.g.part"]}
+    auto_apply: dependents
+    build_to: cache
+    applies_builders: ["source_gen|combining_builder"]
+

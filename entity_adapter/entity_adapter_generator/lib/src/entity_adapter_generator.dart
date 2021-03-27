@@ -4,7 +4,7 @@ import 'package:source_gen/source_gen.dart';
 import 'package:squarealfa_entity_adapter/squarealfa_entity_adapter.dart';
 import 'package:squarealfa_generators_common/squarealfa_generators_common.dart';
 
-class EntityAdapterGenerator extends GeneratorForAnnotation<AdaptEntity> {
+class EntityAdapterGenerator extends GeneratorForAnnotation<EntityAdapted> {
   EntityAdapterGenerator(BuilderOptions options);
 
   @override
@@ -18,7 +18,9 @@ class EntityAdapterGenerator extends GeneratorForAnnotation<AdaptEntity> {
     if (classElement.kind.name == 'ENUM') return '';
 
     var type = reader.read('rootEntityType').typeValue;
-    if (classElement.supertype?.element != type.element) return '';
+    if (!classElement.allSupertypes.any((st) => st.element == type.element)) {
+      return '';
+    }
 
     var className = classElement.name;
     var protoClassName = 'G$className';
