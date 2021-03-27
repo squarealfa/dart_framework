@@ -13,7 +13,7 @@ abstract class FieldCodeGenerator {
   final FieldDescriptor fieldDescriptor;
   final bool hasDefaultsProvider;
 
-  MapMapBase get mapEntityAnnotation => fieldDescriptor.mapMapAnnotation;
+  MapMap get mapEntityAnnotation => fieldDescriptor.mapMapAnnotation;
   String get mapName => fieldDescriptor.mapName;
 
   FieldCodeGenerator(this.fieldDescriptor, this.hasDefaultsProvider);

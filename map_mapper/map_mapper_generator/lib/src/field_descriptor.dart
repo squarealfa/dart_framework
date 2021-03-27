@@ -4,7 +4,7 @@ import 'package:map_mapper_annotations/map_mapper_annotations.dart';
 import 'package:source_gen/source_gen.dart';
 
 class FieldDescriptor extends FieldDescriptorBase {
-  final MapMapBase mapMapAnnotation;
+  final MapMap mapMapAnnotation;
 
   final MapField? mapFieldAnnotation;
   final MapIgnore? mapIgnoreAnnotation;
@@ -20,7 +20,7 @@ class FieldDescriptor extends FieldDescriptorBase {
   factory FieldDescriptor.fromFieldElement(
     ClassElement classElement,
     FieldElement fieldElement,
-    MapMapBase mapEntityAnnotation,
+    MapMap mapEntityAnnotation,
   ) {
     final mapFieldAnnotation = _getMapField(fieldElement);
     final mapIgnoreAnnotation = _getMapIgnore(fieldElement);
@@ -46,13 +46,13 @@ class FieldDescriptor extends FieldDescriptorBase {
       (fieldElement.name == 'id' ? '_id' : fieldElement.name);
 
   bool get typeHasMapMapAnnotation {
-    var annotation = TypeChecker.fromRuntime(MapMapBase)
+    var annotation = TypeChecker.fromRuntime(MapMap)
         .firstAnnotationOf(fieldElement.type.element!);
     return annotation != null;
   }
 
   bool get parameterTypeHasMapMapAnnotation {
-    var annotation = TypeChecker.fromRuntime(MapMapBase)
+    var annotation = TypeChecker.fromRuntime(MapMap)
         .firstAnnotationOf(parameterType.element!);
     return annotation != null;
   }

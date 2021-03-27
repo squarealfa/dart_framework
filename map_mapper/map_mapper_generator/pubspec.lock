@@ -109,9 +109,9 @@ packages:
   map_mapper_annotations:
     dependency: "direct main"
     description:
-      name: map_mapper_annotations
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "../map_mapper_annotations"
+      relative: true
+    source: path
     version: "1.1.0"
   meta:
     dependency: transitive
