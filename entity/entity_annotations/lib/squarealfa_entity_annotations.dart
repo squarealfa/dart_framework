@@ -7,7 +7,6 @@ export 'src/validations/annotations/range.dart';
 export 'src/validations/annotations/required.dart';
 export 'src/validations/annotations/string_length.dart';
 export 'src/validations/annotations/validatable.dart';
-export 'src/validations/annotations/validatable_base.dart';
 export 'src/validations/error_list.dart';
 export 'src/validations/errors/range_validation_error.dart';
 export 'src/validations/errors/required_validation_error.dart';

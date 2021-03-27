@@ -8,7 +8,6 @@ import 'src/copywith_generator/copywith_generator.dart';
 import 'src/validation/validator_generator.dart';
 
 export 'src/validation/validator_generator.dart';
-export 'src/validation/validator_generator_base.dart';
 
 Builder validationGeneratorBuilder(BuilderOptions options) =>
     SharedPartBuilder([ValidatorGenerator()], 'validation');
