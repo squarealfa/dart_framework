@@ -27,7 +27,7 @@ abstract class FieldCodeGenerator {
   String? get fieldType;
 
   factory FieldCodeGenerator.fromFieldDescriptor(
-      FieldDescriptor fieldDescriptor, int lineNumber, String filePrefix) {
+      FieldDescriptor fieldDescriptor, int lineNumber) {
     var type = fieldDescriptor.itemType;
     var typeName =
         fieldDescriptor.itemType.getDisplayString(withNullability: false);
@@ -50,9 +50,9 @@ abstract class FieldCodeGenerator {
     if (typeName == (Duration).toString()) {
       return DurationFieldCodeGenerator(fieldDescriptor, lineNumber);
     }
-    if (TypeChecker.fromRuntime(ProtoBase).firstAnnotationOf(type.element!) !=
+    if (TypeChecker.fromRuntime(Proto).firstAnnotationOf(type.element!) !=
         null) {
-      return EntityFieldCodeGenerator(fieldDescriptor, lineNumber, filePrefix);
+      return EntityFieldCodeGenerator(fieldDescriptor, lineNumber);
     }
     return GenericFieldCodeGenerator(fieldDescriptor, lineNumber);
   }

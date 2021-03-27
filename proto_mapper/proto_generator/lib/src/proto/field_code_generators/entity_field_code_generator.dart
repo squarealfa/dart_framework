@@ -7,12 +7,11 @@ import 'external_proto_name.dart';
 
 class EntityFieldCodeGenerator extends FieldCodeGenerator
     implements ExternalProtoName {
-  EntityFieldCodeGenerator(
-      FieldDescriptor fieldDescriptor, int lineNumber, String filePrefix)
+  EntityFieldCodeGenerator(FieldDescriptor fieldDescriptor, int lineNumber)
       : super(fieldDescriptor, lineNumber) {
     var fieldElementType = fieldDescriptor.itemType;
 
-    var annotation = TypeChecker.fromRuntime(ProtoBase)
+    var annotation = TypeChecker.fromRuntime(Proto)
         .firstAnnotationOf(fieldElementType.element!);
 
     var packageName =
@@ -28,8 +27,7 @@ class EntityFieldCodeGenerator extends FieldCodeGenerator
     var lastSrc = segments.lastIndexOf('src');
     if (lastSrc != -1) segments.removeRange(0, lastSrc + 1);
     var fileName = segments[segments.length - 1];
-    fileName =
-        fileName.substring(0, fileName.length - 4) + filePrefix + 'proto';
+    fileName = fileName.substring(0, fileName.length - 4) + 'proto';
     segments[segments.length - 1] = fileName;
     _externalProtoName = segments.join('/');
   }

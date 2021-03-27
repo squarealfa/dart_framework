@@ -4,7 +4,7 @@ import 'package:squarealfa_generators_common/squarealfa_generators_common.dart';
 import 'package:source_gen/source_gen.dart';
 
 class FieldDescriptor extends FieldDescriptorBase {
-  final MapProtoBase protoMapperAnnotation;
+  final MapProto protoMapperAnnotation;
   final ProtoField? protoFieldAnnotation;
   final ProtoIgnore? protoIgnoreAnnotation;
 
@@ -19,7 +19,7 @@ class FieldDescriptor extends FieldDescriptorBase {
   factory FieldDescriptor.fromFieldElement(
     ClassElement classElement,
     FieldElement fieldElement,
-    MapProtoBase mapProtoBase,
+    MapProto mapProtoBase,
   ) {
     final protoFieldAnnotation = _getProtoFieldAnnotation(fieldElement);
     final protoIgnoreAnnotation = _getProtoIgnoreAnnotation(fieldElement);
@@ -47,7 +47,7 @@ class FieldDescriptor extends FieldDescriptorBase {
       (protoMapperAnnotation.includeFieldsByDefault || _hasProtoField);
 
   bool get typeHasMapProtoAnnotation {
-    var annotation = TypeChecker.fromRuntime(MapProtoBase)
+    var annotation = TypeChecker.fromRuntime(MapProto)
         .firstAnnotationOf(fieldElement.type.element!);
     return annotation != null;
   }

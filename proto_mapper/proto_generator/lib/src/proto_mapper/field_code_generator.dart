@@ -16,7 +16,7 @@ import 'field_descriptor.dart';
 abstract class FieldCodeGenerator {
   final FieldDescriptor fieldDescriptor;
 
-  MapProtoBase get mapProtoBase => fieldDescriptor.protoMapperAnnotation;
+  MapProto get mapProtoBase => fieldDescriptor.protoMapperAnnotation;
 
   FieldCodeGenerator(this.fieldDescriptor);
 

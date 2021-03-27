@@ -1,15 +1,12 @@
-import 'proto_base.dart';
-
-class Proto extends ProtoBase {
+class Proto {
   const Proto({
-    String? prefix,
-    String packageName = '',
-    bool includeFieldsByDefault = true,
-  }) : super(
-          prefix: prefix,
-          packageName: packageName,
-          includeFieldsByDefault: includeFieldsByDefault,
-        );
+    this.prefix,
+    this.packageName = '',
+    this.includeFieldsByDefault = true,
+  });
+  final String packageName;
+  final String? prefix;
+  final bool includeFieldsByDefault;
 }
 
 const proto = Proto();

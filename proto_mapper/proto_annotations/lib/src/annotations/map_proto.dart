@@ -1,13 +1,13 @@
-import 'map_proto_base.dart';
-
-class MapProto extends MapProtoBase {
+class MapProto {
   const MapProto({
-    String? prefix,
-    String packageName = '',
-  }) : super(
-          prefix: prefix,
-          packageName: packageName,
-        );
+    this.prefix,
+    this.packageName = '',
+    this.includeFieldsByDefault = true,
+  });
+
+  final String? packageName;
+  final String? prefix;
+  final bool includeFieldsByDefault;
 }
 
 const mapProto = MapProto();
