@@ -17,6 +17,8 @@ dependencies:
   map_mapper_generator: ^1.1.1
   proto_generator: 
     path: ../../proto_mapper/proto_generator
+  defaults_provider_generator: #^1.0.1
+    path: ../../defaults_provider/defaults_provider_generator
 
 
 dev_dependencies:

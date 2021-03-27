@@ -30,3 +30,11 @@ builders:
     build_extensions: {".dart": [".entity.proto"]}
     auto_apply: dependents
     build_to: source
+
+  defaults_provider_generator:
+    import: "package:defaults_provider_generator/defaults_provider_generator.dart"
+    builder_factories: ["defaultsProviderGeneratorBuilder"]
+    build_extensions: {".dart": ["entity_defaults_provider.g.part"]}
+    auto_apply: dependents
+    build_to: cache
+    applies_builders: ["source_gen|combining_builder"]

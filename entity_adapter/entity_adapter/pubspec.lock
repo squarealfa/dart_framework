@@ -11,9 +11,9 @@ packages:
   defaults_provider_annotations:
     dependency: "direct main"
     description:
-      name: defaults_provider_annotations
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "../../defaults_provider/defaults_provider_annotations"
+      relative: true
+    source: path
     version: "1.0.1"
   fixnum:
     dependency: transitive
@@ -39,10 +39,10 @@ packages:
   proto_annotations:
     dependency: "direct main"
     description:
-      name: proto_annotations
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.1.3"
+      path: "../../proto_mapper/proto_annotations"
+      relative: true
+    source: path
+    version: "1.1.4"
   rational:
     dependency: transitive
     description:

@@ -1,7 +1,8 @@
+import 'package:defaults_provider_annotations/defaults_provider_annotations.dart';
 import 'package:map_mapper_annotations/map_mapper_annotations.dart';
 import 'package:proto_annotations/proto_annotations.dart';
 
-class AdaptEntity implements MapMap, Proto, MapProto {
+class AdaptEntity implements MapMap, Proto, MapProto, DefaultsProvider {
   final Type rootEntityType;
   const AdaptEntity({
     this.rootEntityType = Object,
@@ -9,6 +10,7 @@ class AdaptEntity implements MapMap, Proto, MapProto {
     this.includeFieldsByDefault = true,
     this.prefix = 'G',
     this.packageName = '',
+    this.createDefaultsProviderBaseClass = false,
   });
 
   @override
@@ -22,4 +24,7 @@ class AdaptEntity implements MapMap, Proto, MapProto {
 
   @override
   final String? prefix;
+
+  @override
+  final bool createDefaultsProviderBaseClass;
 }

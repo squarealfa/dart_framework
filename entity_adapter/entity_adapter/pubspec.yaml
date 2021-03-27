@@ -14,7 +14,8 @@ dependencies:
   proto_annotations: #^1.0.0
     path: ../../proto_mapper/proto_annotations
   map_mapper_annotations: ^1.0.0
-  defaults_provider_annotations: ^1.0.0
+  defaults_provider_annotations: #^1.0.0
+    path: ../../defaults_provider/defaults_provider_annotations
 
 dev_dependencies:
   pedantic: ^1.9.0

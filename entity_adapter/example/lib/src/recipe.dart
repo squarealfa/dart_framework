@@ -12,9 +12,7 @@ const entity = AdaptEntity(rootEntityType: Entity);
 class Entity {}
 
 @entity
-//@mapProto
 @validatable
-@defaultsProvider
 @builder
 @copyWith
 class Recipe extends Entity {
