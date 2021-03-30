@@ -9,3 +9,7 @@
 ## 1.1.0
 
 - Removed redundant base classes
+
+## 1.1.1
+
+- Updated README with reference to correct generator package
