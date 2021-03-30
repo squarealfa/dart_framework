@@ -54,11 +54,11 @@ Strictly all packages are null-safe. One of the databases we would like to suppo
 
 You may not want the entire feature set, but to cherry-pick the features you will be using. The packages that constitute this framework are the following:
 
-| Package | Description |Usage|
-|---------|-------------|-----|
+| Package | Description |
+|---------|-------------|
 |[nosql_repository](https://pub.dev/packages/nosql_repository)|Creates an abstract repository that has as its only assumption that the underlying database is a NoSQL database (document-oriented).|Server|
 |[arango_driver](https://pub.dev/packages/arango_driver)|Type-safe and null-safe ArangoDB access driver.|Server|
-|[arangodb_repository](https://pub.dev/packages/arangodb_repository)|Implementation of the [nosql_repository](https://pub.dev/packages/nosql_repository) package that uses the [arango_driver](https://pub.dev/packages/arango_driver) package to use ArangoDB with the repository pattern.|Server|
+|[arangodb_repository](https://pub.dev/packages/arangodb_repository)|Implementation of the [nosql_repository](https://pub.dev/packages/nosql_repository) package that uses the [arango_driver](https://pub.dev/packages/arango_driver) package to use ArangoDB with the repository pattern.|
 |[squarealfa_security](https://pub.dev/packages/squarealfa_security)|Provides security features. Current version does basic JWT token handling.|
 |[map_mapper_annotations](https://pub.dev/packages/map_mapper_annotations) and [map_mapper_generator](https://pub.dev/packages/map_mapper_generator)|Performs the mapping between [PODOs](#podos) and Map<String, dynamic> to be stored in NoSQL databases.|Full-stack|
 |[defaults_provider_annotations](https://pub.dev/packages/defaults_provider_annotations) and [defaults_provider_generator](https://pub.dev/packages/defaults_provider_generator)|Generates classes that provide default values for [PODO](#podos) instantiation. It's main purpose is to allow for database soft-migrations.|

@@ -3,7 +3,7 @@ description: Provides the annotations and a facade to several SquareAlfa framewo
 homepage: https://github.com/squarealfa/dart_framework/tree/main/entity_adapter/entity_adapter
 repository: https://github.com/squarealfa/dart_framework/
 
-version: 1.0.0
+version: 1.0.1
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
