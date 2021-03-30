@@ -2,7 +2,7 @@
 
 This library contains annotations that mark classes for code generation. This package is companion to the proto_mapper package.
 
-The purpose of this package, alongside its companion proto_mapper package, is to significantly reduce the workload of exposing Dart business model classes as protocol buffer messages to be used with gRPC.
+The purpose of this package, alongside its companion [proto_generator](https://pub.dev/packages/proto_generator) package, is to significantly reduce the workload of exposing Dart business model classes as protocol buffer messages to be used with gRPC.
 
 ## Workflow
 

@@ -21,3 +21,7 @@
 ## 1.1.4
 
 - Removed redundant base classes
+
+## 1.1.5
+
+- Updated README.md with correct reference to proto_generator package
