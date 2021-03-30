@@ -1,6 +1,6 @@
 name: squarealfa_entity_generator
-description: Generates validator classes that check each property for business
-  rule violations and lifecycle helpers
+description: 
+  Code generators that augment classes that are meant to be used as business entities
 homepage: https://github.com/squarealfa/dart_framework/tree/entity/entity/entity_generator
 repository: https://github.com/squarealfa/dart_framework
 version: 1.1.0
