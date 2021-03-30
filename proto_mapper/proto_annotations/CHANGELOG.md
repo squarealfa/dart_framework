@@ -25,3 +25,7 @@
 ## 1.1.5
 
 - Updated README.md with correct reference to proto_generator package
+
+## 1.1.6
+
+- Added reference to integrating framework.

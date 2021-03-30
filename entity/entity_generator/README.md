@@ -4,11 +4,14 @@ This package includes code generators that augment classes that are meant to be 
 - Extension to add copyWith method
 - Builder class
 
+
 ## Validations
-
-
-
 
 
 Check the example at https://github.com/squarealfa/dart_framework/tree/main/entity/example.
 
+
+
+## Context
+
+This package is part of a set of losely integrated packages that constitute the [SquareAlfa Dart Framework](https://github.com/squarealfa/dart_framework#squarealfa-dart-framework).

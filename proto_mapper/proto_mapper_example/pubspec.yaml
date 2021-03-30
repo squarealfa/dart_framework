@@ -2,7 +2,7 @@ name: proto_mapper_example
 description: proto_annotations and proto_generator packages demonstration project
 homepage: https://github.com/squarealfa/dart_framework/tree/main/proto_mapper/proto_mapper_example
 repository: https://github.com/squarealfa/dart_framework
-version: 1.0.0
+version: 1.0.1
 
 publish_to: none
 

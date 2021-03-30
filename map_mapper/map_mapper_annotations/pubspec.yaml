@@ -4,7 +4,7 @@ description:
   used to interact with document databases
 homepage: https://github.com/squarealfa/dart_framework/tree/main/map_mapper/map_mapper_annotations
 repository: https://github.com/squarealfa/dart_framework
-version: 1.2.0
+version: 1.2.1
 
 environment:
   sdk: '>=2.12.0 <3.0.0'

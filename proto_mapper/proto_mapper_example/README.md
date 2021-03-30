@@ -66,3 +66,8 @@ protoc --dart_out=grpc:lib/src/grpc/ -Ilib/src/ ./lib/src/*.proto
 There are other annotations that can be used to further control the code generation process.
 
 Furthermore, defaults can be tweeked by using the included build.yaml file.
+
+
+## Context
+
+This package is part of a set of losely integrated packages that constitute the [SquareAlfa Dart Framework](https://github.com/squarealfa/dart_framework#squarealfa-dart-framework).

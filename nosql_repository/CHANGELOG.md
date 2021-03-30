@@ -53,3 +53,7 @@
 ## 1.1.0
 
 - Version bump
+
+## 1.1.1
+
+- Added reference to integrating framework.

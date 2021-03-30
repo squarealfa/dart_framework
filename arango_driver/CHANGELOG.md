@@ -183,3 +183,7 @@ Fix pedantic warning again
 ## 1.1.0
 
 - Added support for transactions
+
+## 1.1.1
+
+- Added reference to integrating framework.

@@ -66,3 +66,8 @@ This package was initially created when we were considering using MongoDB. We di
 However, a later decision was to use ArangoDB, rather than MongoDB, and the former does not use a specific type like an ObjectId. Therefore, we no longer really need custom serialization code, but we still want to keep the nice features we added to what json_serializable presents.
 
 A future improvement will be to keep this package, but replace some of its implementation with a dependency to json_serializable, without however introducing any breaking change to whatever code has been using the package. Pull-requests are welcome.
+
+
+## Context
+
+This package is part of a set of losely integrated packages that constitute the [SquareAlfa Dart Framework](https://github.com/squarealfa/dart_framework#squarealfa-dart-framework).

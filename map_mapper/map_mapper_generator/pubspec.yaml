@@ -2,7 +2,7 @@ name: map_mapper_generator
 description: Generates code that maps (converts) between instances of business classes to Map<String, dynamic> and back
 homepage: https://github.com/squarealfa/dart_framework/tree/main/map_mapper/map_mapper_generator
 repository: https://github.com/squarealfa/dart_framework
-version: 1.2.0
+version: 1.2.1
 
 environment:
   sdk: '>=2.12.0 <3.0.0'

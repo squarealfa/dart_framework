@@ -15,3 +15,7 @@ as possible the concrete database engine.
 ## Usage
 
 See the example.
+
+## Context
+
+This package is part of a set of losely integrated packages that constitute the [SquareAlfa Dart Framework](https://github.com/squarealfa/dart_framework#squarealfa-dart-framework).

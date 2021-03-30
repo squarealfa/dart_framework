@@ -25,3 +25,7 @@
 ## 1.2.0
 
 - Removed redundant base classes
+
+## 1.2.1
+
+- Added reference to integrating framework.

@@ -13,3 +13,7 @@
 ## 1.1.1
 
 - Updated README with reference to correct generator package
+
+## 1.1.2
+
+- Added reference to integrating framework.

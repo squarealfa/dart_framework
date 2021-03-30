@@ -25,3 +25,7 @@
 ## 1.0.3
 
 - Moved code to monorepo
+
+## 1.0.4
+
+- Added reference to integrating framework.

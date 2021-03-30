@@ -120,3 +120,8 @@ class RecipeDefaults extends RecipeDefaultsProviderBase
   Category get category => Category(title: 'my category');
 }
 ```
+
+
+## Context
+
+This package is part of a set of losely integrated packages that constitute the [SquareAlfa Dart Framework](https://github.com/squarealfa/dart_framework#squarealfa-dart-framework).
