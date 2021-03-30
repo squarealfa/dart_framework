@@ -76,9 +76,7 @@ class DefaultsProviderGenerator
     final constructor = classElement.isAbstract
         ? ''
         : '''
-        $className createWithDefaults({
-          $parameterFieldBuffer
-        }) {
+        $className createWithDefaults( ${parameterFieldBuffer.isEmpty ? '' : '{ $parameterFieldBuffer }'} ) {
           return $className(
             $constructorFieldBuffer
           );

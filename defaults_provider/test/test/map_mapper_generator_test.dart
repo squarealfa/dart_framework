@@ -1,6 +1,7 @@
 //import 'package:decimal/decimal.dart';
 import 'package:decimal/decimal.dart';
 import 'package:map_mapper_generator_test/defaults_provider_generator_test.dart';
+import 'package:map_mapper_generator_test/src/all_nullable.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -57,6 +58,15 @@ void main() {
       final recipe = defaultsProvider.createWithDefaults();
 
       expect(recipe.category.title, 'my category');
+    });
+
+    test('Test all nullable', () {
+      var defaultsProvider = AllNullableDefaultsProvider();
+
+      final an = defaultsProvider.createWithDefaults();
+
+      expect(an.prop1, isNull);
+      expect(an.prop2, isNull);
     });
   });
 }
