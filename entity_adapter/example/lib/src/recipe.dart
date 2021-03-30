@@ -1,9 +1,9 @@
 import 'package:example/grpc/recipe.pb.dart';
 import 'package:squarealfa_entity_adapter/squarealfa_entity_adapter.dart';
 
-part 'recipe.g.dart';
+import 'entity.dart';
 
-const entity = EntityAdapted(rootEntityType: Entity);
+part 'recipe.g.dart';
 
 class Entity {}
 

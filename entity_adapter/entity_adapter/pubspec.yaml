@@ -1,6 +1,7 @@
 name: squarealfa_entity_adapter
-description: Annotations to drive the generation of EntityAdapter class and permissions.
-homepage: https://www.example.com
+description: Provides the annotations and a facade to several SquareAlfa framework services that are required to expose PODOs via gRPC services
+homepage: https://github.com/squarealfa/dart_framework/tree/main/entity_adapter/entity_adapter
+repository: https://github.com/squarealfa/dart_framework/
 
 version: 1.0.0
 

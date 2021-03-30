@@ -1,0 +1,19 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+// **************************************************************************
+// ProtoGenerator
+// **************************************************************************
+
+syntax = "proto3";
+
+import 'asset.proto';
+
+
+
+
+message GPerson
+{
+  repeated GAsset assets = 1;
+  string name = 2;
+
+}

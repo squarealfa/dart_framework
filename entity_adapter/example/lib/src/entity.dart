@@ -1,7 +1,5 @@
-// import 'package:example/src/entity/entity_base.dart';
+import 'package:squarealfa_entity_adapter/squarealfa_entity_adapter.dart';
 
-// class Entity extends EntityBase
-// {
-//   Entity() : super();
+class Entity {}
 
-// }
+const entity = EntityAdapted(rootEntityType: Entity);

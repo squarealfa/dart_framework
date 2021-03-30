@@ -4,6 +4,9 @@ import 'package:source_gen/source_gen.dart';
 import 'package:squarealfa_entity_adapter/squarealfa_entity_adapter.dart';
 import 'package:squarealfa_generators_common/squarealfa_generators_common.dart';
 
+/// Generates EntityAdapter and EntityPermissions classes for PODOs
+///
+/// Check the README.md for an overview.
 class EntityAdapterGenerator extends GeneratorForAnnotation<EntityAdapted> {
   EntityAdapterGenerator(BuilderOptions options);
 

@@ -7,14 +7,14 @@ packages:
       name: decimal
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.0"
+    version: "1.0.0+1"
   defaults_provider_annotations:
     dependency: "direct main"
     description:
       name: defaults_provider_annotations
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.0"
+    version: "1.1.1"
   fixnum:
     dependency: transitive
     description:
@@ -28,7 +28,7 @@ packages:
       name: map_mapper_annotations
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.0"
+    version: "1.2.1"
   pedantic:
     dependency: "direct dev"
     description:
@@ -42,7 +42,7 @@ packages:
       name: proto_annotations
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.4"
+    version: "1.1.6"
   rational:
     dependency: transitive
     description:
@@ -56,6 +56,6 @@ packages:
       name: squarealfa_entity_annotations
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.0"
+    version: "1.1.2"
 sdks:
   dart: ">=2.12.0 <3.0.0"
