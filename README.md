@@ -49,17 +49,19 @@ This framework does offer a few nice features:
 Strictly all packages are null-safe. One of the databases we would like to support in the future is MongoDB, and it is our intention to do so whenever the mongo_dart package is migrated to null-safety.
 
 
-## Packages
 
-The packages that constitute this framework are the following:
+### Packages
 
-| Package | Description |
-|---------|-------------|
-|[nosql_repository](https://pub.dev/packages/nosql_repository)|Creates an abstract repository that has as its only assumption that the underlying database is a NoSQL database (document-oriented).|
-|[arango_driver](https://pub.dev/packages/arango_driver)|Type-safe and null-safe ArangoDB access driver.|
-|[arangodb_repository](https://pub.dev/packages/arangodb_repository)|Implementation of the [nosql_repository](https://pub.dev/packages/nosql_repository) package that uses the [arango_driver](https://pub.dev/packages/arango_driver) package to use ArangoDB with the repository pattern.|
+You may not want the entire feature set, but to cherry-pick the features you will be using. The packages that constitute this framework are the following:
+
+| Package | Description |Usage|
+|---------|-------------|-----|
+|[nosql_repository](https://pub.dev/packages/nosql_repository)|Creates an abstract repository that has as its only assumption that the underlying database is a NoSQL database (document-oriented).|Server|
+|[arango_driver](https://pub.dev/packages/arango_driver)|Type-safe and null-safe ArangoDB access driver.|Server|
+|[arangodb_repository](https://pub.dev/packages/arangodb_repository)|Implementation of the [nosql_repository](https://pub.dev/packages/nosql_repository) package that uses the [arango_driver](https://pub.dev/packages/arango_driver) package to use ArangoDB with the repository pattern.|Server|
 |[squarealfa_security](https://pub.dev/packages/squarealfa_security)|Provides security features. Current version does basic JWT token handling.|
-|[map_mapper_annotations](https://pub.dev/packages/map_mapper_annotations) and [map_mapper_generator](https://pub.dev/packages/map_mapper_generator)|Performs the mapping between [PODOs](#podos) and Map<String, dynamic> to be stored in NoSQL databases.|
+|[map_mapper_annotations](https://pub.dev/packages/map_mapper_annotations) and [map_mapper_generator](https://pub.dev/packages/map_mapper_generator)|Performs the mapping between [PODOs](#podos) and Map<String, dynamic> to be stored in NoSQL databases.|Full-stack|
 |[defaults_provider_annotations](https://pub.dev/packages/defaults_provider_annotations) and [defaults_provider_generator](https://pub.dev/packages/defaults_provider_generator)|Generates classes that provide default values for [PODO](#podos) instantiation. It's main purpose is to allow for database soft-migrations.|
 |[proto_annotations](https://pub.dev/packages/proto_annotations) and [proto_generator](https://pub.dev/packages/proto_generator)|Handles the relation between [PODOs](#podos) and protocol buffers. Has two main features. The first, is that it generates protocol buffer files (.proto), which are expected to be [compiled](https://grpc.io/docs/languages/dart/quickstart/) to Dart protocol buffer classes that handle all the serialization. The second is that it generates code that maps between the [PODOs](#podos) and the compiled protocol buffer Dart classes.|
 |[squarealfa_entity_annotations](https://pub.dev/packages/squarealfa_entity_annotations) and [squarealfa_entity_generator](https://pub.dev/packages/squarealfa_entity_generator)|Adds features to [PODOs](#podos) like validation, builders and an extension to provide a ```copyWith``` method.|
+|[squarealfa_entity_adapter](https://pub.dev/packages/squarealfa_entity_adapter) and [squarealfa_entity_adapter_generator](https://pub.dev/packages/squarealfa_entity_adapter_generator/admin)|Provides the annotations and a facade to several SquareAlfa framework services that are required to expose PODOs via gRPC services. These packages are a substitute for all other code-generation packages.|
