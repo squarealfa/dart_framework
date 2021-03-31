@@ -93,7 +93,8 @@ class ValidatorGenerator extends GeneratorForAnnotation<Validatable> {
         @override
         ErrorList validate(covariant $className entity) {
           var errors = <ValidationError>[];
-          ValidationError? error;
+
+          ${errorCallBuffer.isNotEmpty ? 'ValidationError? error;' : ''}
           $errorCallBuffer
       
           $returnStatement

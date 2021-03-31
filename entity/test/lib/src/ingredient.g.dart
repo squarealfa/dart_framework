@@ -99,6 +99,7 @@ class IngredientValidator implements Validator {
   @override
   ErrorList validate(covariant Ingredient entity) {
     var errors = <ValidationError>[];
+
     ValidationError? error;
     if ((error = validateDescription(entity.description)) != null) {
       errors.add(error!);

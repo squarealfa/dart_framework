@@ -392,7 +392,7 @@ packages:
       path: "../entity_generator"
       relative: true
     source: path
-    version: "1.1.0"
+    version: "1.1.1"
   squarealfa_generators_common:
     dependency: transitive
     description:

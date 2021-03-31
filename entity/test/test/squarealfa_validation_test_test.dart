@@ -1,5 +1,6 @@
 import 'package:decimal/decimal.dart';
 import 'package:squarealfa_validation_test/squarealfa_validation_test.dart';
+import 'package:squarealfa_validation_test/src/empty.dart';
 import 'package:squarealfa_validation_test/src/ingredient.dart';
 
 import 'package:test/test.dart';
@@ -283,6 +284,15 @@ void main() {
       final errors = validator.validate(ingredient);
 
       expect(errors.validationErrors.first.propertyName, 'nintQuantity');
+    });
+
+    test('too empty', () {
+      final empty = Empty();
+
+      final validator = EmptyValidator();
+      final errors = validator.validate(empty);
+
+      expect(errors.validationErrors.isEmpty, true);
     });
   });
 }

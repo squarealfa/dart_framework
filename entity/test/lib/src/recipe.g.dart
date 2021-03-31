@@ -80,6 +80,7 @@ class RecipeValidator implements Validator {
   @override
   ErrorList validate(covariant Recipe entity) {
     var errors = <ValidationError>[];
+
     ValidationError? error;
     if ((error = validateTitle(entity.title)) != null) {
       errors.add(error!);
