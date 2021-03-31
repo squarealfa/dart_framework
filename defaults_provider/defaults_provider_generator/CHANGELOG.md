@@ -14,6 +14,3 @@
 
 - Fixed bug with target classes without a non-nullable field
 
-## 1.1.3
-
-- Removed local variable causing warning in generated validator for empty classes

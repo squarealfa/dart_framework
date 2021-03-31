@@ -17,3 +17,7 @@
 ## 1.1.1
 
 - Added reference to integrating framework.
+
+## 1.1.2
+
+- Removed local variable causing warning in generated validator for empty classes
