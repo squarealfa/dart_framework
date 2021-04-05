@@ -5,20 +5,16 @@ import 'package:build_test/build_test.dart';
 import 'package:squarealfa_generators_common/squarealfa_generators_common.dart';
 import 'package:test/test.dart';
 
-const _recipeServicesCode = '''
-
-    abstract class RecipeServices {
-      void sayHello();
-    }
-''';
-
-const _recipeCode = '''
+const _code = '''
 
 class Entity {
   final String id;
   String _key = '';
 
   String get rprop => '';
+
+  static String superStaticProp = '';
+  static const String superConstProp = '';
 
   String get key => _key;
   set key(String value) {
@@ -41,11 +37,42 @@ class Recipe extends Entity {
     _tag = value;
   }
 
+  static String staticProp = '';
+  static const String constProp = '';
+
   Recipe({
     required String id,
     this.description = '',
     required this.title,
   }) : super(id);
+}
+
+class Key {
+  final String key;
+
+  Key(this.key);
+}
+
+class SearchCriteria {
+  final String title;
+
+  SearchCriteria(this.title);
+}
+
+abstract class CrudServices<TEntity> {
+  final String superInstanceProp = '';
+  static String superStaticProp = '';
+
+  TEntity create(TEntity entity);
+  Future<TEntity> update(TEntity entity);
+  TEntity delete(Key key);
+}
+
+abstract class RecipeServices extends CrudServices<Recipe> {
+  final String instanceProp = '';
+  static String staticProp = '';
+
+  Future<List<Recipe>> search(SearchCriteria criteria);
 }
 ''';
 
@@ -73,7 +100,7 @@ void main() {
     // });
 
     test('Without inherited fields', () {
-      return testClass(_recipeCode, 'Recipe', (classElement) {
+      return testClass(_code, 'Recipe', (classElement) {
         final fields = classElement.getSortedFieldSet(includeInherited: false);
         expect(fields.any((f) => f.name == 'title'), true);
         expect(fields.any((f) => f.name == 'description'), true);
@@ -86,11 +113,16 @@ void main() {
         expect(fields.any((f) => f.name == '_key'), false);
         expect(fields.any((f) => f.name == 'rprop'), false);
         expect(fields.any((f) => f.name == 'key'), false);
+
+        expect(fields.any((f) => f.name == 'staticProp'), false);
+        expect(fields.any((f) => f.name == 'constProp'), false);
+        expect(fields.any((f) => f.name == 'superStaticProp'), false);
+        expect(fields.any((f) => f.name == 'superSonstProp'), false);
       });
     });
 
     test('Including inherited fields', () {
-      return testClass(_recipeCode, 'Recipe', (classElement) {
+      return testClass(_code, 'Recipe', (classElement) {
         final fields = classElement.getSortedFieldSet(includeInherited: true);
         expect(fields.any((f) => f.name == 'title'), true);
         expect(fields.any((f) => f.name == 'description'), true);
@@ -104,6 +136,11 @@ void main() {
 
         expect(fields.any((f) => f.name == '_key'), false);
         expect(fields.any((f) => f.name == 'rprop'), false);
+
+        expect(fields.any((f) => f.name == 'staticProp'), false);
+        expect(fields.any((f) => f.name == 'constProp'), false);
+        expect(fields.any((f) => f.name == 'superStaticProp'), false);
+        expect(fields.any((f) => f.name == 'superSonstProp'), false);
       });
     });
   });
