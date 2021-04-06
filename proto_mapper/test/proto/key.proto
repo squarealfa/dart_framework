@@ -1,0 +1,22 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+// **************************************************************************
+// ProtoGenerator
+// **************************************************************************
+
+syntax = "proto3";
+
+
+
+
+
+message GKey
+{
+  string key = 1;
+
+}   
+
+message GListOfKey
+{
+  repeated GKey items = 1;
+}

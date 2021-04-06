@@ -8,13 +8,17 @@ version: 1.1.2
 environment:
   sdk: ">=2.12.0 <3.0.0"
 
+publish_to: none
+
+
 dependencies:
   analyzer: ^1.2.0
   build: ^2.0.0
   decimal: ^1.0.0
   source_gen: ^1.0.0
   squarealfa_entity_annotations: ^1.1.0
-  squarealfa_generators_common: ^1.0.0
+  squarealfa_generators_common: #^1.0.0
+    path: ../../generators_common
   tuple: ^2.0.0
 
 dev_dependencies:

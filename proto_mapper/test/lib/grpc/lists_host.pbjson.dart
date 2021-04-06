@@ -41,3 +41,13 @@ const GListsHost$json = const {
 
 /// Descriptor for `GListsHost`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List gListsHostDescriptor = $convert.base64Decode('CgpHTGlzdHNIb3N0EhYKBnZib29scxgBIAMoCFIGdmJvb2xzEhgKB252Ym9vbHMYAiADKAhSB252Ym9vbHMSKAoPbnZib29sc0hhc1ZhbHVlGAMgASgIUg9udmJvb2xzSGFzVmFsdWUSGgoIdnN0cmluZ3MYBCADKAlSCHZzdHJpbmdzEhwKCW52c3RyaW5ncxgFIAMoCVIJbnZzdHJpbmdzEiwKEW52c3RyaW5nc0hhc1ZhbHVlGAYgASgIUhFudnN0cmluZ3NIYXNWYWx1ZRIeCgp2ZHVyYXRpb25zGAcgAygBUgp2ZHVyYXRpb25zEiAKC252ZHVyYXRpb25zGAggAygBUgtudmR1cmF0aW9ucxIwChNudmR1cmF0aW9uc0hhc1ZhbHVlGAkgASgIUhNudmR1cmF0aW9uc0hhc1ZhbHVlEh4KCnZkYXRldGltZXMYCiADKANSCnZkYXRldGltZXMSIAoLbnZkYXRldGltZXMYCyADKANSC252ZGF0ZXRpbWVzEjAKE252ZGF0ZXRpbWVzSGFzVmFsdWUYDCABKAhSE252ZGF0ZXRpbWVzSGFzVmFsdWUSHAoJdmRlY2ltYWxzGA0gAygJUgl2ZGVjaW1hbHMSHgoKbnZkZWNpbWFscxgOIAMoCVIKbnZkZWNpbWFscxIuChJudmRlY2ltYWxzSGFzVmFsdWUYDyABKAhSEm52ZGVjaW1hbHNIYXNWYWx1ZRIUCgV2aW50cxgQIAMoBVIFdmludHMSFgoGbnZpbnRzGBEgAygFUgZudmludHMSJgoObnZpbnRzSGFzVmFsdWUYEiABKAhSDm52aW50c0hhc1ZhbHVlEhoKCHZkb3VibGVzGBMgAygBUgh2ZG91YmxlcxIcCgludmRvdWJsZXMYFCADKAFSCW52ZG91YmxlcxIsChFudmRvdWJsZXNIYXNWYWx1ZRgVIAEoCFIRbnZkb3VibGVzSGFzVmFsdWUSOQoPdmFwcGxpYW5jZVR5cGVzGBYgAygOMg8uR0FwcGxpYW5jZVR5cGVSD3ZhcHBsaWFuY2VUeXBlcxI7ChBudmFwcGxpYW5jZVR5cGVzGBcgAygOMg8uR0FwcGxpYW5jZVR5cGVSEG52YXBwbGlhbmNlVHlwZXMSOgoYbnZhcHBsaWFuY2VUeXBlc0hhc1ZhbHVlGBggASgIUhhudmFwcGxpYW5jZVR5cGVzSGFzVmFsdWU=');
+@$core.Deprecated('Use gListOfListsHostDescriptor instead')
+const GListOfListsHost$json = const {
+  '1': 'GListOfListsHost',
+  '2': const [
+    const {'1': 'items', '3': 1, '4': 3, '5': 11, '6': '.GListsHost', '10': 'items'},
+  ],
+};
+
+/// Descriptor for `GListOfListsHost`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List gListOfListsHostDescriptor = $convert.base64Decode('ChBHTGlzdE9mTGlzdHNIb3N0EiEKBWl0ZW1zGAEgAygLMgsuR0xpc3RzSG9zdFIFaXRlbXM=');

@@ -149,7 +149,7 @@ Iterable<FieldDescriptor> _getFieldDescriptors(
   final fieldDescriptors = fieldSet
       .map((fieldElement) => FieldDescriptor.fromFieldElement(
             classElement,
-            fieldElement!,
+            fieldElement,
             annotation,
           ))
       .where((element) => element.isMapIncluded);

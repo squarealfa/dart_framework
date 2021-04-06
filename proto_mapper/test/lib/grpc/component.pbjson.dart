@@ -18,3 +18,13 @@ const GComponent$json = const {
 
 /// Descriptor for `GComponent`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List gComponentDescriptor = $convert.base64Decode('CgpHQ29tcG9uZW50EiAKC2Rlc2NyaXB0aW9uGAEgASgJUgtkZXNjcmlwdGlvbg==');
+@$core.Deprecated('Use gListOfComponentDescriptor instead')
+const GListOfComponent$json = const {
+  '1': 'GListOfComponent',
+  '2': const [
+    const {'1': 'items', '3': 1, '4': 3, '5': 11, '6': '.GComponent', '10': 'items'},
+  ],
+};
+
+/// Descriptor for `GListOfComponent`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List gListOfComponentDescriptor = $convert.base64Decode('ChBHTGlzdE9mQ29tcG9uZW50EiEKBWl0ZW1zGAEgAygLMgsuR0NvbXBvbmVudFIFaXRlbXM=');

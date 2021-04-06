@@ -1,0 +1,21 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+// **************************************************************************
+// ProtoGenerator
+// **************************************************************************
+
+syntax = "proto3";
+
+
+
+
+
+message GEmpty
+{
+
+}   
+
+message GListOfEmpty
+{
+  repeated GEmpty items = 1;
+}

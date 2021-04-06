@@ -5,6 +5,7 @@ library proto_generator;
 
 import 'package:build/build.dart';
 import 'package:proto_generator/src/proto/proto_generator.dart';
+import 'package:proto_generator/src/proto_services/proto_services_generator.dart';
 import 'package:proto_generator/src/proto_mapper/proto_mapper_generator.dart';
 import 'package:source_gen/source_gen.dart';
 
@@ -17,3 +18,7 @@ Builder protoMapperBuilder(BuilderOptions options) =>
 Builder protoBuilder(BuilderOptions options) =>
     LibraryBuilder(ProtoGenerator(options),
         generatedExtension: '.proto', formatOutput: (code) => code);
+
+Builder protoServicesBuilder(BuilderOptions options) =>
+    LibraryBuilder(ProtoServicesGenerator(options),
+        generatedExtension: '.services.proto', formatOutput: (code) => code);

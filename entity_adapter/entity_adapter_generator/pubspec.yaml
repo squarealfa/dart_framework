@@ -11,7 +11,7 @@ environment:
 
 dependencies:
   source_gen: ^1.0.0
-  squarealfa_generators_common: ^1.0.0
+  #squarealfa_generators_common: ^1.0.0
   squarealfa_entity_adapter: ^1.0.0
   map_mapper_generator: ^1.2.0
   proto_generator: ^1.2.0

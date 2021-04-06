@@ -66,6 +66,8 @@ abstract class CrudServices<TEntity> {
   TEntity create(TEntity entity);
   Future<TEntity> update(TEntity entity);
   TEntity delete(Key key);
+
+  static void superStaticMethod() {}
 }
 
 abstract class RecipeServices extends CrudServices<Recipe> {
@@ -73,6 +75,8 @@ abstract class RecipeServices extends CrudServices<Recipe> {
   static String staticProp = '';
 
   Future<List<Recipe>> search(SearchCriteria criteria);
+
+  static void staticMethod() {}
 }
 ''';
 
@@ -92,12 +96,43 @@ Future testClass(
 
 void main() {
   group('ClassElementExtensions', () {
-    // test('Non-Inherited methods', () {
-    //   return testClass(_recipeServicesCode, (classElement) {
-    //     final methods = classElement.getSortedMethods(includeInherited: false);
-    //     expect(methods.length, 1);
-    //   });
-    // });
+    test('Without inherited methods', () {
+      return testClass(_code, 'RecipeServices', (classElement) {
+        final methods = classElement.getSortedMethods(includeInherited: false);
+        expect(methods.any((f) => f.name == 'search'), true);
+        expect(methods.any((f) => f.name == 'create'), false);
+        expect(methods.any((f) => f.name == 'update'), false);
+        expect(methods.any((f) => f.name == 'delete'), false);
+
+        expect(methods.any((f) => f.name == 'staticProp'), false);
+        expect(methods.any((f) => f.name == 'instanceProp'), false);
+        expect(methods.any((f) => f.name == 'staticMethod'), false);
+
+        expect(methods.any((f) => f.name == 'superInstanceProp'), false);
+        expect(methods.any((f) => f.name == 'superStaticProp'), false);
+        expect(methods.any((f) => f.name == 'superStaticMethod'), false);
+      });
+    });
+
+    test('With inherited methods', () {
+      return testClass(_code, 'RecipeServices', (classElement) {
+        final methods = classElement.getSortedMethods(
+          includeInherited: true,
+        );
+        expect(methods.any((f) => f.name == 'search'), true);
+        expect(methods.any((f) => f.name == 'create'), true);
+        expect(methods.any((f) => f.name == 'update'), true);
+        expect(methods.any((f) => f.name == 'delete'), true);
+
+        expect(methods.any((f) => f.name == 'staticProp'), false);
+        expect(methods.any((f) => f.name == 'instanceProp'), false);
+        expect(methods.any((f) => f.name == 'staticMethod'), false);
+
+        expect(methods.any((f) => f.name == 'superInstanceProp'), false);
+        expect(methods.any((f) => f.name == 'superStaticProp'), false);
+        expect(methods.any((f) => f.name == 'superStaticMethod'), false);
+      });
+    });
 
     test('Without inherited fields', () {
       return testClass(_code, 'Recipe', (classElement) {

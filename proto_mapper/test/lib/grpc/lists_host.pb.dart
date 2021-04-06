@@ -285,3 +285,44 @@ class GListsHost extends $pb.GeneratedMessage {
   void clearNvapplianceTypesHasValue() => clearField(24);
 }
 
+class GListOfListsHost extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GListOfListsHost', createEmptyInstance: create)
+    ..pc<GListsHost>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'items', $pb.PbFieldType.PM, subBuilder: GListsHost.create)
+    ..hasRequiredFields = false
+  ;
+
+  GListOfListsHost._() : super();
+  factory GListOfListsHost({
+    $core.Iterable<GListsHost>? items,
+  }) {
+    final _result = create();
+    if (items != null) {
+      _result.items.addAll(items);
+    }
+    return _result;
+  }
+  factory GListOfListsHost.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GListOfListsHost.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  GListOfListsHost clone() => GListOfListsHost()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GListOfListsHost copyWith(void Function(GListOfListsHost) updates) => super.copyWith((message) => updates(message as GListOfListsHost)) as GListOfListsHost; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GListOfListsHost create() => GListOfListsHost._();
+  GListOfListsHost createEmptyInstance() => create();
+  static $pb.PbList<GListOfListsHost> createRepeated() => $pb.PbList<GListOfListsHost>();
+  @$core.pragma('dart2js:noInline')
+  static GListOfListsHost getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GListOfListsHost>(create);
+  static GListOfListsHost? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.List<GListsHost> get items => $_getList(0);
+}
+

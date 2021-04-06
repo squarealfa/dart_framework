@@ -72,7 +72,7 @@ Iterable<FieldDescriptor> _getFieldDescriptors(ClassElement classElement) {
   final fieldDescriptors =
       fieldSet.map((fieldElement) => FieldDescriptor.fromFieldElement(
             classElement,
-            fieldElement!,
+            fieldElement,
           ));
   return fieldDescriptors;
 }

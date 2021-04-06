@@ -182,7 +182,7 @@ packages:
       path: "../defaults_provider_generator"
       relative: true
     source: path
-    version: "1.1.0"
+    version: "1.1.2"
   file:
     dependency: transitive
     description:

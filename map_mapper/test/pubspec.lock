@@ -252,7 +252,7 @@ packages:
       path: "../map_mapper_generator"
       relative: true
     source: path
-    version: "1.2.0"
+    version: "1.2.1"
   matcher:
     dependency: transitive
     description:
@@ -389,9 +389,9 @@ packages:
   squarealfa_generators_common:
     dependency: transitive
     description:
-      name: squarealfa_generators_common
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "../../generators_common"
+      relative: true
+    source: path
     version: "1.0.1"
   stack_trace:
     dependency: transitive

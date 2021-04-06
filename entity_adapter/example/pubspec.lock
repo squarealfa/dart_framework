@@ -464,12 +464,12 @@ packages:
     source: hosted
     version: "1.8.1"
   squarealfa_entity_adapter:
-    dependency: "direct main"
+    dependency: transitive
     description:
-      path: "../entity_adapter"
-      relative: true
-    source: path
-    version: "1.0.0"
+      name: squarealfa_entity_adapter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1"
   squarealfa_entity_adapter_generator:
     dependency: "direct dev"
     description:

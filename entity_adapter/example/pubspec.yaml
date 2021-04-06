@@ -4,8 +4,8 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  squarealfa_entity_adapter:
-    path: ../entity_adapter
+  # squarealfa_entity_adapter:
+  #   path: ../entity_adapter
   decimal: ^1.0.0
   fixnum: ^1.0.0
 

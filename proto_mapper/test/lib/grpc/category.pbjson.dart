@@ -24,3 +24,13 @@ const GCategory$json = const {
 
 /// Descriptor for `GCategory`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List gCategoryDescriptor = $convert.base64Decode('CglHQ2F0ZWdvcnkSFAoFdGl0bGUYASABKAlSBXRpdGxlEjEKDW1haW5Db21wb25lbnQYAiABKAsyCy5HQ29tcG9uZW50Ug1tYWluQ29tcG9uZW50Ej8KFGFsdGVybmF0aXZlQ29tcG9uZW50GAMgASgLMgsuR0NvbXBvbmVudFIUYWx0ZXJuYXRpdmVDb21wb25lbnQSQgocYWx0ZXJuYXRpdmVDb21wb25lbnRIYXNWYWx1ZRgEIAEoCFIcYWx0ZXJuYXRpdmVDb21wb25lbnRIYXNWYWx1ZRI1Cg9vdGhlckNvbXBvbmVudHMYBSADKAsyCy5HQ29tcG9uZW50Ug9vdGhlckNvbXBvbmVudHMSPQoTc2Vjb25kYXJ5Q29tcG9uZW50cxgGIAMoCzILLkdDb21wb25lbnRSE3NlY29uZGFyeUNvbXBvbmVudHMSQAobc2Vjb25kYXJ5Q29tcG9uZW50c0hhc1ZhbHVlGAcgASgIUhtzZWNvbmRhcnlDb21wb25lbnRzSGFzVmFsdWU=');
+@$core.Deprecated('Use gListOfCategoryDescriptor instead')
+const GListOfCategory$json = const {
+  '1': 'GListOfCategory',
+  '2': const [
+    const {'1': 'items', '3': 1, '4': 3, '5': 11, '6': '.GCategory', '10': 'items'},
+  ],
+};
+
+/// Descriptor for `GListOfCategory`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List gListOfCategoryDescriptor = $convert.base64Decode('Cg9HTGlzdE9mQ2F0ZWdvcnkSIAoFaXRlbXMYASADKAsyCi5HQ2F0ZWdvcnlSBWl0ZW1z');

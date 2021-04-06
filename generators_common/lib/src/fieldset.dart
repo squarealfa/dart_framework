@@ -1,7 +1,7 @@
 part of 'class_element_extensions.dart';
 
 class _FieldSet implements Comparable<_FieldSet> {
-  final FieldElement? field;
+  final FieldElement field;
 
   _FieldSet._(this.field);
 
@@ -10,13 +10,13 @@ class _FieldSet implements Comparable<_FieldSet> {
     final fields = [classField, superField].where((fe) => fe != null).toList();
 
     // Prefer the class field over the inherited field when sorting.
-    final sortField = fields.first;
+    final sortField = fields.first!;
 
     return _FieldSet._(sortField);
   }
 
   @override
-  int compareTo(_FieldSet other) => _sortByLocation(field!, other.field!);
+  int compareTo(_FieldSet other) => _sortByLocation(field, other.field);
 
   static int _sortByLocation(FieldElement a, FieldElement b) {
     final checkerA = TypeChecker.fromStatic(

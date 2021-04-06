@@ -21,4 +21,9 @@ message GCategory
   repeated GComponent secondaryComponents = 6;
   bool secondaryComponentsHasValue = 7;
 
+}   
+
+message GListOfCategory
+{
+  repeated GCategory items = 1;
 }

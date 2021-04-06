@@ -88,6 +88,11 @@ message $_prefix$className
 $fieldBuffer
 }   
 
+message ${_prefix}ListOf$className
+{
+  repeated $_prefix$className items = 1;
+}   
+
  
 ''';
     return ret;
@@ -134,7 +139,7 @@ Iterable<FieldDescriptor> _getFieldDescriptors(
   final fieldDescriptors = fieldSet
       .map((fieldElement) => FieldDescriptor.fromFieldElement(
             classElement,
-            fieldElement!,
+            fieldElement,
             annotation,
           ))
       .where((element) => element.isProtoIncluded);

@@ -14,4 +14,9 @@ message GComponent
 {
   string description = 1;
 
+}   
+
+message GListOfComponent
+{
+  repeated GComponent items = 1;
 }

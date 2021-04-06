@@ -38,4 +38,9 @@ message GListsHost
   repeated GApplianceType nvapplianceTypes = 23;
   bool nvapplianceTypesHasValue = 24;
 
+}   
+
+message GListOfListsHost
+{
+  repeated GListsHost items = 1;
 }

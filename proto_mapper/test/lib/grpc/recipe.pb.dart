@@ -312,3 +312,44 @@ class GRecipe extends $pb.GeneratedMessage {
   void clearExtraTagsHasValue() => clearField(20);
 }
 
+class GListOfRecipe extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GListOfRecipe', createEmptyInstance: create)
+    ..pc<GRecipe>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'items', $pb.PbFieldType.PM, subBuilder: GRecipe.create)
+    ..hasRequiredFields = false
+  ;
+
+  GListOfRecipe._() : super();
+  factory GListOfRecipe({
+    $core.Iterable<GRecipe>? items,
+  }) {
+    final _result = create();
+    if (items != null) {
+      _result.items.addAll(items);
+    }
+    return _result;
+  }
+  factory GListOfRecipe.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GListOfRecipe.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  GListOfRecipe clone() => GListOfRecipe()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GListOfRecipe copyWith(void Function(GListOfRecipe) updates) => super.copyWith((message) => updates(message as GListOfRecipe)) as GListOfRecipe; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GListOfRecipe create() => GListOfRecipe._();
+  GListOfRecipe createEmptyInstance() => create();
+  static $pb.PbList<GListOfRecipe> createRepeated() => $pb.PbList<GListOfRecipe>();
+  @$core.pragma('dart2js:noInline')
+  static GListOfRecipe getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GListOfRecipe>(create);
+  static GListOfRecipe? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.List<GRecipe> get items => $_getList(0);
+}
+

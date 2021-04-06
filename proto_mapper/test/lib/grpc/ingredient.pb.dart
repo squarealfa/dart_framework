@@ -176,3 +176,44 @@ class GIngredient extends $pb.GeneratedMessage {
   void clearSecondaryComponentsHasValue() => clearField(10);
 }
 
+class GListOfIngredient extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GListOfIngredient', createEmptyInstance: create)
+    ..pc<GIngredient>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'items', $pb.PbFieldType.PM, subBuilder: GIngredient.create)
+    ..hasRequiredFields = false
+  ;
+
+  GListOfIngredient._() : super();
+  factory GListOfIngredient({
+    $core.Iterable<GIngredient>? items,
+  }) {
+    final _result = create();
+    if (items != null) {
+      _result.items.addAll(items);
+    }
+    return _result;
+  }
+  factory GListOfIngredient.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GListOfIngredient.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  GListOfIngredient clone() => GListOfIngredient()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GListOfIngredient copyWith(void Function(GListOfIngredient) updates) => super.copyWith((message) => updates(message as GListOfIngredient)) as GListOfIngredient; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GListOfIngredient create() => GListOfIngredient._();
+  GListOfIngredient createEmptyInstance() => create();
+  static $pb.PbList<GListOfIngredient> createRepeated() => $pb.PbList<GListOfIngredient>();
+  @$core.pragma('dart2js:noInline')
+  static GListOfIngredient getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GListOfIngredient>(create);
+  static GListOfIngredient? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.List<GIngredient> get items => $_getList(0);
+}
+

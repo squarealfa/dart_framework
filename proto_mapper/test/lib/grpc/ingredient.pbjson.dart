@@ -27,3 +27,13 @@ const GIngredient$json = const {
 
 /// Descriptor for `GIngredient`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List gIngredientDescriptor = $convert.base64Decode('CgtHSW5ncmVkaWVudBIgCgtkZXNjcmlwdGlvbhgBIAEoCVILZGVzY3JpcHRpb24SGgoIcXVhbnRpdHkYAiABKAlSCHF1YW50aXR5EhwKCXByZWNpc2lvbhgDIAEoAVIJcHJlY2lzaW9uEigKD2Nvb2tpbmdEdXJhdGlvbhgEIAEoAVIPY29va2luZ0R1cmF0aW9uEjEKDW1haW5Db21wb25lbnQYBSABKAsyCy5HQ29tcG9uZW50Ug1tYWluQ29tcG9uZW50EjUKD290aGVyQ29tcG9uZW50cxgGIAMoCzILLkdDb21wb25lbnRSD290aGVyQ29tcG9uZW50cxI/ChRhbHRlcm5hdGl2ZUNvbXBvbmVudBgHIAEoCzILLkdDb21wb25lbnRSFGFsdGVybmF0aXZlQ29tcG9uZW50EkIKHGFsdGVybmF0aXZlQ29tcG9uZW50SGFzVmFsdWUYCCABKAhSHGFsdGVybmF0aXZlQ29tcG9uZW50SGFzVmFsdWUSPQoTc2Vjb25kYXJ5Q29tcG9uZW50cxgJIAMoCzILLkdDb21wb25lbnRSE3NlY29uZGFyeUNvbXBvbmVudHMSQAobc2Vjb25kYXJ5Q29tcG9uZW50c0hhc1ZhbHVlGAogASgIUhtzZWNvbmRhcnlDb21wb25lbnRzSGFzVmFsdWU=');
+@$core.Deprecated('Use gListOfIngredientDescriptor instead')
+const GListOfIngredient$json = const {
+  '1': 'GListOfIngredient',
+  '2': const [
+    const {'1': 'items', '3': 1, '4': 3, '5': 11, '6': '.GIngredient', '10': 'items'},
+  ],
+};
+
+/// Descriptor for `GListOfIngredient`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List gListOfIngredientDescriptor = $convert.base64Decode('ChFHTGlzdE9mSW5ncmVkaWVudBIiCgVpdGVtcxgBIAMoCzIMLkdJbmdyZWRpZW50UgVpdGVtcw==');

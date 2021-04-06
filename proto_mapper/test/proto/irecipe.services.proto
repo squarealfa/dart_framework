@@ -1,0 +1,25 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+// **************************************************************************
+// ProtoGenerator
+// **************************************************************************
+
+syntax = "proto3";
+
+import 'category.proto';
+import 'ingredient.proto';
+import 'appliance_type.proto';
+
+service GRecipeServices {
+
+  rpc Search (GEmpty) returns (GListOfRecipe);
+  rpc Get(GKey) returns (GRecipe);
+
+  rpc Create(GRecipe) returns (GRecipe);
+  rpc Update(GRecipe) returns (GRecipe);
+  rpc Delete(GKey) returns (GEmpty);
+}
+
+
+
+

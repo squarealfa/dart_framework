@@ -10,4 +10,7 @@ extension TypeCheckerExtensions on TypeChecker {
       (fieldElement.getter == null
           ? null
           : firstAnnotationOf(fieldElement.getter!));
+
+  DartObject? getMethodAnnotation(MethodElement methodElement) =>
+      firstAnnotationOf(methodElement);
 }

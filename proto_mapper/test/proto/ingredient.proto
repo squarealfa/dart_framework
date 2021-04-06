@@ -24,4 +24,9 @@ message GIngredient
   repeated GComponent secondaryComponents = 9;
   bool secondaryComponentsHasValue = 10;
 
+}   
+
+message GListOfIngredient
+{
+  repeated GIngredient items = 1;
 }
