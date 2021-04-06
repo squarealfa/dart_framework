@@ -11,9 +11,9 @@ packages:
   defaults_provider_annotations:
     dependency: "direct main"
     description:
-      name: defaults_provider_annotations
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "/home/ruicraveiro/sources/dart_framework/defaults_provider/defaults_provider_annotations"
+      relative: false
+    source: path
     version: "1.1.1"
   fixnum:
     dependency: transitive
@@ -25,9 +25,9 @@ packages:
   map_mapper_annotations:
     dependency: "direct main"
     description:
-      name: map_mapper_annotations
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "/home/ruicraveiro/sources/dart_framework/map_mapper/map_mapper_annotations"
+      relative: false
+    source: path
     version: "1.2.1"
   pedantic:
     dependency: "direct dev"
@@ -39,9 +39,9 @@ packages:
   proto_annotations:
     dependency: "direct main"
     description:
-      name: proto_annotations
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "../../proto_mapper/proto_annotations"
+      relative: true
+    source: path
     version: "1.1.6"
   rational:
     dependency: transitive
@@ -53,9 +53,9 @@ packages:
   squarealfa_entity_annotations:
     dependency: "direct main"
     description:
-      name: squarealfa_entity_annotations
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "/home/ruicraveiro/sources/dart_framework/entity/entity_annotations"
+      relative: false
+    source: path
     version: "1.1.2"
 sdks:
   dart: ">=2.12.0 <3.0.0"

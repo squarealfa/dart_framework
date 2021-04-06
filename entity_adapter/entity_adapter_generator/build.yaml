@@ -16,6 +16,14 @@ builders:
     build_to: cache
     applies_builders: ["source_gen|combining_builder"]
 
+
+  proto_generator:
+    import: "package:proto_generator/proto_generator.dart"
+    builder_factories: ["protoBuilder"]
+    build_extensions: {".dart": [".entity.proto"]}
+    auto_apply: dependents
+    build_to: source
+
   proto_mapper_generator:
     import: "package:proto_generator/proto_generator.dart"
     builder_factories: ["protoMapperBuilder"]
@@ -24,12 +32,14 @@ builders:
     build_to: cache
     applies_builders: ["source_gen|combining_builder"]
 
-  proto_generator:
+  proto_services_generator:
     import: "package:proto_generator/proto_generator.dart"
-    builder_factories: ["protoBuilder"]
-    build_extensions: {".dart": [".entity.proto"]}
+    builder_factories: ["protoServicesBuilder"]
+    build_extensions: {".dart": ["entity_proto_services.g.part"]}
     auto_apply: dependents
-    build_to: source
+    build_to: cache
+    applies_builders: ["source_gen|combining_builder"]
+
 
   defaults_provider_generator:
     import: "package:defaults_provider_generator/defaults_provider_generator.dart"

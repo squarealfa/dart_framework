@@ -10,7 +10,7 @@ import 'dart:core' as $core;
 import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'appliance_type.pbenum.dart' as $1;
+import 'appliance_type.pbenum.dart' as $6;
 
 class GListsHost extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GListsHost', createEmptyInstance: create)
@@ -35,8 +35,8 @@ class GListsHost extends $pb.GeneratedMessage {
     ..p<$core.double>(19, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'vdoubles', $pb.PbFieldType.PD)
     ..p<$core.double>(20, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'nvdoubles', $pb.PbFieldType.PD)
     ..aOB(21, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'nvdoublesHasValue', protoName: 'nvdoublesHasValue')
-    ..pc<$1.GApplianceType>(22, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'vapplianceTypes', $pb.PbFieldType.PE, protoName: 'vapplianceTypes', valueOf: $1.GApplianceType.valueOf, enumValues: $1.GApplianceType.values)
-    ..pc<$1.GApplianceType>(23, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'nvapplianceTypes', $pb.PbFieldType.PE, protoName: 'nvapplianceTypes', valueOf: $1.GApplianceType.valueOf, enumValues: $1.GApplianceType.values)
+    ..pc<$6.GApplianceType>(22, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'vapplianceTypes', $pb.PbFieldType.PE, protoName: 'vapplianceTypes', valueOf: $6.GApplianceType.valueOf, enumValues: $6.GApplianceType.values)
+    ..pc<$6.GApplianceType>(23, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'nvapplianceTypes', $pb.PbFieldType.PE, protoName: 'nvapplianceTypes', valueOf: $6.GApplianceType.valueOf, enumValues: $6.GApplianceType.values)
     ..aOB(24, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'nvapplianceTypesHasValue', protoName: 'nvapplianceTypesHasValue')
     ..hasRequiredFields = false
   ;
@@ -64,8 +64,8 @@ class GListsHost extends $pb.GeneratedMessage {
     $core.Iterable<$core.double>? vdoubles,
     $core.Iterable<$core.double>? nvdoubles,
     $core.bool? nvdoublesHasValue,
-    $core.Iterable<$1.GApplianceType>? vapplianceTypes,
-    $core.Iterable<$1.GApplianceType>? nvapplianceTypes,
+    $core.Iterable<$6.GApplianceType>? vapplianceTypes,
+    $core.Iterable<$6.GApplianceType>? nvapplianceTypes,
     $core.bool? nvapplianceTypesHasValue,
   }) {
     final _result = create();
@@ -270,10 +270,10 @@ class GListsHost extends $pb.GeneratedMessage {
   void clearNvdoublesHasValue() => clearField(21);
 
   @$pb.TagNumber(22)
-  $core.List<$1.GApplianceType> get vapplianceTypes => $_getList(21);
+  $core.List<$6.GApplianceType> get vapplianceTypes => $_getList(21);
 
   @$pb.TagNumber(23)
-  $core.List<$1.GApplianceType> get nvapplianceTypes => $_getList(22);
+  $core.List<$6.GApplianceType> get nvapplianceTypes => $_getList(22);
 
   @$pb.TagNumber(24)
   $core.bool get nvapplianceTypesHasValue => $_getBF(23);

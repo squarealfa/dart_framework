@@ -10,18 +10,18 @@ import 'dart:core' as $core;
 import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'category.pb.dart' as $2;
-import 'ingredient.pb.dart' as $3;
+import 'category.pb.dart' as $7;
+import 'ingredient.pb.dart' as $8;
 
-import 'appliance_type.pbenum.dart' as $1;
+import 'appliance_type.pbenum.dart' as $6;
 
 class GRecipe extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GRecipe', createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'title')
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'description')
     ..aOB(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'descriptionHasValue', protoName: 'descriptionHasValue')
-    ..aOM<$2.GCategory>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'category', subBuilder: $2.GCategory.create)
-    ..pc<$3.GIngredient>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'ingredients', $pb.PbFieldType.PM, subBuilder: $3.GIngredient.create)
+    ..aOM<$7.GCategory>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'category', subBuilder: $7.GCategory.create)
+    ..pc<$8.GIngredient>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'ingredients', $pb.PbFieldType.PM, subBuilder: $8.GIngredient.create)
     ..aInt64(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'publishDate', protoName: 'publishDate')
     ..aInt64(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'expiryDate', protoName: 'expiryDate')
     ..aOB(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'expiryDateHasValue', protoName: 'expiryDateHasValue')
@@ -31,8 +31,8 @@ class GRecipe extends $pb.GeneratedMessage {
     ..aOB(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isPublished', protoName: 'isPublished')
     ..aOB(13, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'requiresRobot', protoName: 'requiresRobot')
     ..aOB(14, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'requiresRobotHasValue', protoName: 'requiresRobotHasValue')
-    ..e<$1.GApplianceType>(15, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'mainApplianceType', $pb.PbFieldType.OE, protoName: 'mainApplianceType', defaultOrMaker: $1.GApplianceType.Heat, valueOf: $1.GApplianceType.valueOf, enumValues: $1.GApplianceType.values)
-    ..e<$1.GApplianceType>(16, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'secondaryApplianceType', $pb.PbFieldType.OE, protoName: 'secondaryApplianceType', defaultOrMaker: $1.GApplianceType.Heat, valueOf: $1.GApplianceType.valueOf, enumValues: $1.GApplianceType.values)
+    ..e<$6.GApplianceType>(15, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'mainApplianceType', $pb.PbFieldType.OE, protoName: 'mainApplianceType', defaultOrMaker: $6.GApplianceType.Heat, valueOf: $6.GApplianceType.valueOf, enumValues: $6.GApplianceType.values)
+    ..e<$6.GApplianceType>(16, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'secondaryApplianceType', $pb.PbFieldType.OE, protoName: 'secondaryApplianceType', defaultOrMaker: $6.GApplianceType.Heat, valueOf: $6.GApplianceType.valueOf, enumValues: $6.GApplianceType.values)
     ..aOB(17, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'secondaryApplianceTypeHasValue', protoName: 'secondaryApplianceTypeHasValue')
     ..pPS(18, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'tags')
     ..pPS(19, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'extraTags', protoName: 'extraTags')
@@ -45,8 +45,8 @@ class GRecipe extends $pb.GeneratedMessage {
     $core.String? title,
     $core.String? description,
     $core.bool? descriptionHasValue,
-    $2.GCategory? category,
-    $core.Iterable<$3.GIngredient>? ingredients,
+    $7.GCategory? category,
+    $core.Iterable<$8.GIngredient>? ingredients,
     $fixnum.Int64? publishDate,
     $fixnum.Int64? expiryDate,
     $core.bool? expiryDateHasValue,
@@ -56,8 +56,8 @@ class GRecipe extends $pb.GeneratedMessage {
     $core.bool? isPublished,
     $core.bool? requiresRobot,
     $core.bool? requiresRobotHasValue,
-    $1.GApplianceType? mainApplianceType,
-    $1.GApplianceType? secondaryApplianceType,
+    $6.GApplianceType? mainApplianceType,
+    $6.GApplianceType? secondaryApplianceType,
     $core.bool? secondaryApplianceTypeHasValue,
     $core.Iterable<$core.String>? tags,
     $core.Iterable<$core.String>? extraTags,
@@ -175,18 +175,18 @@ class GRecipe extends $pb.GeneratedMessage {
   void clearDescriptionHasValue() => clearField(3);
 
   @$pb.TagNumber(4)
-  $2.GCategory get category => $_getN(3);
+  $7.GCategory get category => $_getN(3);
   @$pb.TagNumber(4)
-  set category($2.GCategory v) { setField(4, v); }
+  set category($7.GCategory v) { setField(4, v); }
   @$pb.TagNumber(4)
   $core.bool hasCategory() => $_has(3);
   @$pb.TagNumber(4)
   void clearCategory() => clearField(4);
   @$pb.TagNumber(4)
-  $2.GCategory ensureCategory() => $_ensure(3);
+  $7.GCategory ensureCategory() => $_ensure(3);
 
   @$pb.TagNumber(5)
-  $core.List<$3.GIngredient> get ingredients => $_getList(4);
+  $core.List<$8.GIngredient> get ingredients => $_getList(4);
 
   @$pb.TagNumber(6)
   $fixnum.Int64 get publishDate => $_getI64(5);
@@ -270,18 +270,18 @@ class GRecipe extends $pb.GeneratedMessage {
   void clearRequiresRobotHasValue() => clearField(14);
 
   @$pb.TagNumber(15)
-  $1.GApplianceType get mainApplianceType => $_getN(14);
+  $6.GApplianceType get mainApplianceType => $_getN(14);
   @$pb.TagNumber(15)
-  set mainApplianceType($1.GApplianceType v) { setField(15, v); }
+  set mainApplianceType($6.GApplianceType v) { setField(15, v); }
   @$pb.TagNumber(15)
   $core.bool hasMainApplianceType() => $_has(14);
   @$pb.TagNumber(15)
   void clearMainApplianceType() => clearField(15);
 
   @$pb.TagNumber(16)
-  $1.GApplianceType get secondaryApplianceType => $_getN(15);
+  $6.GApplianceType get secondaryApplianceType => $_getN(15);
   @$pb.TagNumber(16)
-  set secondaryApplianceType($1.GApplianceType v) { setField(16, v); }
+  set secondaryApplianceType($6.GApplianceType v) { setField(16, v); }
   @$pb.TagNumber(16)
   $core.bool hasSecondaryApplianceType() => $_has(15);
   @$pb.TagNumber(16)

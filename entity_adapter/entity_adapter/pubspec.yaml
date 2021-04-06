@@ -8,11 +8,17 @@ version: 1.0.1
 environment:
   sdk: '>=2.12.0 <3.0.0'
 
+publish_to: none
+
 dependencies:
-  squarealfa_entity_annotations: ^1.1.0
-  proto_annotations: ^1.1.4
-  map_mapper_annotations: ^1.2.0
-  defaults_provider_annotations: ^1.1.0
+  squarealfa_entity_annotations: #^1.1.0
+    path: /home/ruicraveiro/sources/dart_framework/entity/entity_annotations
+  proto_annotations: #^1.1.4
+    path: ../../proto_mapper/proto_annotations
+  map_mapper_annotations: #^1.2.0
+    path: /home/ruicraveiro/sources/dart_framework/map_mapper/map_mapper_annotations
+  defaults_provider_annotations: #^1.1.0
+    path: /home/ruicraveiro/sources/dart_framework/defaults_provider/defaults_provider_annotations
 
 dev_dependencies:
   pedantic: ^1.9.0

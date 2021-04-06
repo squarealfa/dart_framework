@@ -11,12 +11,14 @@ syntax = "proto3";
 
 
 
-message GEmpty
+message GCalcParameters
 {
+  int32 parameter1 = 1;
+  int32 parameter2 = 2;
 
 }   
 
-message GListOfEmpty
+message GListOfCalcParameters
 {
-  repeated GEmpty items = 1;
+  repeated GCalcParameters items = 1;
 }

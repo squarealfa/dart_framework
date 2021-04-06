@@ -1,12 +1,11 @@
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/type.dart';
 import 'package:build/build.dart';
 import 'package:proto_annotations/proto_annotations.dart';
 import 'package:squarealfa_generators_common/squarealfa_generators_common.dart';
 import 'package:source_gen/source_gen.dart';
 
-import 'field_code_generator.dart';
-import 'field_code_generators/external_proto_name.dart';
-import 'field_descriptor.dart';
+import 'method_descriptor.dart';
 
 class ProtoServicesGenerator extends GeneratorForAnnotation<ProtoServices> {
   final BuilderOptions options;
@@ -29,41 +28,48 @@ class ProtoServicesGenerator extends GeneratorForAnnotation<ProtoServices> {
 
     final packageDeclaration = packageName != '' ? 'package $packageName;' : '';
 
-    var fieldDescriptors = _getFieldDescriptors(classElement, annotation);
+    var methodDescriptors = _getMethodDescriptors(classElement, annotation);
 
     var ret =
-        _generateForClass(classElement, fieldDescriptors, packageDeclaration);
+        _generateForClass(classElement, methodDescriptors, packageDeclaration);
 
     return ret;
   }
 
   String _generateForClass(
     ClassElement classElement,
-    Iterable<FieldDescriptor> fieldDescriptors,
+    Iterable<MethodDescriptor> methodDescriptors,
     String packageDeclaration,
   ) {
     var methodBuffer = StringBuffer();
     var externalProtoNames = <String>[];
 
-    var lineNumber = 1;
-    for (var fieldDescriptor in fieldDescriptors) {
-      var fieldCodeGenerator = FieldCodeGenerator.fromFieldDescriptor(
-        fieldDescriptor,
-        lineNumber++,
-      );
+    for (var methodDescriptor in methodDescriptors) {
+      final methodName = methodDescriptor.name;
+      final parameterType = _getTypeName(methodDescriptor.parameterType);
+      final gParameterType =
+          _getPrefixedTypeName(methodDescriptor.parameterType);
+      final gReturnType = _getPrefixedTypeName(methodDescriptor.returnType);
+      final resultLine = !methodDescriptor.returnType.isList
+          ? '''final protoResult = result.toProto();'''
+          : '''final protoResult = $gReturnType()..items.addAll(result.map((i) => i.toProto()));''';
 
-      var fieldLine = fieldCodeGenerator.fieldLine;
-      methodBuffer.writeln(
-          '  ${fieldDescriptor.isRepeated ? 'repeated ' : ''}$fieldLine');
-      if (fieldDescriptor.isNullable) {
-        methodBuffer.writeln('  ${fieldCodeGenerator.hasValueLine}');
-        lineNumber++;
-      }
+      methodBuffer.writeln('''
+  @override Future<$gReturnType> $methodName(ServiceCall call, $gParameterType request,) async {
+    final service = createService(call);
 
-      if (fieldCodeGenerator is! ExternalProtoName) continue;
-      var externalProtoName =
-          (fieldCodeGenerator as ExternalProtoName).externalProtoName;
-      if (externalProtoName != null &&
+    final entity = request.to$parameterType();
+    final result = await service.$methodName(entity);
+    $resultLine
+    return protoResult;
+  }
+
+''');
+
+      final externalProtoName =
+          _getExternalProtoName(methodDescriptor.returnType);
+
+      if (externalProtoName != '' &&
           !externalProtoNames.contains(externalProtoName)) {
         externalProtoNames.add(externalProtoName);
       }
@@ -74,43 +80,82 @@ class ProtoServicesGenerator extends GeneratorForAnnotation<ProtoServices> {
       imports.writeln('import \'$externalProtoName\';');
     }
 
-    var className = classElement.name;
+    final className = classElement.name;
+    final serviceClassName = className.endsWith('Base')
+        ? className.substring(0, className.length - 4)
+        : className;
+
     var ret = '''
-syntax = "proto3";
 
-$imports
+typedef ${serviceClassName}Factory = $className Function(ServiceCall call);
 
-$packageDeclaration
 
-service $_prefix${className}Services
+
+class $_prefix$serviceClassName extends $_prefix${serviceClassName}Base
 {
-$methodBuffer
-}   
+  final ${serviceClassName}Factory factory;
 
- 
+  $_prefix$serviceClassName(this.factory);
+
+  $className createService(ServiceCall call) {
+    final ret = factory(call);
+    return ret;
+  }
+
+  $methodBuffer
+} 
 ''';
+    return ret;
+  }
+
+  String _getTypeName(DartType type) {
+    final itemType = type.finalType;
+    final displayName = itemType.getDisplayString(withNullability: false);
+    return displayName;
+  }
+
+  String _getPrefixedTypeName(DartType type) {
+    final itemType = type.finalType;
+    final listOf = type.isList ? 'ListOf' : '';
+    final displayName = itemType.getDisplayString(withNullability: false);
+    final ret = '$_prefix$listOf$displayName';
+    return ret;
+  }
+
+  String _getExternalProtoName(DartType type) {
+    var fieldElementType = type.finalType;
+    var segments = fieldElementType.element?.source?.uri.pathSegments.toList();
+    if (segments == null) {
+      return '';
+    }
+    var lastSrc = segments.lastIndexOf('src');
+    if (lastSrc != -1) segments.removeRange(0, lastSrc + 1);
+    var fileName = segments[segments.length - 1];
+    fileName = fileName.substring(0, fileName.length - 4) + 'proto';
+    segments[segments.length - 1] = fileName;
+    final ret = segments.join('/');
     return ret;
   }
 }
 
-Iterable<FieldDescriptor> _getFieldDescriptors(
-    ClassElement classElement, Proto annotation) {
-  final fieldSet = classElement.getSortedFieldSet();
-  final fieldDescriptors = fieldSet
-      .map((fieldElement) => FieldDescriptor.fromFieldElement(
+Iterable<MethodDescriptor> _getMethodDescriptors(
+  ClassElement classElement,
+  ProtoServices annotation,
+) {
+  final methods = classElement.getSortedMethods();
+  final methodDescriptors = methods
+      .map((fieldElement) => MethodDescriptor.fromMethodElement(
             classElement,
             fieldElement,
             annotation,
           ))
       .where((element) => element.isProtoIncluded);
-  return fieldDescriptors;
+  return methodDescriptors;
 }
 
-Proto _hydrateAnnotation(ConstantReader reader, {String prefix = ''}) {
-  var ret = Proto(
+ProtoServices _hydrateAnnotation(ConstantReader reader, {String prefix = ''}) {
+  var ret = ProtoServices(
     prefix: reader.read('prefix').literalValue as String? ?? prefix,
-    includeFieldsByDefault:
-        reader.read('includeFieldsByDefault').literalValue as bool,
     packageName: reader.read('packageName').literalValue as String? ?? '',
   );
 

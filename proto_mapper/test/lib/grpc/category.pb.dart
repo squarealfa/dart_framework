@@ -9,16 +9,16 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'component.pb.dart' as $0;
+import 'component.pb.dart' as $5;
 
 class GCategory extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GCategory', createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'title')
-    ..aOM<$0.GComponent>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'mainComponent', protoName: 'mainComponent', subBuilder: $0.GComponent.create)
-    ..aOM<$0.GComponent>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'alternativeComponent', protoName: 'alternativeComponent', subBuilder: $0.GComponent.create)
+    ..aOM<$5.GComponent>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'mainComponent', protoName: 'mainComponent', subBuilder: $5.GComponent.create)
+    ..aOM<$5.GComponent>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'alternativeComponent', protoName: 'alternativeComponent', subBuilder: $5.GComponent.create)
     ..aOB(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'alternativeComponentHasValue', protoName: 'alternativeComponentHasValue')
-    ..pc<$0.GComponent>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'otherComponents', $pb.PbFieldType.PM, protoName: 'otherComponents', subBuilder: $0.GComponent.create)
-    ..pc<$0.GComponent>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'secondaryComponents', $pb.PbFieldType.PM, protoName: 'secondaryComponents', subBuilder: $0.GComponent.create)
+    ..pc<$5.GComponent>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'otherComponents', $pb.PbFieldType.PM, protoName: 'otherComponents', subBuilder: $5.GComponent.create)
+    ..pc<$5.GComponent>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'secondaryComponents', $pb.PbFieldType.PM, protoName: 'secondaryComponents', subBuilder: $5.GComponent.create)
     ..aOB(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'secondaryComponentsHasValue', protoName: 'secondaryComponentsHasValue')
     ..hasRequiredFields = false
   ;
@@ -26,11 +26,11 @@ class GCategory extends $pb.GeneratedMessage {
   GCategory._() : super();
   factory GCategory({
     $core.String? title,
-    $0.GComponent? mainComponent,
-    $0.GComponent? alternativeComponent,
+    $5.GComponent? mainComponent,
+    $5.GComponent? alternativeComponent,
     $core.bool? alternativeComponentHasValue,
-    $core.Iterable<$0.GComponent>? otherComponents,
-    $core.Iterable<$0.GComponent>? secondaryComponents,
+    $core.Iterable<$5.GComponent>? otherComponents,
+    $core.Iterable<$5.GComponent>? secondaryComponents,
     $core.bool? secondaryComponentsHasValue,
   }) {
     final _result = create();
@@ -88,26 +88,26 @@ class GCategory extends $pb.GeneratedMessage {
   void clearTitle() => clearField(1);
 
   @$pb.TagNumber(2)
-  $0.GComponent get mainComponent => $_getN(1);
+  $5.GComponent get mainComponent => $_getN(1);
   @$pb.TagNumber(2)
-  set mainComponent($0.GComponent v) { setField(2, v); }
+  set mainComponent($5.GComponent v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasMainComponent() => $_has(1);
   @$pb.TagNumber(2)
   void clearMainComponent() => clearField(2);
   @$pb.TagNumber(2)
-  $0.GComponent ensureMainComponent() => $_ensure(1);
+  $5.GComponent ensureMainComponent() => $_ensure(1);
 
   @$pb.TagNumber(3)
-  $0.GComponent get alternativeComponent => $_getN(2);
+  $5.GComponent get alternativeComponent => $_getN(2);
   @$pb.TagNumber(3)
-  set alternativeComponent($0.GComponent v) { setField(3, v); }
+  set alternativeComponent($5.GComponent v) { setField(3, v); }
   @$pb.TagNumber(3)
   $core.bool hasAlternativeComponent() => $_has(2);
   @$pb.TagNumber(3)
   void clearAlternativeComponent() => clearField(3);
   @$pb.TagNumber(3)
-  $0.GComponent ensureAlternativeComponent() => $_ensure(2);
+  $5.GComponent ensureAlternativeComponent() => $_ensure(2);
 
   @$pb.TagNumber(4)
   $core.bool get alternativeComponentHasValue => $_getBF(3);
@@ -119,10 +119,10 @@ class GCategory extends $pb.GeneratedMessage {
   void clearAlternativeComponentHasValue() => clearField(4);
 
   @$pb.TagNumber(5)
-  $core.List<$0.GComponent> get otherComponents => $_getList(4);
+  $core.List<$5.GComponent> get otherComponents => $_getList(4);
 
   @$pb.TagNumber(6)
-  $core.List<$0.GComponent> get secondaryComponents => $_getList(5);
+  $core.List<$5.GComponent> get secondaryComponents => $_getList(5);
 
   @$pb.TagNumber(7)
   $core.bool get secondaryComponentsHasValue => $_getBF(6);
