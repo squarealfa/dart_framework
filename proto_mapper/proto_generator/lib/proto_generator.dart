@@ -20,5 +20,4 @@ Builder protoBuilder(BuilderOptions options) =>
         generatedExtension: '.proto', formatOutput: (code) => code);
 
 Builder protoServicesBuilder(BuilderOptions options) =>
-    LibraryBuilder(ProtoServicesGenerator(options),
-        generatedExtension: '.services.proto', formatOutput: (code) => code);
+    SharedPartBuilder([ProtoServicesGenerator(options)], 'proto_services');

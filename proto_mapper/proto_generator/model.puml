@@ -1,0 +1,93 @@
+@startuml
+
+
+package model {
+
+
+    class Area <<@proto>> {
+        String title
+    }
+    class Key <<@proto>> {
+        String key
+    }
+    class Criteria <<@proto>>
+
+    class GArea <<protoc_generated>> {
+        String title;
+    }
+
+    class GKey <<protoc_generated>> {
+        String key
+    }
+    
+    class GCriteria <<protoc_generated>>
+
+
+    interface ICrudServices<TEntity> {
+        Future<TEntity> create(TEntity entity);
+        Future<TEntity> update(TEntity entity);
+        Future<Empty> delete(Key key);
+        Future<TEntity> get(Key key);
+    }
+
+    interface AreaServicesBase <<@protoService>> {
+        Future<List<Area>> search(Criteria criteria);
+    }
+
+
+    AreaServicesBase --|> ICrudServices : "<<bind>> TEntity::Area"
+    AreaServicesBase ..> Area
+
+    class GAreaServiceBase <<protoc_generated>> {
+        GArea create(GArea);
+        GArea update(GArea);
+        void delete(GKey key);
+        Stream<GArea> search(GCriteria criteria);
+    }
+
+    GAreaServiceBase ..> GArea
+
+    class GAreaService <<generated>> {
+        AreaServiceFactory factory;
+        GAreaService(AreaServiceFactory factory);
+    }
+
+    class AreaServicesFactory <<(t, #AAAA77) typedef>> {
+        IAreaService Function(ServiceCall call)
+    }
+
+    GAreaService --|> GAreaServiceBase
+    GAreaService *--> AreaServicesBase
+    GAreaService *--> "1" AreaServicesFactory
+    note "Singleton" as note_singleton
+    GAreaService .u. note_singleton
+
+}
+
+package service
+{
+    class CrudServices<TEntity> {
+        TEntity create(TEntity entity);
+        TEntity update(TEntity entity);
+        void delete(Key key);
+    }
+
+    CrudServices -() ICrudServices
+
+    class AreaServices {
+        Stream<Area> search(Criteria criteria);
+    }
+
+    AreaServices --|> CrudServices
+    AreaServices -() AreaServicesBase
+
+
+    note "Instance per call" as note_instance
+    AreaServices .. note_instance
+    CrudServices .. note_instance
+
+}
+
+
+
+@enduml

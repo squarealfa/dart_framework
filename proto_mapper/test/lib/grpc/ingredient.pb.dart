@@ -9,7 +9,7 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'component.pb.dart' as $0;
+import 'component.pb.dart' as $5;
 
 class GIngredient extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GIngredient', createEmptyInstance: create)
@@ -17,11 +17,11 @@ class GIngredient extends $pb.GeneratedMessage {
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'quantity')
     ..a<$core.double>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'precision', $pb.PbFieldType.OD)
     ..a<$core.double>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'cookingDuration', $pb.PbFieldType.OD, protoName: 'cookingDuration')
-    ..aOM<$0.GComponent>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'mainComponent', protoName: 'mainComponent', subBuilder: $0.GComponent.create)
-    ..pc<$0.GComponent>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'otherComponents', $pb.PbFieldType.PM, protoName: 'otherComponents', subBuilder: $0.GComponent.create)
-    ..aOM<$0.GComponent>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'alternativeComponent', protoName: 'alternativeComponent', subBuilder: $0.GComponent.create)
+    ..aOM<$5.GComponent>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'mainComponent', protoName: 'mainComponent', subBuilder: $5.GComponent.create)
+    ..pc<$5.GComponent>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'otherComponents', $pb.PbFieldType.PM, protoName: 'otherComponents', subBuilder: $5.GComponent.create)
+    ..aOM<$5.GComponent>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'alternativeComponent', protoName: 'alternativeComponent', subBuilder: $5.GComponent.create)
     ..aOB(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'alternativeComponentHasValue', protoName: 'alternativeComponentHasValue')
-    ..pc<$0.GComponent>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'secondaryComponents', $pb.PbFieldType.PM, protoName: 'secondaryComponents', subBuilder: $0.GComponent.create)
+    ..pc<$5.GComponent>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'secondaryComponents', $pb.PbFieldType.PM, protoName: 'secondaryComponents', subBuilder: $5.GComponent.create)
     ..aOB(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'secondaryComponentsHasValue', protoName: 'secondaryComponentsHasValue')
     ..hasRequiredFields = false
   ;
@@ -32,11 +32,11 @@ class GIngredient extends $pb.GeneratedMessage {
     $core.String? quantity,
     $core.double? precision,
     $core.double? cookingDuration,
-    $0.GComponent? mainComponent,
-    $core.Iterable<$0.GComponent>? otherComponents,
-    $0.GComponent? alternativeComponent,
+    $5.GComponent? mainComponent,
+    $core.Iterable<$5.GComponent>? otherComponents,
+    $5.GComponent? alternativeComponent,
     $core.bool? alternativeComponentHasValue,
-    $core.Iterable<$0.GComponent>? secondaryComponents,
+    $core.Iterable<$5.GComponent>? secondaryComponents,
     $core.bool? secondaryComponentsHasValue,
   }) {
     final _result = create();
@@ -130,29 +130,29 @@ class GIngredient extends $pb.GeneratedMessage {
   void clearCookingDuration() => clearField(4);
 
   @$pb.TagNumber(5)
-  $0.GComponent get mainComponent => $_getN(4);
+  $5.GComponent get mainComponent => $_getN(4);
   @$pb.TagNumber(5)
-  set mainComponent($0.GComponent v) { setField(5, v); }
+  set mainComponent($5.GComponent v) { setField(5, v); }
   @$pb.TagNumber(5)
   $core.bool hasMainComponent() => $_has(4);
   @$pb.TagNumber(5)
   void clearMainComponent() => clearField(5);
   @$pb.TagNumber(5)
-  $0.GComponent ensureMainComponent() => $_ensure(4);
+  $5.GComponent ensureMainComponent() => $_ensure(4);
 
   @$pb.TagNumber(6)
-  $core.List<$0.GComponent> get otherComponents => $_getList(5);
+  $core.List<$5.GComponent> get otherComponents => $_getList(5);
 
   @$pb.TagNumber(7)
-  $0.GComponent get alternativeComponent => $_getN(6);
+  $5.GComponent get alternativeComponent => $_getN(6);
   @$pb.TagNumber(7)
-  set alternativeComponent($0.GComponent v) { setField(7, v); }
+  set alternativeComponent($5.GComponent v) { setField(7, v); }
   @$pb.TagNumber(7)
   $core.bool hasAlternativeComponent() => $_has(6);
   @$pb.TagNumber(7)
   void clearAlternativeComponent() => clearField(7);
   @$pb.TagNumber(7)
-  $0.GComponent ensureAlternativeComponent() => $_ensure(6);
+  $5.GComponent ensureAlternativeComponent() => $_ensure(6);
 
   @$pb.TagNumber(8)
   $core.bool get alternativeComponentHasValue => $_getBF(7);
@@ -164,7 +164,7 @@ class GIngredient extends $pb.GeneratedMessage {
   void clearAlternativeComponentHasValue() => clearField(8);
 
   @$pb.TagNumber(9)
-  $core.List<$0.GComponent> get secondaryComponents => $_getList(8);
+  $core.List<$5.GComponent> get secondaryComponents => $_getList(8);
 
   @$pb.TagNumber(10)
   $core.bool get secondaryComponentsHasValue => $_getBF(9);

@@ -1,18 +1,26 @@
 name: squarealfa_entity_adapter
-description: Provides the annotations and a facade to several SquareAlfa framework services that are required to expose PODOs via gRPC services
+description: Provides the annotations and a facade to several SquareAlfa
+  framework services that are required to expose PODOs via gRPC services
 homepage: https://github.com/squarealfa/dart_framework/tree/main/entity_adapter/entity_adapter
 repository: https://github.com/squarealfa/dart_framework/
 
 version: 1.0.1
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: ">=2.12.0 <3.0.0"
+
+publish_to: none
 
 dependencies:
-  squarealfa_entity_annotations: ^1.1.0
-  proto_annotations: ^1.1.4
-  map_mapper_annotations: ^1.2.0
-  defaults_provider_annotations: ^1.1.0
+  defaults_provider_annotations:
+    path: /home/ruicraveiro/sources/dart_framework/defaults_provider/defaults_provider_annotations
+  map_mapper_annotations:
+    path: /home/ruicraveiro/sources/dart_framework/map_mapper/map_mapper_annotations
+  proto_annotations:
+    path: ../../proto_mapper/proto_annotations
+  squarealfa_entity_annotations:
+    path: /home/ruicraveiro/sources/dart_framework/entity/entity_annotations
+  grpc: ^3.0.0
 
 dev_dependencies:
   pedantic: ^1.9.0

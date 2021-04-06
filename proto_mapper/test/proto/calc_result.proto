@@ -11,12 +11,13 @@ syntax = "proto3";
 
 
 
-message GEmpty
+message GCalcResult
 {
+  int32 result = 1;
 
 }   
 
-message GListOfEmpty
+message GListOfCalcResult
 {
-  repeated GEmpty items = 1;
+  repeated GCalcResult items = 1;
 }

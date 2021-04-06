@@ -19,6 +19,7 @@ builders:
   proto_services_generator:
     import: "package:proto_generator/proto_generator.dart"
     builder_factories: ["protoServicesBuilder"]
-    build_extensions: {".dart": [".services.proto"]}
+    build_extensions: {".dart": ["proto_services.g.part"]}
     auto_apply: dependents
-    build_to: source
+    build_to: cache
+    applies_builders: ["source_gen|combining_builder"]

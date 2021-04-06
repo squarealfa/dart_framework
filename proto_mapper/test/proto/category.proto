@@ -11,6 +11,7 @@ import 'component.proto';
 
 
 
+
 message GCategory
 {
   string title = 1;

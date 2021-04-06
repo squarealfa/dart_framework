@@ -78,6 +78,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.1.12"
+  build_test:
+    dependency: transitive
+    description:
+      name: build_test
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
   build_verify:
     dependency: "direct dev"
     description:
@@ -155,6 +162,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.0"
+  csslib:
+    dependency: transitive
+    description:
+      name: csslib
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.17.0"
   dart_style:
     dependency: transitive
     description:
@@ -197,6 +211,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
+  html:
+    dependency: transitive
+    description:
+      name: html
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.15.0"
   http_multi_server:
     dependency: transitive
     description:
@@ -382,10 +403,10 @@ packages:
   squarealfa_entity_annotations:
     dependency: transitive
     description:
-      name: squarealfa_entity_annotations
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.1.0"
+      path: "../entity_annotations"
+      relative: true
+    source: path
+    version: "1.1.2"
   squarealfa_entity_generator:
     dependency: "direct main"
     description:
