@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:arango_driver/arango_driver.dart';
+import 'package:squarealfa_security/squarealfa_security.dart';
 import 'package:nosql_repository/nosql_repository.dart';
 import 'package:tuple/tuple.dart';
 

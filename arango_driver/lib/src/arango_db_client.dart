@@ -60,6 +60,60 @@ class ArangoDBClient {
     _connect();
   }
 
+  factory ArangoDBClient.fromConnectionString(String connectionString) {
+    var scheme = 'http';
+    var host = 'localhost';
+    var port = 8529;
+    var db = '_system';
+    var user = '';
+    var pass = '';
+
+    final parts = connectionString.split(';');
+
+    for (final part in parts) {
+      final subParts = part.split('=');
+      if (part.length != 2) {
+        continue;
+      }
+      final name = subParts[0];
+      final value = subParts[1];
+      switch (name) {
+        case 'scheme':
+          scheme = value;
+          break;
+        case 'server':
+        case 'hostname':
+        case 'host':
+          host = value;
+          break;
+        case 'port':
+          port = int.tryParse(value) ?? 8529;
+          break;
+        case 'database':
+        case 'db':
+          db = value;
+          break;
+        case 'user':
+        case 'username':
+          user = value;
+          break;
+        case 'pass':
+        case 'password':
+          pass = value;
+          break;
+      }
+    }
+    final ret = ArangoDBClient(
+      scheme: scheme,
+      host: host,
+      port: port,
+      db: db,
+      user: user,
+      pass: pass,
+    );
+    return ret;
+  }
+
   void _connect() {
     credentials = HttpClientBasicCredentials(user, pass);
     httpClient = HttpClient();

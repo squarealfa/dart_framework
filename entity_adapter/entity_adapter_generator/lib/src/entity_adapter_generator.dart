@@ -26,7 +26,6 @@ class EntityAdapterGenerator extends GeneratorForAnnotation<EntityAdapted> {
     }
 
     var className = classElement.name;
-    var protoClassName = 'G$className';
 
     var ret = '''
 
@@ -52,12 +51,9 @@ class ${className}Permissions extends EntityPermissions {
 }
 
 
-class ${className}EntityAdapter implements EntityAdapter<$className, $protoClassName> {
+class ${className}EntityAdapter implements EntityAdapter<$className> {
   @override
   final MapMapper<$className> mapMapper = ${className}MapMapper();
-
-  @override
-  final ProtoMapper<$className, $protoClassName> protoMapper = ${className}ProtoMapper();
 
   @override
   final Validator validator = ${className}Validator();

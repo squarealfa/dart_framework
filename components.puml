@@ -1,0 +1,121 @@
+@startuml
+
+package model {
+    component service_bases {
+
+    }
+
+    component entities {
+        
+    }
+
+    service_bases --> entities
+}
+
+
+node host {
+    package server {
+        component business_services {
+        }
+
+        component token_services {
+
+        }
+    }
+
+    package grpc_host {
+        component crud_services {
+
+        }
+
+        component entity_services {
+
+        }
+
+        component principal {
+
+        }
+    }
+
+    server --> grpc_host
+
+    package nosql_repository {
+        component repository {
+
+        }
+    }
+
+    package security_repository {
+        component user_repository {
+
+        }
+
+        repository <|-- user_repository
+    }
+
+    grpc_host --> security_repository
+    'user_repository --|> repository
+
+    package squarealfa_security {
+        component JsonWebTokenHandler {
+
+        }
+    }
+
+    security_repository --> squarealfa_security
+
+    package arango_repository {
+        component arangodb_repository {
+
+        }
+    }
+
+    package arango_security_repository {
+        component arango_user_repository {
+
+        }
+
+        user_repository <|.. arango_user_repository 
+        arangodb_repository <|-- arango_user_repository
+    }
+
+    grpc_host --> nosql_repository
+    grpc_host --> squarealfa_security
+    business_services --|> service_bases
+    repository <|.. arangodb_repository
+}
+
+server --> model
+
+node dart_client {
+    component client_app {
+    }
+}
+
+
+node third_grpc_client {
+
+}
+
+
+
+cloud grpc {
+}
+
+client_app --> model 
+
+client_app --> grpc
+third_grpc_client --> grpc 
+grpc --> server
+
+
+database Arangodb {
+
+}
+
+arango_repository --> Arangodb
+
+note top of dart_client : Flutter, Dart CLI (including daemons and docker)
+note top of third_grpc_client : .Net, Java, C++, Python or any other gRPC client
+
+@enduml

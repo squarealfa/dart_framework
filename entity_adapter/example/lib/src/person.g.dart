@@ -92,12 +92,9 @@ class PersonPermissions extends EntityPermissions {
   String get update => 'updatePerson';
 }
 
-class PersonEntityAdapter implements EntityAdapter<Person, GPerson> {
+class PersonEntityAdapter implements EntityAdapter<Person> {
   @override
   final MapMapper<Person> mapMapper = PersonMapMapper();
-
-  @override
-  final ProtoMapper<Person, GPerson> protoMapper = PersonProtoMapper();
 
   @override
   final Validator validator = PersonValidator();

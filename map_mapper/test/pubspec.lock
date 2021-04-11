@@ -263,10 +263,10 @@ packages:
   map_mapper_annotations:
     dependency: transitive
     description:
-      name: map_mapper_annotations
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.2.0"
+      path: "/home/ruicraveiro/sources/dart_framework/map_mapper/map_mapper_annotations"
+      relative: false
+    source: path
+    version: "1.2.1"
   map_mapper_generator:
     dependency: "direct main"
     description:

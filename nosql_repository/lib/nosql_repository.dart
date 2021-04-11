@@ -17,7 +17,6 @@ library repository;
 export 'src/db_exception.dart';
 export 'src/db_principal.dart';
 export 'src/errors/not_found.dart';
-export 'src/errors/unauthorized.dart';
 export 'src/expressions/expressions.dart';
 export 'src/orderby.dart';
 export 'src/policy/create_policy.dart';

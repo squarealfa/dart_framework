@@ -547,6 +547,26 @@ void main() {
       expect(afterCount, count - 1);
     });
 
+    var testDbClientWithConnectionString = ArangoDBClient(
+        scheme: sch,
+        host: h,
+        port: p,
+        db: testDb,
+        user: u,
+        pass: ps,
+        realm: realm);
+
+    test('get collection info from connection created with connectionstring',
+        () async {
+      var answer =
+          await testDbClientWithConnectionString.collectionInfo(testCollection);
+      if (answer.result.error) {
+        print(answer);
+      }
+      expect(answer.result.error, false);
+      expect(answer.collectionInfo.name, testCollection);
+    });
+
     test('drop collection', () async {
       var answer = await testDbClient.dropCollection(testCollection);
       if (answer.result.error) {
