@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:grpc/grpc.dart';
+import 'package:grpc_host/grpc_host.dart';
 import 'package:security_repository/security_repository.dart';
 import 'package:squarealfa_security/squarealfa_security.dart';
 
@@ -37,7 +38,7 @@ extension AuthenticationExtensions on ServiceCall {
   }
 
   Future authenticate(
-    JsonWebTokenHandler tokenHandler,
+    TokenServicesParameters tokenServicesParameters,
     UserRepository userRepository,
   ) async {
     Principal? local_principal;
@@ -48,7 +49,7 @@ extension AuthenticationExtensions on ServiceCall {
         _extra.principal = null;
         return;
       }
-      var payload = tokenHandler.load(token);
+      var payload = tokenServicesParameters.tokenHandler.load(token);
       _extra.jwtPayload = payload;
       local_principal = await _createPrincipal(
         payload,

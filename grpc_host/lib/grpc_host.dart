@@ -1,4 +1,4 @@
-export 'src/configuration/app_settings.dart';
+export 'src/configuration/configuration.dart';
 export 'src/host.dart';
 export 'src/host_parameters.dart';
 export 'src/security/security.dart';

@@ -4,7 +4,7 @@ import 'package:grpc_host/grpc_host.dart';
 
 class HostParameters {
   final SendPort sendPort;
-  final AppSettings appSettings;
+  final HostSettings hostSettings;
 
-  const HostParameters(this.sendPort, this.appSettings);
+  const HostParameters(this.sendPort, this.hostSettings);
 }
