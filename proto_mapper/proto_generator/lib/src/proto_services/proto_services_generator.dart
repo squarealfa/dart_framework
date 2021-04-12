@@ -46,6 +46,7 @@ class ProtoServicesGenerator extends GeneratorForAnnotation<ProtoServices> {
 
     for (var methodDescriptor in methodDescriptors) {
       final methodName = methodDescriptor.name;
+      final asnc = methodDescriptor.returnTypeIsFuture ? 'await' : '';
       final parameterType = _getTypeName(methodDescriptor.parameterType);
       final gParameterType =
           _getPrefixedTypeName(methodDescriptor.parameterType);
@@ -59,7 +60,7 @@ class ProtoServicesGenerator extends GeneratorForAnnotation<ProtoServices> {
     final service = createService(call);
 
     final entity = request.to$parameterType();
-    final result = await service.$methodName(entity);
+    final result = $asnc service.$methodName(entity);
     $resultLine
     return protoResult;
   }

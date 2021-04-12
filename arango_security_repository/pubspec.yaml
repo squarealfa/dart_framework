@@ -1,0 +1,19 @@
+name: arango_security_repository
+description: A starting point for Dart libraries or applications.
+# version: 1.0.0
+# homepage: https://www.example.com
+
+environment:
+  sdk: '>=2.12.0 <3.0.0'
+
+dependencies:
+  arango_driver: #^1.0.2
+    path: /home/ruicraveiro/sources/dart_framework/arango_driver
+  security_repository:
+    path: ../security_repository
+  nosql_repository: #^1.0.0
+    path: /home/ruicraveiro/sources/dart_framework/nosql_repository
+
+dev_dependencies:
+  pedantic: ^1.9.0
+  test: ^1.14.4

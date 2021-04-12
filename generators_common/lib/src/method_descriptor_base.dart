@@ -15,6 +15,9 @@ class MethodDescriptorBase {
   /// Returns the type of the field element
   DartType get returnType => methodElement.returnType;
 
+  bool get returnTypeIsFuture =>
+      returnType.isDartAsyncFuture || returnType.isDartAsyncFutureOr;
+
   /// Returns the name of the type of the field element
   String get returnTypeName =>
       returnType.getDisplayString(withNullability: false);
@@ -30,7 +33,6 @@ class MethodDescriptorBase {
       parameterType.isDartCoreList && parameterType is ParameterizedType
           ? (parameterType as ParameterizedType).typeArguments.first
           : null;
-  
 
   /// Returns the list element type when the field is a list and
   /// returns the field element when otherwise
