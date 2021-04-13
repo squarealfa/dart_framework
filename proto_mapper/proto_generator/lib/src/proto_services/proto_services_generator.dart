@@ -95,8 +95,20 @@ typedef ${serviceClassName}Factory = $className Function(ServiceCall call);
 class $_prefix$serviceClassName extends $_prefix${serviceClassName}Base
 {
   final ${serviceClassName}Factory factory;
+  final void Function(ServiceCall call)? onMetadataHandler;
 
-  $_prefix$serviceClassName(this.factory);
+  $_prefix$serviceClassName(
+    this.factory, [
+    this.onMetadataHandler,
+  ]);
+
+    @override
+  void \$onMetadata(ServiceCall call) {
+    if (onMetadataHandler != null) {
+      onMetadataHandler!(call);
+    }
+  }
+
 
   $className createService(ServiceCall call) {
     final ret = factory(call);

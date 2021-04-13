@@ -5,4 +5,5 @@ library proto_mapper_annotations;
 export 'package:fixnum/fixnum.dart';
 
 export 'src/annotations.dart';
+export 'src/g_service_parameters.dart';
 export 'src/proto_mapper.dart';

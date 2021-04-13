@@ -63,3 +63,10 @@ extension AuthenticationExtensions on ServiceCall {
     return;
   }
 }
+
+void authenticateCalls(ServiceCall context) {
+  var principal = context.principal;
+  if (!principal.isAuthenticated) {
+    throw GrpcError.unauthenticated();
+  }
+}
