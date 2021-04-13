@@ -2,7 +2,6 @@ import 'dart:isolate';
 
 import 'package:grpc/grpc.dart';
 import 'package:grpc_host/grpc_host.dart';
-import 'package:nosql_repository/nosql_repository.dart';
 import 'package:security_repository/security_repository.dart';
 import 'package:squarealfa_security/squarealfa_security.dart';
 
@@ -11,15 +10,14 @@ abstract class ServicesHost {
   final HostSettings hostSettings;
   ServicesHost(this.parameters) : hostSettings = parameters.hostSettings;
 
-  ServiceCollection getServiceCollection(
-    CreateRepositoryFunction createRepository,
-    TokenServicesParameters tokenServicesParameters,
-  );
+  Container get container => Container();
 
-  Map<Type, String> get collectionMap;
+  List<Service> get services;
+
   Future init();
   UserRepository createUserRepository();
-  Repository<TEntity> createRepository<TEntity>();
+
+  Future registerContainedDependencies() async {}
 
   Future run() async {
     await init();
@@ -33,9 +31,9 @@ abstract class ServicesHost {
       tokenAudience: tokenSettings.audience,
     );
 
-    final serviceCollection = getServiceCollection(createRepository, tsp);
+    Container().registerInstance<TokenServicesParameters>(tsp);
 
-    final services = serviceCollection.services;
+    await registerContainedDependencies();
 
     var server = Server([
       ...services,
