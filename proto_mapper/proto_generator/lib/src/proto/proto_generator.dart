@@ -67,7 +67,9 @@ class ProtoGenerator extends GeneratorForAnnotation<Proto> {
     final className = classElement.name;
     final serviceClassName = className.endsWith('Base')
         ? className.substring(0, className.length - 4)
-        : className;
+        : className.endsWith('Interface')
+            ? className.substring(0, className.length - 'Interface'.length)
+            : className;
 
     final messages = fieldDeclarations == '' && methodDeclarations != ''
         ? ''

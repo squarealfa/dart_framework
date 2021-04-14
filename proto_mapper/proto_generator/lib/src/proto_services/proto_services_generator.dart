@@ -23,15 +23,20 @@ class ProtoServicesGenerator extends GeneratorForAnnotation<ProtoServices> {
       Element element, ConstantReader reader, BuildStep buildStep) {
     var annotation = _hydrateAnnotation(reader, prefix: _prefix);
 
-    var classElement = element.asClassElement();
-    var packageName = annotation.packageName != '' ? '' : _defaultPackage;
+    final classElement = element.asClassElement();
+    final packageName = annotation.packageName != '' ? '' : _defaultPackage;
 
     final packageDeclaration = packageName != '' ? 'package $packageName;' : '';
+    final withAuthenticator = annotation.withAuthenticator;
 
     var methodDescriptors = _getMethodDescriptors(classElement, annotation);
 
-    var ret =
-        _generateForClass(classElement, methodDescriptors, packageDeclaration);
+    var ret = _generateForClass(
+      classElement,
+      methodDescriptors,
+      packageDeclaration,
+      withAuthenticator,
+    );
 
     return ret;
   }
@@ -40,9 +45,10 @@ class ProtoServicesGenerator extends GeneratorForAnnotation<ProtoServices> {
     ClassElement classElement,
     Iterable<MethodDescriptor> methodDescriptors,
     String packageDeclaration,
+    bool withAuthenticator,
   ) {
-    var methodBuffer = StringBuffer();
-    var externalProtoNames = <String>[];
+    final methodBuffer = StringBuffer();
+    final externalProtoNames = <String>[];
 
     for (var methodDescriptor in methodDescriptors) {
       final methodName = methodDescriptor.name;
@@ -57,7 +63,7 @@ class ProtoServicesGenerator extends GeneratorForAnnotation<ProtoServices> {
 
       methodBuffer.writeln('''
   @override Future<$gReturnType> $methodName(ServiceCall call, $gParameterType request,) async {
-    final service = createService(call);
+    final service = \$serviceFactory(call);
 
     final entity = request.to$parameterType();
     final result = $asnc service.$methodName(entity);
@@ -83,8 +89,10 @@ class ProtoServicesGenerator extends GeneratorForAnnotation<ProtoServices> {
 
     final className = classElement.name;
     final serviceClassName = className.endsWith('Base')
-        ? className.substring(0, className.length - 4)
-        : className;
+        ? className.substring(0, className.length - 'Base'.length)
+        : className.endsWith('Interface')
+            ? className.substring(0, className.length - 'Interface'.length)
+            : className;
 
     var ret = '''
 
@@ -94,26 +102,22 @@ typedef ${serviceClassName}Factory = $className Function(ServiceCall call);
 
 class $_prefix$serviceClassName extends $_prefix${serviceClassName}Base
 {
-  final ${serviceClassName}Factory factory;
-  final void Function(ServiceCall call)? onMetadataHandler;
+  final ${serviceClassName}Factory \$serviceFactory;
+  ${withAuthenticator ? 'final void Function(ServiceCall call) \$authenticator;' : ''}
+  
 
   $_prefix$serviceClassName(
-    this.factory, [
-    this.onMetadataHandler,
-  ]);
+    this.\$serviceFactory,
+    ${withAuthenticator ? 'this.\$authenticator,' : ''}
+  );
 
+  ${withAuthenticator ? '''
     @override
-  void \$onMetadata(ServiceCall call) {
-    if (onMetadataHandler != null) {
-      onMetadataHandler!(call);
-    }
-  }
+    void \$onMetadata(ServiceCall call) {
+        \$authenticator(call);
+    }  
+  ''' : ''}
 
-
-  $className createService(ServiceCall call) {
-    final ret = factory(call);
-    return ret;
-  }
 
   $methodBuffer
 } 
@@ -170,6 +174,7 @@ ProtoServices _hydrateAnnotation(ConstantReader reader, {String prefix = ''}) {
   var ret = ProtoServices(
     prefix: reader.read('prefix').literalValue as String? ?? prefix,
     packageName: reader.read('packageName').literalValue as String? ?? '',
+    withAuthenticator: reader.read('withAuthenticator').literalValue as bool,
   );
 
   return ret;
