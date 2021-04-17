@@ -6,7 +6,9 @@ part 'category.g.dart';
 
 @mapMap
 class Category {
+  final String id;
   final String title;
+  final String mainComponentId;
   final Component mainComponent;
   final Component? alternativeComponent;
   final List<Component> otherComponents;
@@ -18,5 +20,7 @@ class Category {
     required this.otherComponents,
     this.alternativeComponent,
     this.secondaryComponents,
+    this.id = '',
+    this.mainComponentId = '',
   });
 }

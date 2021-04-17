@@ -20,7 +20,9 @@ class CategoryMapMapper extends MapMapper<Category> {
     final $kh = keyHandler ?? KeyHandler.fromDefault();
 
     return Category(
+      id: $kh.keyFromMap(map, 'id'),
       title: map['title'] as String,
+      mainComponentId: $kh.keyFromMap(map, 'mainComponentId'),
       mainComponent: ComponentMapMapper().fromMap(map['mainComponent'], $kh),
       alternativeComponent: (map['alternativeComponent'] != null
           ? ComponentMapMapper().fromMap(map['alternativeComponent'], $kh)
@@ -42,7 +44,9 @@ class CategoryMapMapper extends MapMapper<Category> {
     final $kh = keyHandler ?? KeyHandler.fromDefault();
     final map = <String, dynamic>{};
 
+    $kh.keyToMap(map, instance.id, 'id');
     map['title'] = instance.title;
+    $kh.keyToMap(map, instance.mainComponentId, 'mainComponentId');
     map['mainComponent'] =
         ComponentMapMapper().toMap(instance.mainComponent, $kh);
     map['alternativeComponent'] = (instance.alternativeComponent == null

@@ -11,7 +11,7 @@ class KeyFieldCodeGenerator extends FieldCodeGenerator {
 
   @override
   String get toMapMap =>
-      '''\$kh.keyToMap(map, instance.$fieldName ${fieldDescriptor.isNullable ? '?? \'\' ' : ''});''';
+      '''\$kh.keyToMap(map, instance.$fieldName ${fieldDescriptor.isNullable ? '?? \'\' ' : ''}, \'$fieldName\');''';
 
   @override
   String fromMapExpression(String sourceExpression) =>

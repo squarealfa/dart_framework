@@ -20,10 +20,12 @@ class IngredientMapMapper extends MapMapper<Ingredient> {
     final $kh = keyHandler ?? KeyHandler.fromDefault();
 
     return Ingredient(
+      key: $kh.keyFromMap(map, 'key'),
       description: map['description'] as String,
       quantity: Decimal.parse(map['quantity']),
       precision: map['precision'] as double,
       cookingDuration: Duration(milliseconds: map['cookingDuration']),
+      mainComponentKey: $kh.keyFromMap(map, 'mainComponentKey'),
       mainComponent: ComponentMapMapper().fromMap(map['mainComponent'], $kh),
       otherComponents: List<Component>.from(map['otherComponents']
           .map((e) => ComponentMapMapper().fromMap(e, $kh))),
@@ -45,10 +47,12 @@ class IngredientMapMapper extends MapMapper<Ingredient> {
     final $kh = keyHandler ?? KeyHandler.fromDefault();
     final map = <String, dynamic>{};
 
+    $kh.keyToMap(map, instance.key, 'key');
     map['description'] = instance.description;
     map['quantity'] = instance.quantity.toString();
     map['precision'] = instance.precision;
     map['cookingDuration'] = instance.cookingDuration.inMilliseconds;
+    $kh.keyToMap(map, instance.mainComponentKey, 'mainComponentKey');
     map['mainComponent'] =
         ComponentMapMapper().toMap(instance.mainComponent, $kh);
     map['otherComponents'] = instance.otherComponents

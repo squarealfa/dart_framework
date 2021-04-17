@@ -1,5 +1,6 @@
 import 'package:decimal/decimal.dart';
 import 'package:map_mapper_generator_test/map_mapper_generator_test.dart';
+import 'package:mongo_dart/mongo_dart.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -222,6 +223,62 @@ void main() {
       expect(recipe2.extraTags!.last, recipe2.extraTags!.last);
     });
   });
+
+  group('keyhandler tests', () {
+    test('mongo key handler', () {
+      final recipe = _scrambledEggsRecipe();
+      final mkh = MongoKeyHandler();
+      final mongoMap = recipe.toMap(mkh);
+
+      final mrecipe = mongoMap.toRecipe(mkh);
+
+      expect(mrecipe.key, recipe.key);
+      expect(mrecipe.categoryKey, recipe.categoryKey);
+      expect(mrecipe.category.id, recipe.category.id);
+      expect(mrecipe.category.mainComponentId, recipe.category.mainComponentId);
+      expect(mrecipe.ingredients.first.key, recipe.ingredients.first.key);
+      expect(mrecipe.ingredients.first.mainComponentKey,
+          recipe.ingredients.first.mainComponentKey);
+
+      expect(mongoMap['_id'], ObjectId.fromHexString(recipe.key));
+      expect(
+          mongoMap['categoryId'], ObjectId.fromHexString(recipe.categoryKey));
+      expect(mongoMap['category']['_id'],
+          ObjectId.fromHexString(recipe.category.id));
+      expect(mongoMap['category']['mainComponentId'],
+          ObjectId.fromHexString(recipe.category.mainComponentId));
+
+      expect(mongoMap['ingredients'][0]['_id'],
+          ObjectId.fromHexString(recipe.ingredients.first.key));
+      expect(mongoMap['ingredients'][0]['mainComponentId'],
+          ObjectId.fromHexString(recipe.ingredients.first.mainComponentKey));
+    });
+
+    test('default key handler', () {
+      final recipe = _scrambledEggsRecipe();
+      final map = recipe.toMap();
+
+      final drecipe = map.toRecipe();
+
+      expect(drecipe.key, recipe.key);
+      expect(drecipe.categoryKey, recipe.categoryKey);
+      expect(drecipe.category.id, recipe.category.id);
+      expect(drecipe.category.mainComponentId, recipe.category.mainComponentId);
+      expect(drecipe.ingredients.first.key, recipe.ingredients.first.key);
+      expect(drecipe.ingredients.first.mainComponentKey,
+          recipe.ingredients.first.mainComponentKey);
+
+      expect(map['_key'], recipe.key);
+      expect(map['categoryKey'], recipe.categoryKey);
+      expect(map['category']['id'], recipe.category.id);
+      expect(map['category']['mainComponentId'],
+          recipe.category.mainComponentId);
+
+      expect(map['ingredients'][0]['_key'], recipe.ingredients.first.key);
+      expect(map['ingredients'][0]['mainComponentKey'],
+          recipe.ingredients.first.mainComponentKey);
+    });
+  });
 }
 
 Category _eggsCategory({
@@ -229,6 +286,8 @@ Category _eggsCategory({
   List<Component>? secondaryComponents,
 }) =>
     Category(
+      id: ObjectId.fromSeconds(4343433).toHexString(),
+      mainComponentId: ObjectId.fromSeconds(87633323).toHexString(),
       title: 'eggs',
       mainComponent: Component(
         description: 'category component',
@@ -257,15 +316,19 @@ Recipe _scrambledEggsRecipe({
         alternativeComponent: categoryAlternativeComponent,
         secondaryComponents: categorySecondaryComponents,
       ),
-      categoryKey: '5334',
+      key: ObjectId.fromSeconds(5653323465).toHexString(),
+      categoryKey: ObjectId.fromSeconds(576653323).toHexString(),
+      secondaryCategoryKey: ObjectId.fromSeconds(5653323465).toHexString(),
       publishDate: DateTime(2021, 02, 05, 13, 15, 12),
       expiryDate: expiryDate,
       ingredients: [
         Ingredient(
+          key: ObjectId.fromSeconds(73323465).toHexString(),
           description: '',
           quantity: Decimal.fromInt(0),
           precision: 1202.067843212219876,
           cookingDuration: Duration(),
+          mainComponentKey: ObjectId.fromSeconds(656434).toHexString(),
           mainComponent: Component(
             description: 'ingredient component',
           ),

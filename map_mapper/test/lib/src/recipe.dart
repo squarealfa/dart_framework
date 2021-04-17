@@ -7,6 +7,7 @@ part 'recipe.g.dart';
 
 @mapMap
 class Recipe {
+  final String key;
   final String title;
   final String? description;
   final String categoryKey;
@@ -27,6 +28,7 @@ class Recipe {
   final List<String>? extraTags;
 
   Recipe({
+    this.key = '',
     required this.title,
     required this.category,
     required this.categoryKey,

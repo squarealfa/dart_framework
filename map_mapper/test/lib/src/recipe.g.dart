@@ -20,6 +20,7 @@ class RecipeMapMapper extends MapMapper<Recipe> {
     final $kh = keyHandler ?? KeyHandler.fromDefault();
 
     return Recipe(
+      key: $kh.keyFromMap(map, 'key'),
       title: map['title'] as String,
       description: map['description'] as String?,
       categoryKey: $kh.keyFromMap(map, 'categoryKey'),
@@ -56,10 +57,12 @@ class RecipeMapMapper extends MapMapper<Recipe> {
     final $kh = keyHandler ?? KeyHandler.fromDefault();
     final map = <String, dynamic>{};
 
+    $kh.keyToMap(map, instance.key, 'key');
     map['title'] = instance.title;
     map['description'] = instance.description;
-    $kh.keyToMap(map, instance.categoryKey);
-    $kh.keyToMap(map, instance.secondaryCategoryKey ?? '');
+    $kh.keyToMap(map, instance.categoryKey, 'categoryKey');
+    $kh.keyToMap(
+        map, instance.secondaryCategoryKey ?? '', 'secondaryCategoryKey');
     map['category'] = CategoryMapMapper().toMap(instance.category, $kh);
     map['ingredients'] = instance.ingredients
         .map((e) => IngredientMapMapper().toMap(e, $kh))

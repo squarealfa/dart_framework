@@ -22,7 +22,6 @@ class DefaultKeyHandler extends KeyHandler {
   String _fieldNameToMapKey(String fieldName) {
     switch (fieldName) {
       case '':
-      case 'id':
       case 'key':
         return '_key';
       default:

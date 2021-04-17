@@ -6,11 +6,13 @@ part 'ingredient.g.dart';
 
 @mapMap
 class Ingredient {
+  final String key;
   final String description;
   final Decimal quantity;
   final double precision;
   final Duration cookingDuration;
 
+  final String mainComponentKey;
   final Component mainComponent;
   final List<Component> otherComponents;
   final Component? alternativeComponent;
@@ -25,5 +27,7 @@ class Ingredient {
     required this.otherComponents,
     this.alternativeComponent,
     this.secondaryComponents,
+    this.key = '',
+    this.mainComponentKey = '',
   });
 }
