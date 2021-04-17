@@ -10,9 +10,15 @@ syntax = "proto3";
 
 
 
+
 message GAsset
 {
   string description = 1;
   string value = 2;
 
+}   
+
+message GListOfAsset
+{
+  repeated GAsset items = 1;
 }

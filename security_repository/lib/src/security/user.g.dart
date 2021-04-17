@@ -49,10 +49,15 @@ class UserMapMapper extends MapMapper<User> {
   factory UserMapMapper() => _singleton;
 
   @override
-  User fromMap(Map<String, dynamic> map) {
+  User fromMap(
+    Map<String, dynamic> map, [
+    KeyHandler? keyHandler,
+  ]) {
+    final $kh = keyHandler ?? KeyHandler.fromDefault();
+
     return User(
-      key: map['key'] as String,
-      meta: MetaMapMapper().fromMap(map['meta']),
+      key: $kh.keyFromMap(map, 'key'),
+      meta: MetaMapMapper().fromMap(map['meta'], $kh),
       creationDate: DateTime.parse(map['creationDate']),
       emailAddress: map['emailAddress'] as String,
       friendlyName: map['friendlyName'] as String,
@@ -62,17 +67,21 @@ class UserMapMapper extends MapMapper<User> {
       numberOfFailedAttempts: map['numberOfFailedAttempts'] as int,
       roles: List<String>.from(map['roles']),
       cache: (map['cache'] != null
-          ? UserCacheMapMapper().fromMap(map['cache'])
+          ? UserCacheMapMapper().fromMap(map['cache'], $kh)
           : null),
     );
   }
 
   @override
-  Map<String, dynamic> toMap(User instance) {
+  Map<String, dynamic> toMap(
+    User instance, [
+    KeyHandler? keyHandler,
+  ]) {
+    final $kh = keyHandler ?? KeyHandler.fromDefault();
     final map = <String, dynamic>{};
 
-    map['key'] = instance.key;
-    map['meta'] = MetaMapMapper().toMap(instance.meta);
+    $kh.keyToMap(map, instance.key);
+    map['meta'] = MetaMapMapper().toMap(instance.meta, $kh);
     map['creationDate'] = instance.creationDate.toIso8601String();
     map['emailAddress'] = instance.emailAddress;
     map['friendlyName'] = instance.friendlyName;
@@ -84,17 +93,20 @@ class UserMapMapper extends MapMapper<User> {
     ;
     map['cache'] = (instance.cache == null
         ? null
-        : UserCacheMapMapper().toMap(instance.cache!));
+        : UserCacheMapMapper().toMap(instance.cache!, $kh));
 
     return map;
   }
 }
 
 extension UserMapExtension on User {
-  Map<String, dynamic> toMap() => UserMapMapper().toMap(this);
-  static User fromMap(Map<String, dynamic> map) => UserMapMapper().fromMap(map);
+  Map<String, dynamic> toMap([KeyHandler? keyHandler]) =>
+      UserMapMapper().toMap(this, keyHandler);
+  static User fromMap(Map<String, dynamic> map, [KeyHandler? keyHandler]) =>
+      UserMapMapper().fromMap(map, keyHandler);
 }
 
 extension MapUserExtension on Map<String, dynamic> {
-  User toUser() => UserMapMapper().fromMap(this);
+  User toUser([KeyHandler? keyHandler]) =>
+      UserMapMapper().fromMap(this, keyHandler);
 }

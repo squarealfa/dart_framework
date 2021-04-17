@@ -19,3 +19,13 @@ const GPerson$json = const {
 
 /// Descriptor for `GPerson`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List gPersonDescriptor = $convert.base64Decode('CgdHUGVyc29uEh8KBmFzc2V0cxgBIAMoCzIHLkdBc3NldFIGYXNzZXRzEhIKBG5hbWUYAiABKAlSBG5hbWU=');
+@$core.Deprecated('Use gListOfPersonDescriptor instead')
+const GListOfPerson$json = const {
+  '1': 'GListOfPerson',
+  '2': const [
+    const {'1': 'items', '3': 1, '4': 3, '5': 11, '6': '.GPerson', '10': 'items'},
+  ],
+};
+
+/// Descriptor for `GListOfPerson`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List gListOfPersonDescriptor = $convert.base64Decode('Cg1HTGlzdE9mUGVyc29uEh4KBWl0ZW1zGAEgAygLMgguR1BlcnNvblIFaXRlbXM=');

@@ -20,3 +20,13 @@ const GRecipe$json = const {
 
 /// Descriptor for `GRecipe`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List gRecipeDescriptor = $convert.base64Decode('CgdHUmVjaXBlEhQKBXRpdGxlGAEgASgJUgV0aXRsZRIgCgtkZXNjcmlwdGlvbhgCIAEoCVILZGVzY3JpcHRpb24SMAoTZGVzY3JpcHRpb25IYXNWYWx1ZRgDIAEoCFITZGVzY3JpcHRpb25IYXNWYWx1ZQ==');
+@$core.Deprecated('Use gListOfRecipeDescriptor instead')
+const GListOfRecipe$json = const {
+  '1': 'GListOfRecipe',
+  '2': const [
+    const {'1': 'items', '3': 1, '4': 3, '5': 11, '6': '.GRecipe', '10': 'items'},
+  ],
+};
+
+/// Descriptor for `GListOfRecipe`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List gListOfRecipeDescriptor = $convert.base64Decode('Cg1HTGlzdE9mUmVjaXBlEh4KBWl0ZW1zGAEgAygLMgguR1JlY2lwZVIFaXRlbXM=');

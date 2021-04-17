@@ -66,3 +66,44 @@ class GPerson extends $pb.GeneratedMessage {
   void clearName() => clearField(2);
 }
 
+class GListOfPerson extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GListOfPerson', createEmptyInstance: create)
+    ..pc<GPerson>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'items', $pb.PbFieldType.PM, subBuilder: GPerson.create)
+    ..hasRequiredFields = false
+  ;
+
+  GListOfPerson._() : super();
+  factory GListOfPerson({
+    $core.Iterable<GPerson>? items,
+  }) {
+    final _result = create();
+    if (items != null) {
+      _result.items.addAll(items);
+    }
+    return _result;
+  }
+  factory GListOfPerson.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GListOfPerson.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  GListOfPerson clone() => GListOfPerson()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GListOfPerson copyWith(void Function(GListOfPerson) updates) => super.copyWith((message) => updates(message as GListOfPerson)) as GListOfPerson; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GListOfPerson create() => GListOfPerson._();
+  GListOfPerson createEmptyInstance() => create();
+  static $pb.PbList<GListOfPerson> createRepeated() => $pb.PbList<GListOfPerson>();
+  @$core.pragma('dart2js:noInline')
+  static GListOfPerson getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GListOfPerson>(create);
+  static GListOfPerson? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.List<GPerson> get items => $_getList(0);
+}
+

@@ -78,7 +78,10 @@ class RecipeMapMapper extends MapMapper<Recipe> {
   factory RecipeMapMapper() => _singleton;
 
   @override
-  Recipe fromMap(Map<String, dynamic> map) {
+  Recipe fromMap(
+    Map<String, dynamic> map, [
+    KeyHandler? keyHandler,
+  ]) {
     var defaultsProvider = RecipeDefaultsProvider();
 
     return Recipe(
@@ -89,7 +92,10 @@ class RecipeMapMapper extends MapMapper<Recipe> {
   }
 
   @override
-  Map<String, dynamic> toMap(Recipe instance) {
+  Map<String, dynamic> toMap(
+    Recipe instance, [
+    KeyHandler? keyHandler,
+  ]) {
     final map = <String, dynamic>{};
 
     map['title'] = instance.title;
@@ -100,13 +106,15 @@ class RecipeMapMapper extends MapMapper<Recipe> {
 }
 
 extension RecipeMapExtension on Recipe {
-  Map<String, dynamic> toMap() => RecipeMapMapper().toMap(this);
-  static Recipe fromMap(Map<String, dynamic> map) =>
-      RecipeMapMapper().fromMap(map);
+  Map<String, dynamic> toMap([KeyHandler? keyHandler]) =>
+      RecipeMapMapper().toMap(this, keyHandler);
+  static Recipe fromMap(Map<String, dynamic> map, [KeyHandler? keyHandler]) =>
+      RecipeMapMapper().fromMap(map, keyHandler);
 }
 
 extension MapRecipeExtension on Map<String, dynamic> {
-  Recipe toRecipe() => RecipeMapMapper().fromMap(this);
+  Recipe toRecipe([KeyHandler? keyHandler]) =>
+      RecipeMapMapper().fromMap(this, keyHandler);
 }
 
 // **************************************************************************
@@ -181,6 +189,7 @@ class RecipeValidator implements Validator {
   @override
   ErrorList validate(covariant Recipe entity) {
     var errors = <ValidationError>[];
+
     ValidationError? error;
     if ((error = validateTitle(entity.title)) != null) {
       errors.add(error!);

@@ -11,9 +11,15 @@ import 'asset.proto';
 
 
 
+
 message GPerson
 {
   repeated GAsset assets = 1;
   string name = 2;
 
+}   
+
+message GListOfPerson
+{
+  repeated GPerson items = 1;
 }

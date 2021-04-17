@@ -27,27 +27,39 @@ class MetaMapMapper extends MapMapper<Meta> {
   factory MetaMapMapper() => _singleton;
 
   @override
-  Meta fromMap(Map<String, dynamic> map) {
+  Meta fromMap(
+    Map<String, dynamic> map, [
+    KeyHandler? keyHandler,
+  ]) {
+    final $kh = keyHandler ?? KeyHandler.fromDefault();
+
     return Meta(
-      tenantKey: map['tenantKey'] as String,
+      tenantKey: $kh.keyFromMap(map, 'tenantKey'),
     );
   }
 
   @override
-  Map<String, dynamic> toMap(Meta instance) {
+  Map<String, dynamic> toMap(
+    Meta instance, [
+    KeyHandler? keyHandler,
+  ]) {
+    final $kh = keyHandler ?? KeyHandler.fromDefault();
     final map = <String, dynamic>{};
 
-    map['tenantKey'] = instance.tenantKey;
+    $kh.keyToMap(map, instance.tenantKey);
 
     return map;
   }
 }
 
 extension MetaMapExtension on Meta {
-  Map<String, dynamic> toMap() => MetaMapMapper().toMap(this);
-  static Meta fromMap(Map<String, dynamic> map) => MetaMapMapper().fromMap(map);
+  Map<String, dynamic> toMap([KeyHandler? keyHandler]) =>
+      MetaMapMapper().toMap(this, keyHandler);
+  static Meta fromMap(Map<String, dynamic> map, [KeyHandler? keyHandler]) =>
+      MetaMapMapper().fromMap(map, keyHandler);
 }
 
 extension MapMetaExtension on Map<String, dynamic> {
-  Meta toMeta() => MetaMapMapper().fromMap(this);
+  Meta toMeta([KeyHandler? keyHandler]) =>
+      MetaMapMapper().fromMap(this, keyHandler);
 }

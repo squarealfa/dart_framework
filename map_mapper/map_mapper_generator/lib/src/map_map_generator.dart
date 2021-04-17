@@ -36,10 +36,12 @@ class MapMapGenerator extends GeneratorForAnnotation<MapMap> {
     var defaultsProviderClassName =
         getDefaultsProvider(_classElement, annotation, fieldDescriptors);
     var hasDefaultsProvider = defaultsProviderClassName != null;
+    var declareKh = false;
 
     for (var fieldDescriptor in fieldDescriptors) {
       var fieldCodeGenerator = FieldCodeGenerator.fromFieldDescriptor(
           fieldDescriptor, hasDefaultsProvider);
+      declareKh = declareKh || fieldCodeGenerator.usesKh;
 
       var toMapMap = fieldCodeGenerator.toMapMap;
       toMapFieldBuffer.writeln(toMapMap);
@@ -58,6 +60,7 @@ class MapMapGenerator extends GeneratorForAnnotation<MapMap> {
       toMapFieldBuffer,
       fromMapFieldBuffer,
       constructorFieldBuffer,
+      declareKh,
     );
 
     return ret;
@@ -68,11 +71,17 @@ class MapMapGenerator extends GeneratorForAnnotation<MapMap> {
     StringBuffer toMapFieldBuffer,
     StringBuffer fromMapFieldBuffer,
     StringBuffer constructorFieldBuffer,
+    bool declareKh,
   ) {
-    var className = _className;
-    var defaultsProviderDeclaration = ((defaultsProviderClassName ?? '') == '')
-        ? ''
-        : 'var defaultsProvider = $defaultsProviderClassName();';
+    final className = _className;
+
+    final defaultsProviderDeclaration =
+        ((defaultsProviderClassName ?? '') == '')
+            ? ''
+            : 'var defaultsProvider = $defaultsProviderClassName();';
+
+    final kh =
+        declareKh ? 'final \$kh = keyHandler ?? KeyHandler.fromDefault();' : '';
     return '''
 
       class ${className}MapMapper extends MapMapper<$className> {
@@ -83,16 +92,24 @@ class MapMapGenerator extends GeneratorForAnnotation<MapMap> {
 
 
         @override
-        $className fromMap(Map<String, dynamic> map) { 
+        $className fromMap(
+          Map<String, dynamic> map, [
+          KeyHandler? keyHandler,
+        ]) { 
         
           $defaultsProviderDeclaration
+          $kh
           
           return $className($constructorFieldBuffer)
               $fromMapFieldBuffer; 
         }
 
         @override
-        Map<String, dynamic> toMap($className instance) {
+        Map<String, dynamic> toMap(
+          $className instance, [
+          KeyHandler? keyHandler,
+        ]) {
+            $kh
             final map = <String, dynamic>{};
         
             $toMapFieldBuffer  
@@ -103,12 +120,12 @@ class MapMapGenerator extends GeneratorForAnnotation<MapMap> {
 
 
       extension ${className}MapExtension on $className {
-        Map<String, dynamic> toMap() => ${className}MapMapper().toMap(this);
-        static $className fromMap(Map<String, dynamic> map) => ${className}MapMapper().fromMap(map);
+        Map<String, dynamic> toMap([KeyHandler? keyHandler]) => ${className}MapMapper().toMap(this, keyHandler);
+        static $className fromMap(Map<String, dynamic> map, [KeyHandler? keyHandler]) => ${className}MapMapper().fromMap(map, keyHandler);
       }
       
       extension Map${className}Extension on Map<String, dynamic> {
-        $className to$className() => ${className}MapMapper().fromMap(this);
+        $className to$className([KeyHandler? keyHandler]) => ${className}MapMapper().fromMap(this, keyHandler);
       }
 
   

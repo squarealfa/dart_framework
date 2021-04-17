@@ -19,3 +19,13 @@ const GAsset$json = const {
 
 /// Descriptor for `GAsset`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List gAssetDescriptor = $convert.base64Decode('CgZHQXNzZXQSIAoLZGVzY3JpcHRpb24YASABKAlSC2Rlc2NyaXB0aW9uEhQKBXZhbHVlGAIgASgJUgV2YWx1ZQ==');
+@$core.Deprecated('Use gListOfAssetDescriptor instead')
+const GListOfAsset$json = const {
+  '1': 'GListOfAsset',
+  '2': const [
+    const {'1': 'items', '3': 1, '4': 3, '5': 11, '6': '.GAsset', '10': 'items'},
+  ],
+};
+
+/// Descriptor for `GListOfAsset`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List gListOfAssetDescriptor = $convert.base64Decode('CgxHTGlzdE9mQXNzZXQSHQoFaXRlbXMYASADKAsyBy5HQXNzZXRSBWl0ZW1z');

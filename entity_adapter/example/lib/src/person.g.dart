@@ -114,26 +114,34 @@ class PersonMapMapper extends MapMapper<Person> {
   factory PersonMapMapper() => _singleton;
 
   @override
-  Person fromMap(Map<String, dynamic> map) {
+  Person fromMap(
+    Map<String, dynamic> map, [
+    KeyHandler? keyHandler,
+  ]) {
     var defaultsProvider = PersonDefaultsProvider();
+    final $kh = keyHandler ?? KeyHandler.fromDefault();
 
     return Person(
       assets: getValueOrDefault(
           map['assets'],
           () => defaultsProvider.assets,
           (mapValue) => List<Asset>.from(
-              mapValue.map((e) => AssetMapMapper().fromMap(e)))),
+              mapValue.map((e) => AssetMapMapper().fromMap(e, $kh)))),
       name: getValueOrDefault(map['name'], () => defaultsProvider.name,
           (mapValue) => mapValue as String),
     );
   }
 
   @override
-  Map<String, dynamic> toMap(Person instance) {
+  Map<String, dynamic> toMap(
+    Person instance, [
+    KeyHandler? keyHandler,
+  ]) {
+    final $kh = keyHandler ?? KeyHandler.fromDefault();
     final map = <String, dynamic>{};
 
     map['assets'] =
-        instance.assets.map((e) => AssetMapMapper().toMap(e)).toList();
+        instance.assets.map((e) => AssetMapMapper().toMap(e, $kh)).toList();
     ;
     map['name'] = instance.name;
 
@@ -142,13 +150,15 @@ class PersonMapMapper extends MapMapper<Person> {
 }
 
 extension PersonMapExtension on Person {
-  Map<String, dynamic> toMap() => PersonMapMapper().toMap(this);
-  static Person fromMap(Map<String, dynamic> map) =>
-      PersonMapMapper().fromMap(map);
+  Map<String, dynamic> toMap([KeyHandler? keyHandler]) =>
+      PersonMapMapper().toMap(this, keyHandler);
+  static Person fromMap(Map<String, dynamic> map, [KeyHandler? keyHandler]) =>
+      PersonMapMapper().fromMap(map, keyHandler);
 }
 
 extension MapPersonExtension on Map<String, dynamic> {
-  Person toPerson() => PersonMapMapper().fromMap(this);
+  Person toPerson([KeyHandler? keyHandler]) =>
+      PersonMapMapper().fromMap(this, keyHandler);
 }
 
 // **************************************************************************
@@ -235,6 +245,7 @@ class PersonValidator implements Validator {
   @override
   ErrorList validate(covariant Person entity) {
     var errors = <ValidationError>[];
+
     ValidationError? error;
     if ((error = validateAssets(entity.assets)) != null) {
       errors.add(error!);

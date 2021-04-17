@@ -7,22 +7,25 @@ class EntityFieldCodeGenerator extends FieldCodeGenerator {
       : super(fieldDescriptor, hasDefaultsProvider);
 
   @override
+  bool get usesKh => true;
+
+  @override
   String get toMapExpression =>
-      '''${fieldDescriptor.fieldElementTypeName}MapMapper().toMap(instance.$fieldName)''';
+      '''${fieldDescriptor.fieldElementTypeName}MapMapper().toMap(instance.$fieldName, \$kh)''';
 
   @override
   String get toNullableMapExpression => '''
       (instance.$fieldName == null ? null :
-      ${fieldDescriptor.fieldElementTypeName}MapMapper().toMap(instance.$fieldName!)
+      ${fieldDescriptor.fieldElementTypeName}MapMapper().toMap(instance.$fieldName!, \$kh)
       )''';
 
   @override
   String fromMapExpression(String sourceExpression) =>
-      '''${fieldDescriptor.fieldElementTypeName}MapMapper().fromMap($sourceExpression)''';
+      '''${fieldDescriptor.fieldElementTypeName}MapMapper().fromMap($sourceExpression, \$kh)''';
 
   @override
   String get fromNullableMapExpression => '''
   (map[\'$mapName\'] != null
-      ? ${fieldDescriptor.fieldElementTypeName}MapMapper().fromMap(map[\'$mapName\'])
+      ? ${fieldDescriptor.fieldElementTypeName}MapMapper().fromMap(map[\'$mapName\'], \$kh)
       : null)''';
 }

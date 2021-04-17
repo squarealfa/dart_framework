@@ -13,13 +13,22 @@ class RecipeMapMapper extends MapMapper<Recipe> {
   factory RecipeMapMapper() => _singleton;
 
   @override
-  Recipe fromMap(Map<String, dynamic> map) {
+  Recipe fromMap(
+    Map<String, dynamic> map, [
+    KeyHandler? keyHandler,
+  ]) {
+    final $kh = keyHandler ?? KeyHandler.fromDefault();
+
     return Recipe(
       title: map['title'] as String,
       description: map['description'] as String?,
-      category: CategoryMapMapper().fromMap(map['category']),
+      categoryKey: $kh.keyFromMap(map, 'categoryKey'),
+      secondaryCategoryKey: map['secondaryCategoryKey'] == null
+          ? null
+          : $kh.keyFromMap(map, 'secondaryCategoryKey'),
+      category: CategoryMapMapper().fromMap(map['category'], $kh),
       ingredients: List<Ingredient>.from(
-          map['ingredients'].map((e) => IngredientMapMapper().fromMap(e))),
+          map['ingredients'].map((e) => IngredientMapMapper().fromMap(e, $kh))),
       publishDate: DateTime.parse(map['publishDate']),
       expiryDate:
           map['expiryDate'] == null ? null : DateTime.parse(map['expiryDate']),
@@ -29,11 +38,10 @@ class RecipeMapMapper extends MapMapper<Recipe> {
           : Duration(milliseconds: map['totalDuration']),
       isPublished: map['isPublished'] as bool,
       requiresRobot: map['requiresRobot'] as bool?,
-      mainApplianceType:
-          ApplianceTypeMapMapper().fromMap(map['mainApplianceType']),
-      secondaryApplianceType: (map['secondaryApplianceType'] != null
-          ? ApplianceTypeMapMapper().fromMap(map['secondaryApplianceType'])
-          : null),
+      mainApplianceType: ApplianceType.values[map['mainApplianceType'] as int],
+      secondaryApplianceType: map['secondaryApplianceType'] == null
+          ? null
+          : ApplianceType.values[map['secondaryApplianceType'] as int],
       tags: List<String>.from(map['tags']),
       extraTags:
           map['extraTags'] == null ? null : List<String>.from(map['extraTags']),
@@ -41,14 +49,20 @@ class RecipeMapMapper extends MapMapper<Recipe> {
   }
 
   @override
-  Map<String, dynamic> toMap(Recipe instance) {
+  Map<String, dynamic> toMap(
+    Recipe instance, [
+    KeyHandler? keyHandler,
+  ]) {
+    final $kh = keyHandler ?? KeyHandler.fromDefault();
     final map = <String, dynamic>{};
 
     map['title'] = instance.title;
     map['description'] = instance.description;
-    map['category'] = CategoryMapMapper().toMap(instance.category);
+    $kh.keyToMap(map, instance.categoryKey);
+    $kh.keyToMap(map, instance.secondaryCategoryKey ?? '');
+    map['category'] = CategoryMapMapper().toMap(instance.category, $kh);
     map['ingredients'] = instance.ingredients
-        .map((e) => IngredientMapMapper().toMap(e))
+        .map((e) => IngredientMapMapper().toMap(e, $kh))
         .toList();
     ;
     map['publishDate'] = instance.publishDate.toIso8601String();
@@ -57,11 +71,8 @@ class RecipeMapMapper extends MapMapper<Recipe> {
     map['totalDuration'] = instance.totalDuration?.inMilliseconds;
     map['isPublished'] = instance.isPublished;
     map['requiresRobot'] = instance.requiresRobot;
-    map['mainApplianceType'] =
-        ApplianceTypeMapMapper().toMap(instance.mainApplianceType);
-    map['secondaryApplianceType'] = (instance.secondaryApplianceType == null
-        ? null
-        : ApplianceTypeMapMapper().toMap(instance.secondaryApplianceType!));
+    map['mainApplianceType'] = instance.mainApplianceType.index;
+    map['secondaryApplianceType'] = instance.secondaryApplianceType?.index;
     map['tags'] = instance.tags;
     ;
     map['extraTags'] = instance.extraTags;
@@ -72,11 +83,13 @@ class RecipeMapMapper extends MapMapper<Recipe> {
 }
 
 extension RecipeMapExtension on Recipe {
-  Map<String, dynamic> toMap() => RecipeMapMapper().toMap(this);
-  static Recipe fromMap(Map<String, dynamic> map) =>
-      RecipeMapMapper().fromMap(map);
+  Map<String, dynamic> toMap([KeyHandler? keyHandler]) =>
+      RecipeMapMapper().toMap(this, keyHandler);
+  static Recipe fromMap(Map<String, dynamic> map, [KeyHandler? keyHandler]) =>
+      RecipeMapMapper().fromMap(map, keyHandler);
 }
 
 extension MapRecipeExtension on Map<String, dynamic> {
-  Recipe toRecipe() => RecipeMapMapper().fromMap(this);
+  Recipe toRecipe([KeyHandler? keyHandler]) =>
+      RecipeMapMapper().fromMap(this, keyHandler);
 }

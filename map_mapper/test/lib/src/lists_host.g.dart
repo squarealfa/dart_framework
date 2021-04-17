@@ -13,7 +13,10 @@ class ListsHostMapMapper extends MapMapper<ListsHost> {
   factory ListsHostMapMapper() => _singleton;
 
   @override
-  ListsHost fromMap(Map<String, dynamic> map) {
+  ListsHost fromMap(
+    Map<String, dynamic> map, [
+    KeyHandler? keyHandler,
+  ]) {
     return ListsHost(
       vbools: List<bool>.from(map['vbools']),
       nvbools: map['nvbools'] == null ? null : List<bool>.from(map['nvbools']),
@@ -47,7 +50,10 @@ class ListsHostMapMapper extends MapMapper<ListsHost> {
   }
 
   @override
-  Map<String, dynamic> toMap(ListsHost instance) {
+  Map<String, dynamic> toMap(
+    ListsHost instance, [
+    KeyHandler? keyHandler,
+  ]) {
     final map = <String, dynamic>{};
 
     map['vbools'] = instance.vbools;
@@ -94,11 +100,14 @@ class ListsHostMapMapper extends MapMapper<ListsHost> {
 }
 
 extension ListsHostMapExtension on ListsHost {
-  Map<String, dynamic> toMap() => ListsHostMapMapper().toMap(this);
-  static ListsHost fromMap(Map<String, dynamic> map) =>
-      ListsHostMapMapper().fromMap(map);
+  Map<String, dynamic> toMap([KeyHandler? keyHandler]) =>
+      ListsHostMapMapper().toMap(this, keyHandler);
+  static ListsHost fromMap(Map<String, dynamic> map,
+          [KeyHandler? keyHandler]) =>
+      ListsHostMapMapper().fromMap(map, keyHandler);
 }
 
 extension MapListsHostExtension on Map<String, dynamic> {
-  ListsHost toListsHost() => ListsHostMapMapper().fromMap(this);
+  ListsHost toListsHost([KeyHandler? keyHandler]) =>
+      ListsHostMapMapper().fromMap(this, keyHandler);
 }

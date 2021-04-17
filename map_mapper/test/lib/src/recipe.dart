@@ -9,6 +9,8 @@ part 'recipe.g.dart';
 class Recipe {
   final String title;
   final String? description;
+  final String categoryKey;
+  final String? secondaryCategoryKey;
   final Category category;
   final List<Ingredient> ingredients;
   final DateTime publishDate;
@@ -27,6 +29,7 @@ class Recipe {
   Recipe({
     required this.title,
     required this.category,
+    required this.categoryKey,
     required this.ingredients,
     required this.publishDate,
     required this.preparationDuration,
@@ -39,5 +42,6 @@ class Recipe {
     this.requiresRobot,
     this.secondaryApplianceType,
     this.extraTags,
+    this.secondaryCategoryKey,
   });
 }

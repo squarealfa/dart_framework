@@ -31,7 +31,10 @@ class UserCacheMapMapper extends MapMapper<UserCache> {
   factory UserCacheMapMapper() => _singleton;
 
   @override
-  UserCache fromMap(Map<String, dynamic> map) {
+  UserCache fromMap(
+    Map<String, dynamic> map, [
+    KeyHandler? keyHandler,
+  ]) {
     return UserCache(
       updateTimestamp: DateTime.parse(map['updateTimestamp']),
       permissions: List<String>.from(map['permissions']),
@@ -40,7 +43,10 @@ class UserCacheMapMapper extends MapMapper<UserCache> {
   }
 
   @override
-  Map<String, dynamic> toMap(UserCache instance) {
+  Map<String, dynamic> toMap(
+    UserCache instance, [
+    KeyHandler? keyHandler,
+  ]) {
     final map = <String, dynamic>{};
 
     map['updateTimestamp'] = instance.updateTimestamp.toIso8601String();
@@ -53,11 +59,14 @@ class UserCacheMapMapper extends MapMapper<UserCache> {
 }
 
 extension UserCacheMapExtension on UserCache {
-  Map<String, dynamic> toMap() => UserCacheMapMapper().toMap(this);
-  static UserCache fromMap(Map<String, dynamic> map) =>
-      UserCacheMapMapper().fromMap(map);
+  Map<String, dynamic> toMap([KeyHandler? keyHandler]) =>
+      UserCacheMapMapper().toMap(this, keyHandler);
+  static UserCache fromMap(Map<String, dynamic> map,
+          [KeyHandler? keyHandler]) =>
+      UserCacheMapMapper().fromMap(map, keyHandler);
 }
 
 extension MapUserCacheExtension on Map<String, dynamic> {
-  UserCache toUserCache() => UserCacheMapMapper().fromMap(this);
+  UserCache toUserCache([KeyHandler? keyHandler]) =>
+      UserCacheMapMapper().fromMap(this, keyHandler);
 }

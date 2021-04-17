@@ -13,24 +13,33 @@ class RecipeMapMapper extends MapMapper<Recipe> {
   factory RecipeMapMapper() => _singleton;
 
   @override
-  Recipe fromMap(Map<String, dynamic> map) {
+  Recipe fromMap(
+    Map<String, dynamic> map, [
+    KeyHandler? keyHandler,
+  ]) {
+    final $kh = keyHandler ?? KeyHandler.fromDefault();
+
     return Recipe(
       key: map['key'] as String,
       title: map['title'] as String,
       ingredients: List<Ingredient>.from(
-          map['ingredients'].map((e) => IngredientMapMapper().fromMap(e))),
+          map['ingredients'].map((e) => IngredientMapMapper().fromMap(e, $kh))),
       runtimeTag: map['runtimeTag'] as String?,
     );
   }
 
   @override
-  Map<String, dynamic> toMap(Recipe instance) {
+  Map<String, dynamic> toMap(
+    Recipe instance, [
+    KeyHandler? keyHandler,
+  ]) {
+    final $kh = keyHandler ?? KeyHandler.fromDefault();
     final map = <String, dynamic>{};
 
-    map['key'] = instance.key;
+    $kh.keyToMap(map, instance.key);
     map['title'] = instance.title;
     map['ingredients'] = instance.ingredients
-        .map((e) => IngredientMapMapper().toMap(e))
+        .map((e) => IngredientMapMapper().toMap(e, $kh))
         .toList();
     ;
     map['runtimeTag'] = instance.runtimeTag;
@@ -40,13 +49,15 @@ class RecipeMapMapper extends MapMapper<Recipe> {
 }
 
 extension RecipeMapExtension on Recipe {
-  Map<String, dynamic> toMap() => RecipeMapMapper().toMap(this);
-  static Recipe fromMap(Map<String, dynamic> map) =>
-      RecipeMapMapper().fromMap(map);
+  Map<String, dynamic> toMap([KeyHandler? keyHandler]) =>
+      RecipeMapMapper().toMap(this, keyHandler);
+  static Recipe fromMap(Map<String, dynamic> map, [KeyHandler? keyHandler]) =>
+      RecipeMapMapper().fromMap(map, keyHandler);
 }
 
 extension MapRecipeExtension on Map<String, dynamic> {
-  Recipe toRecipe() => RecipeMapMapper().fromMap(this);
+  Recipe toRecipe([KeyHandler? keyHandler]) =>
+      RecipeMapMapper().fromMap(this, keyHandler);
 }
 
 // **************************************************************************

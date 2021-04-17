@@ -7,4 +7,5 @@ library map_mapper_annotations;
 export 'src/annotations/map_field.dart';
 export 'src/annotations/map_ignore.dart';
 export 'src/annotations/map_map.dart';
+export 'src/key_handler.dart';
 export 'src/map_mapper.dart';

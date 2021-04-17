@@ -79,7 +79,10 @@ class AssetMapMapper extends MapMapper<Asset> {
   factory AssetMapMapper() => _singleton;
 
   @override
-  Asset fromMap(Map<String, dynamic> map) {
+  Asset fromMap(
+    Map<String, dynamic> map, [
+    KeyHandler? keyHandler,
+  ]) {
     var defaultsProvider = AssetDefaultsProvider();
 
     return Asset(
@@ -91,7 +94,10 @@ class AssetMapMapper extends MapMapper<Asset> {
   }
 
   @override
-  Map<String, dynamic> toMap(Asset instance) {
+  Map<String, dynamic> toMap(
+    Asset instance, [
+    KeyHandler? keyHandler,
+  ]) {
     final map = <String, dynamic>{};
 
     map['description'] = instance.description;
@@ -102,13 +108,15 @@ class AssetMapMapper extends MapMapper<Asset> {
 }
 
 extension AssetMapExtension on Asset {
-  Map<String, dynamic> toMap() => AssetMapMapper().toMap(this);
-  static Asset fromMap(Map<String, dynamic> map) =>
-      AssetMapMapper().fromMap(map);
+  Map<String, dynamic> toMap([KeyHandler? keyHandler]) =>
+      AssetMapMapper().toMap(this, keyHandler);
+  static Asset fromMap(Map<String, dynamic> map, [KeyHandler? keyHandler]) =>
+      AssetMapMapper().fromMap(map, keyHandler);
 }
 
 extension MapAssetExtension on Map<String, dynamic> {
-  Asset toAsset() => AssetMapMapper().fromMap(this);
+  Asset toAsset([KeyHandler? keyHandler]) =>
+      AssetMapMapper().fromMap(this, keyHandler);
 }
 
 // **************************************************************************
@@ -178,6 +186,7 @@ class AssetValidator implements Validator {
   @override
   ErrorList validate(covariant Asset entity) {
     var errors = <ValidationError>[];
+
     ValidationError? error;
     if ((error = validateDescription(entity.description)) != null) {
       errors.add(error!);

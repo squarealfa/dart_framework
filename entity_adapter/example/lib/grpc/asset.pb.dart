@@ -70,3 +70,44 @@ class GAsset extends $pb.GeneratedMessage {
   void clearValue() => clearField(2);
 }
 
+class GListOfAsset extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GListOfAsset', createEmptyInstance: create)
+    ..pc<GAsset>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'items', $pb.PbFieldType.PM, subBuilder: GAsset.create)
+    ..hasRequiredFields = false
+  ;
+
+  GListOfAsset._() : super();
+  factory GListOfAsset({
+    $core.Iterable<GAsset>? items,
+  }) {
+    final _result = create();
+    if (items != null) {
+      _result.items.addAll(items);
+    }
+    return _result;
+  }
+  factory GListOfAsset.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GListOfAsset.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  GListOfAsset clone() => GListOfAsset()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GListOfAsset copyWith(void Function(GListOfAsset) updates) => super.copyWith((message) => updates(message as GListOfAsset)) as GListOfAsset; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GListOfAsset create() => GListOfAsset._();
+  GListOfAsset createEmptyInstance() => create();
+  static $pb.PbList<GListOfAsset> createRepeated() => $pb.PbList<GListOfAsset>();
+  @$core.pragma('dart2js:noInline')
+  static GListOfAsset getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GListOfAsset>(create);
+  static GListOfAsset? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.List<GAsset> get items => $_getList(0);
+}
+

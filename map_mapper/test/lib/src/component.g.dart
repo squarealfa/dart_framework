@@ -13,14 +13,20 @@ class ComponentMapMapper extends MapMapper<Component> {
   factory ComponentMapMapper() => _singleton;
 
   @override
-  Component fromMap(Map<String, dynamic> map) {
+  Component fromMap(
+    Map<String, dynamic> map, [
+    KeyHandler? keyHandler,
+  ]) {
     return Component(
       description: map['description'] as String,
     );
   }
 
   @override
-  Map<String, dynamic> toMap(Component instance) {
+  Map<String, dynamic> toMap(
+    Component instance, [
+    KeyHandler? keyHandler,
+  ]) {
     final map = <String, dynamic>{};
 
     map['description'] = instance.description;
@@ -30,11 +36,14 @@ class ComponentMapMapper extends MapMapper<Component> {
 }
 
 extension ComponentMapExtension on Component {
-  Map<String, dynamic> toMap() => ComponentMapMapper().toMap(this);
-  static Component fromMap(Map<String, dynamic> map) =>
-      ComponentMapMapper().fromMap(map);
+  Map<String, dynamic> toMap([KeyHandler? keyHandler]) =>
+      ComponentMapMapper().toMap(this, keyHandler);
+  static Component fromMap(Map<String, dynamic> map,
+          [KeyHandler? keyHandler]) =>
+      ComponentMapMapper().fromMap(map, keyHandler);
 }
 
 extension MapComponentExtension on Map<String, dynamic> {
-  Component toComponent() => ComponentMapMapper().fromMap(this);
+  Component toComponent([KeyHandler? keyHandler]) =>
+      ComponentMapMapper().fromMap(this, keyHandler);
 }

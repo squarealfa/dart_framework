@@ -6,12 +6,17 @@ class ListFieldCodeGenerator extends FieldCodeGenerator {
       FieldDescriptor fieldDescriptor, bool hasDefaultsProvider)
       : super(fieldDescriptor, hasDefaultsProvider);
 
+  @override
+  bool get usesKh =>
+      fieldDescriptor.parameterTypeHasMapMapAnnotation &&
+      !fieldDescriptor.parameterTypeIsEnum;
+
   String _toMapExpression(bool isNullable) {
     if (fieldDescriptor.parameterTypeHasMapMapAnnotation) {
       final nullEscape = isNullable
           ? 'instance.$fieldName == null ? null : instance.$fieldName!'
           : 'instance.$fieldName';
-      return '''$nullEscape.map((e) => ${fieldDescriptor.parameterTypeName}MapMapper().toMap(e)).toList();''';
+      return '''$nullEscape.map((e) => ${fieldDescriptor.parameterTypeName}MapMapper().toMap(e ${fieldDescriptor.parameterTypeIsEnum ? '' : ', \$kh'})).toList();''';
     }
     return 'instance.$fieldName;';
   }
@@ -24,7 +29,7 @@ class ListFieldCodeGenerator extends FieldCodeGenerator {
 
   String get _fromMapConversion {
     if (fieldDescriptor.parameterTypeHasMapMapAnnotation) {
-      return '''.map((e) => ${fieldDescriptor.parameterTypeName}MapMapper().fromMap(e))''';
+      return '''.map((e) => ${fieldDescriptor.parameterTypeName}MapMapper().fromMap(e ${fieldDescriptor.parameterTypeIsEnum ? '' : ', \$kh'}))''';
     }
     return '';
   }
@@ -36,5 +41,4 @@ class ListFieldCodeGenerator extends FieldCodeGenerator {
   @override
   String get fromNullableMapExpression =>
       '''map[\'$fieldName\'] == null ? null : ${fromMapExpression('map[\'$fieldName\']')}''';
-  //'(map[\'$fieldName\'] ?? []).map((e) => ${fieldDescriptor.parameterTypeName}MapMapper().fromMap(e)).toList()';
 }

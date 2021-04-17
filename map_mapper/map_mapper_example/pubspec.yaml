@@ -10,12 +10,14 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  map_mapper_annotations: ^1.0.0
+  map_mapper_annotations: #^1.0.0
+    path: ../map_mapper_annotations
 
 dev_dependencies:
   pedantic: ^1.9.0
   test: ^1.14.4
 
-  map_mapper_generator: ^1.0.0
+  map_mapper_generator: #^1.0.0
+    path: ../map_mapper_generator
 
   build_runner: ^1.12.2

@@ -257,6 +257,7 @@ Recipe _scrambledEggsRecipe({
         alternativeComponent: categoryAlternativeComponent,
         secondaryComponents: categorySecondaryComponents,
       ),
+      categoryKey: '5334',
       publishDate: DateTime(2021, 02, 05, 13, 15, 12),
       expiryDate: expiryDate,
       ingredients: [

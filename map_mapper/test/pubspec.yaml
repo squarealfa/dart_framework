@@ -8,6 +8,7 @@ dependencies:
     path: ../map_mapper_generator
   decimal: ^1.0.0
   fixnum: ^1.0.0
+  mongo_dart: ^0.7.0+1
 
 dev_dependencies:
   build_runner: ^1.10.2
