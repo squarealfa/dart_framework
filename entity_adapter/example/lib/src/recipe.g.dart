@@ -68,6 +68,41 @@ class RecipeDefaultsProvider {
 }
 
 // **************************************************************************
+// EntityAdapterGenerator
+// **************************************************************************
+
+class RecipePermissions extends EntityPermissions {
+  static final RecipePermissions _singleton = RecipePermissions._();
+
+  RecipePermissions._();
+
+  factory RecipePermissions() => _singleton;
+
+  @override
+  String get create => 'createRecipe';
+
+  @override
+  String get delete => 'deleteRecipe';
+
+  @override
+  String get read => 'readRecipe';
+
+  @override
+  String get update => 'updateRecipe';
+}
+
+class RecipeEntityAdapter implements EntityAdapter<Recipe> {
+  @override
+  final MapMapper<Recipe> mapMapper = RecipeMapMapper();
+
+  @override
+  final Validator validator = RecipeValidator();
+
+  @override
+  final EntityPermissions permissions = RecipePermissions();
+}
+
+// **************************************************************************
 // MapMapGenerator
 // **************************************************************************
 

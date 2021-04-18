@@ -11,6 +11,4 @@ class Meta {
   });
 
   final String tenantKey;
-
-  void doSomething() {}
 }

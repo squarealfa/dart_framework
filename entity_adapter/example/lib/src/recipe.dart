@@ -5,7 +5,7 @@ import 'entity.dart';
 
 part 'recipe.g.dart';
 
-class Entity {}
+//class Entity {}
 
 @entity
 class Recipe extends Entity {
