@@ -1,6 +1,5 @@
 import 'dart:async';
 
-//import 'package:arango_driver/arango_driver.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 import 'package:nosql_repository/nosql_repository.dart';
 // import 'package:tuple/tuple.dart';
@@ -42,11 +41,10 @@ class MongoRepository<TEntity> implements Repository<TEntity> {
     DbPrincipal principal, [
     CreatePolicy? createPolicy,
   ]) async {
-    if (map.containsKey('_key') && (map['_key'] ?? '') == '') {
-      map.remove('_key');
+    if (map['_id'] == null) {
+      map['_id'] = ObjectId();
     }
-
-    final key = map['_id'] = ObjectId();
+    final key = map['_id'] as ObjectId;
 
     createPolicy ??= this.createPolicy;
     _handleMeta(
@@ -59,22 +57,14 @@ class MongoRepository<TEntity> implements Repository<TEntity> {
     if (!createPolicy.isAuthorized(principal)) {
       throw Unauthorized();
     }
-    final collection = await entityDb.collection;
-    final resultMap = await collection.insert(map);
 
-    _handleDataResult(resultMap);
-    final result = await collection.find(where.eq('_id', key)).single;
-    return result;
-  }
-
-  void _handleDataResult(Map<String, dynamic> result) {
-    final err = result['err'];
-    if (err != null) {
-      throw DbException(
-        message: '',
-        code: '',
-        number: '',
-      );
+    try {
+      final collection = await entityDb.collection;
+      await collection.insert(map);
+      final result = await collection.find(where.eq('_id', key)).single;
+      return result;
+    } catch (ex) {
+      throw _exToDbException(ex);
     }
   }
 
@@ -84,10 +74,10 @@ class MongoRepository<TEntity> implements Repository<TEntity> {
     DbPrincipal principal, [
     UpdatePolicy? updatePolicy,
   ]) async {
-    var key = map['_key'];
+    var id = map['_id'];
 
     var existing = await _get(
-      key,
+      id,
       principal,
     );
 
@@ -102,38 +92,50 @@ class MongoRepository<TEntity> implements Repository<TEntity> {
       addRevision: true,
     );
 
-    // var resultMap = await db.updateDocument(collectionName, key, map);
-    // key = _handleDataResult(resultMap);
-    // map = (await db.getDocumentByKey(collectionName, key)).document;
-
-    // return map;
-    throw UnimplementedError();
+    try {
+      final collection = await entityDb.collection;
+      final wr = await collection.replaceOne({'_id': id}, map);
+      if (wr.hasWriteErrors) {
+        throw _writeErrorToException(wr);
+      }
+      final result = await collection.find(where.eq('_id', id)).single;
+      return result;
+    } on DbException {
+      rethrow;
+    } catch (ex) {
+      throw _exToDbException(ex);
+    }
   }
 
   @override
   Future delete(
-    String key,
+    String id,
     DbPrincipal principal, [
     DeletePolicy? deletePolicy,
   ]) async {
-    var map = await _get(key, principal);
+    var map = await _get(id, principal);
 
     deletePolicy ??= this.deletePolicy;
     _handleMeta(map, principal, deletePolicy);
     _authorize(map, principal, deletePolicy);
 
-    // var result = await db.removeDocument(collectionName, key);
-    // _handleDataResult(result);
-    throw UnimplementedError();
+    try {
+      final collection = await entityDb.collection;
+      await collection.remove(where.eq('_id', id));
+    } on DbException {
+      rethrow;
+    } catch (ex) {
+      throw _exToDbException(ex);
+    }
   }
 
   @override
   Future<Map<String, dynamic>> get(
-    String key,
+    String id,
     DbPrincipal principal, [
     SearchPolicy? searchPolicy,
   ]) async {
-    final map = await _get(key, principal);
+    final map = await _get(id, principal);
     searchPolicy ??= this.searchPolicy;
 
     _handleMeta(map, principal, searchPolicy);
@@ -147,8 +149,8 @@ class MongoRepository<TEntity> implements Repository<TEntity> {
     DbPrincipal principal, [
     SearchPolicy? searchPolicy,
   ]) {
+    searchPolicy ??= this.searchPolicy;
     throw UnimplementedError();
-    // searchPolicy ??= this.searchPolicy;
     // var ret = _runQuery('', principal, searchPolicy, {}, '');
     // return ret;
   }
@@ -227,6 +229,25 @@ class MongoRepository<TEntity> implements Repository<TEntity> {
 
     // var ret = SearchResult(page, count);
     // return ret;
+  }
+
+  DbException _exToDbException(Object ex) {
+    final map = ex is Map<String, dynamic> ? ex : {};
+
+    final ret = DbException(
+      message: map['err'] ?? 'undetermined',
+      code: (map['code'] ?? '').toString(),
+      number: map['codeName'] ?? '',
+    );
+    return ret;
+  }
+
+  DbException _writeErrorToException(WriteResult wr) {
+    return DbException(
+      message: wr.errmsg,
+      code: wr.code.toString(),
+      number: wr.codeName,
+    );
   }
 
   // Stream<Map<String, dynamic>> _runQuery(
@@ -321,34 +342,28 @@ class MongoRepository<TEntity> implements Repository<TEntity> {
     };
   }
 
-  Future<Map<String, dynamic>> _get(String key, DbPrincipal principal) async {
-    throw UnimplementedError();
-    // final response = (await db.getDocumentByKey(collectionName, key));
-    // if (response.result.error) {
-    //   switch (response.result.errorNum) {
-    //     case 1202:
-    //       throw NotFound();
-    //     default:
-    //       throw Error();
-    //   }
-    // }
+  Future<Map<String, dynamic>> _get(String id, DbPrincipal principal) async {
+    try {
+      var collection = await entityDb.collection;
+      var map = await collection.find(where.eq('_id', id)).single;
 
-    // final map = response.document;
+      if (!_isValidateTenant(principal, map)) {
+        throw Unauthorized();
+      }
 
-    // if (!_isValidateTenant(principal, map)) {
-    //   throw Unauthorized();
-    // }
-
-    // return map;
+      return map;
+    } catch (ex) {
+      throw _exToDbException(ex);
+    }
   }
 
-  // bool _isValidateTenant(DbPrincipal principal, Map<String, dynamic> map) {
-  //   final entityTenantKey = (map['meta'] ?? {})['tenantKey'] as String?;
+  bool _isValidateTenant(DbPrincipal principal, Map<String, dynamic> map) {
+    final entityTenantKey = (map['meta'] ?? {})['tenantKey'] as String?;
 
-  //   final isValid =
-  //       entityTenantKey != null && entityTenantKey == principal.tenantKey;
-  //   return isValid;
-  // }
+    final isValid =
+        entityTenantKey != null && entityTenantKey == principal.tenantKey;
+    return isValid;
+  }
 
   void _authorize(
     Map<String, dynamic> entity,
@@ -486,4 +501,5 @@ class MongoRepository<TEntity> implements Repository<TEntity> {
   //   var sanitized = path.replaceAll(RegExp(r'[^a-zA-Z0-9\.\_]'), '');
   //   return sanitized;
   // }
+  //
 }

@@ -13,6 +13,7 @@ const _testUsername = 'alice';
 
 void main() async {
   final testDbClient = _connectDb(connectionString);
+  await testDbClient.dropCollection(_testCollection);
   final repository = MongoRepository<Recipe>(testDbClient, _testCollection);
   final principal = Principal(_testUsername);
   var insertedKey;
@@ -22,8 +23,7 @@ void main() async {
       var recipe = _scrambledEggs();
       var map = _recipeToMap(recipe);
       map = await repository.create(map, principal);
-      insertedKey = map['_key'];
-
+      insertedKey = map['_id'];
       expect(insertedKey, isNotNull);
     });
 
