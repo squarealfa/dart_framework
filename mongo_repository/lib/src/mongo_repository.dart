@@ -74,9 +74,9 @@ class MongoRepository<TEntity> implements Repository<TEntity> {
     DbPrincipal principal, [
     UpdatePolicy? updatePolicy,
   ]) async {
-    var id = map['_id'];
+    var id = map['_id'] as ObjectId;
 
-    var existing = await _get(
+    var existing = await _getFromObjectId(
       id,
       principal,
     );
@@ -113,7 +113,7 @@ class MongoRepository<TEntity> implements Repository<TEntity> {
     DbPrincipal principal, [
     DeletePolicy? deletePolicy,
   ]) async {
-    var map = await _get(id, principal);
+    var map = await _getFromId(id, principal);
 
     deletePolicy ??= this.deletePolicy;
     _handleMeta(map, principal, deletePolicy);
@@ -121,7 +121,7 @@ class MongoRepository<TEntity> implements Repository<TEntity> {
 
     try {
       final collection = await entityDb.collection;
-      await collection.remove(where.eq('_id', id));
+      await collection.remove(where.eq('_id', ObjectId.fromHexString(id)));
     } on DbException {
       rethrow;
     } catch (ex) {
@@ -135,7 +135,7 @@ class MongoRepository<TEntity> implements Repository<TEntity> {
     DbPrincipal principal, [
     SearchPolicy? searchPolicy,
   ]) async {
-    final map = await _get(id, principal);
+    final map = await _getFromId(id, principal);
     searchPolicy ??= this.searchPolicy;
 
     _handleMeta(map, principal, searchPolicy);
@@ -342,10 +342,18 @@ class MongoRepository<TEntity> implements Repository<TEntity> {
     };
   }
 
-  Future<Map<String, dynamic>> _get(String id, DbPrincipal principal) async {
+  Future<Map<String, dynamic>> _getFromId(
+      String id, DbPrincipal principal) async {
+    final oid = ObjectId.fromHexString(id);
+    final ret = await _getFromObjectId(oid, principal);
+    return ret;
+  }
+
+  Future<Map<String, dynamic>> _getFromObjectId(
+      ObjectId oid, DbPrincipal principal) async {
     try {
       var collection = await entityDb.collection;
-      var map = await collection.find(where.eq('_id', id)).single;
+      var map = await collection.find(where.eq('_id', oid)).single;
 
       if (!_isValidateTenant(principal, map)) {
         throw Unauthorized();

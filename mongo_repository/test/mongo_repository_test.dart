@@ -1,5 +1,6 @@
 import 'package:mongo_dart/mongo_dart.dart';
 import 'package:mongo_repository/mongo_repository.dart';
+import 'package:nosql_repository/nosql_repository.dart';
 //import 'package:nosql_repository/nosql_repository.dart';
 import 'package:test/test.dart';
 
@@ -13,46 +14,49 @@ const _testUsername = 'alice';
 
 void main() async {
   final testDbClient = _connectDb(connectionString);
-  await testDbClient.dropCollection(_testCollection);
+
   final repository = MongoRepository<Recipe>(testDbClient, _testCollection);
+  await repository.entityDb.collection;
+  await testDbClient.dropCollection(_testCollection);
+
   final principal = Principal(_testUsername);
-  var insertedKey;
+  var insertedKey = '';
 
   group('client can', () {
     test('insert entity', () async {
       var recipe = _scrambledEggs();
       var map = _recipeToMap(recipe);
       map = await repository.create(map, principal);
-      insertedKey = map['_id'];
+      insertedKey = (map['_id'] as ObjectId).toHexString();
       expect(insertedKey, isNotNull);
     });
 
-    // test('read entity', () async {
-    //   var map = await repository.get(insertedKey, principal);
+    test('read entity', () async {
+      var map = await repository.get(insertedKey, principal);
 
-    //   var recipe = _recipeFromMap(map);
-    //   expect(recipe.title, 'Scrambled eggs');
-    //   expect(recipe.key, insertedKey);
-    // });
+      var recipe = _recipeFromMap(map);
+      expect(recipe.title, 'Scrambled eggs');
+      expect(recipe.key, insertedKey);
+    });
 
-    // test('update entity', () async {
-    //   var map = await repository.get(insertedKey, principal);
+    test('update entity', () async {
+      var map = await repository.get(insertedKey, principal);
 
-    //   var recipe = _recipeFromMap(map);
-    //   recipe = Recipe(
-    //     key: recipe.key,
-    //     title: 'Updated scrambled eggs',
-    //     ingredients: recipe.ingredients,
-    //   );
+      var recipe = _recipeFromMap(map);
+      recipe = Recipe(
+        key: recipe.key,
+        title: 'Updated scrambled eggs',
+        ingredients: recipe.ingredients,
+      );
 
-    //   map = _recipeToMap(recipe);
+      map = _recipeToMap(recipe);
 
-    //   await repository.update(map, principal);
-    //   map = await repository.get(insertedKey, principal);
-    //   recipe = _recipeFromMap(map);
+      await repository.update(map, principal);
+      map = await repository.get(insertedKey, principal);
+      recipe = _recipeFromMap(map);
 
-    //   expect(recipe.title, 'Updated scrambled eggs');
-    // });
+      expect(recipe.title, 'Updated scrambled eggs');
+    });
 
     // test('search entity', () async {
     //   final criteria = SearchCriteria(searchConditions: [
@@ -108,6 +112,15 @@ void main() async {
     //   expect(unfilteredSearchResult.length, 2);
     // });
 
+    test('delete entity', () async {
+      await repository.delete(insertedKey, principal);
+
+      expect(() async {
+        await repository.get(insertedKey, principal);
+      }, throwsA(isA<DbException>()));
+      //expect();
+    });
+
     // end of group
   });
 }
@@ -153,6 +166,7 @@ void main() async {
 
 Db _connectDb(String connectionString) {
   var client = Db(connectionString);
+
   return client;
 }
 
@@ -188,17 +202,17 @@ Map<String, dynamic> _recipeToMap(Recipe recipe) => {
           recipe.ingredients.map((e) => _ingredientToMap(e)).toList(),
     };
 
-// Recipe _recipeFromMap(Map<String, dynamic> map) {
-//   return Recipe(
-//     key: map['_key'],
-//     title: map['title'],
-//     ingredients: List<Ingredient>.from(
-//         map['ingredients'].map((e) => _ingredientFromMap(e))),
-//   );
-// }
+Recipe _recipeFromMap(Map<String, dynamic> map) {
+  return Recipe(
+    key: (map['_id'] as ObjectId).toHexString(),
+    title: map['title'],
+    ingredients: List<Ingredient>.from(
+        map['ingredients'].map((e) => _ingredientFromMap(e))),
+  );
+}
 
-// Ingredient _ingredientFromMap(Map<String, dynamic> map) => Ingredient(
-//     description: map['description'], quantity: map['quantity'].toDouble());
+Ingredient _ingredientFromMap(Map<String, dynamic> map) => Ingredient(
+    description: map['description'], quantity: map['quantity'].toDouble());
 
 Map<String, dynamic> _ingredientToMap(Ingredient value) => <String, dynamic>{
       'description': value.description,

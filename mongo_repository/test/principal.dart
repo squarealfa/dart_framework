@@ -30,7 +30,7 @@ class Principal extends DbPrincipal {
       'create_recipes',
       'read_recipes',
       'update_recipes',
-      //'delete_recipes',
+      'delete_recipes',
       'search_recipes',
       if (username == 'root') 'change_settings',
     ];
