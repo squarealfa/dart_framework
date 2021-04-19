@@ -1,7 +1,6 @@
 import 'package:mongo_dart/mongo_dart.dart';
 import 'package:mongo_repository/mongo_repository.dart';
 import 'package:nosql_repository/nosql_repository.dart';
-//import 'package:nosql_repository/nosql_repository.dart';
 import 'package:test/test.dart';
 
 import 'ingredient.dart';
@@ -58,59 +57,60 @@ void main() async {
       expect(recipe.title, 'Updated scrambled eggs');
     });
 
-    // test('search entity', () async {
-    //   final criteria = SearchCriteria(searchConditions: [
-    //     Equal.fieldValue('entity.title', 'Updated scrambled eggs')
-    //   ]);
-    //   var searchResult = await repository
-    //       .search(
-    //         criteria,
-    //         principal,
-    //       )
-    //       .toList();
+    test('search entity', () async {
+      final criteria = SearchCriteria(searchConditions: [
+        Equal.fieldValue('entity.title', 'Updated scrambled eggs')
+      ]);
+      var searchResult = await repository
+          .search(
+            criteria,
+            principal,
+          )
+          .toList();
 
-    //   expect(searchResult.first['_key'], insertedKey);
-    // });
+      expect(
+          (searchResult.first['_id'] as ObjectId).toHexString(), insertedKey);
+    });
 
-    // test('search entity with action filter', () async {
-    //   final friedEggs = _friedEggsRecipe();
+    test('search entity with action filter', () async {
+      final friedEggs = _friedEggsRecipe();
 
-    //   var map = _recipeToMap(friedEggs);
-    //   map['meta'] = <String, dynamic>{
-    //     'shares': [
-    //       <String, dynamic>{
-    //         'userKey': principal.userKey,
-    //         'actions': ['write', 'read']
-    //       }
-    //     ]
-    //   };
+      var map = _recipeToMap(friedEggs);
+      map['meta'] = <String, dynamic>{
+        'shares': [
+          <String, dynamic>{
+            'userKey': principal.userKey,
+            'actions': ['write', 'read']
+          }
+        ]
+      };
 
-    //   await repository.create(map, principal);
+      await repository.create(map, principal);
 
-    //   final criteria = SearchCriteria(searchConditions: [
-    //     Expression.like('entity.title', '%eggs%'),
-    //   ]);
+      final criteria = SearchCriteria(searchConditions: [
+        Expression.like('entity.title', '%eggs%'),
+      ]);
 
-    //   // because the user has the 'search_recipes' permission,
-    //   // all records of the same tenant will be returned
-    //   var filteredSearchResult = await repository
-    //       .search(
-    //         criteria,
-    //         principal,
-    //         SearchPolicy(permission: 'search_all_recipes'),
-    //       )
-    //       .toList();
+      // because the user has the 'search_recipes' permission,
+      // all records of the same tenant will be returned
+      var filteredSearchResult = await repository
+          .search(
+            criteria,
+            principal,
+            SearchPolicy(permission: 'search_all_recipes'),
+          )
+          .toList();
 
-    //   var unfilteredSearchResult = await repository
-    //       .search(
-    //         criteria,
-    //         principal,
-    //       )
-    //       .toList();
+      var unfilteredSearchResult = await repository
+          .search(
+            criteria,
+            principal,
+          )
+          .toList();
 
-    //   expect(filteredSearchResult.length, 1);
-    //   expect(unfilteredSearchResult.length, 2);
-    // });
+      expect(filteredSearchResult.length, 1);
+      expect(unfilteredSearchResult.length, 2);
+    });
 
     test('delete entity', () async {
       await repository.delete(insertedKey, principal);
@@ -124,45 +124,6 @@ void main() async {
     // end of group
   });
 }
-
-// Future _ensureEmptyTestCollection(
-//     ArangoDBClient testDbClient, String testCollection) async {
-//   var allCollectionsAnsw = await testDbClient.allCollections();
-//   var alreadyExists =
-//       allCollectionsAnsw.response!.any((coll) =>
-//  coll.name == testCollection);
-//   if (!alreadyExists) {
-//     var answer = await testDbClient.createCollection(
-//       name: testCollection,
-//     );
-//     if (answer.result.error) {
-//       throw Error();
-//     }
-//   }
-//   if ((await testDbClient.truncateCollection(testCollection)).result.error) {
-//     throw Error();
-//   }
-// }
-
-// Future<ArangoDBClient> _connectTestDb() async {
-//   const systemDb = '_system';
-//   const testDb = 'test_temp_db';
-//   var clientSystemDb = _connectDb(systemDb);
-//   var databases = await clientSystemDb.existingDatabases();
-//   // skip test if test database already exists
-//   if (!databases.response!.contains(testDb)) {
-//     var result = await clientSystemDb
-//         .createDatabase(CreateDatabaseInfo(testDb,
-// [DatabaseUser('u', 'ps')]));
-//     if (result.result.error) {
-//       throw Error();
-//     }
-//   }
-//   final testDbClient = _connectDb(testDb);
-//   await _ensureEmptyTestCollection(testDbClient, _testCollection);
-
-//   return testDbClient;
-// }
 
 Db _connectDb(String connectionString) {
   var client = Db(connectionString);
@@ -182,18 +143,17 @@ Recipe _scrambledEggs() {
   );
 }
 
-// Recipe _friedEggsRecipe() {
-//   var recipe = Recipe(
-//     title: 'Fried eggs',
-//     ingredients: [
-//       Ingredient(description: 'eggs', quantity: 2.0),
-//       Ingredient(description: 'salt', quantity: 0.002),
-//       Ingredient(description: 'olive oil', quantity: 0.02),
-//     ],
-//   );
-//   return recipe;
-// }
-//
+Recipe _friedEggsRecipe() {
+  var recipe = Recipe(
+    title: 'Fried eggs',
+    ingredients: [
+      Ingredient(description: 'eggs', quantity: 2.0),
+      Ingredient(description: 'salt', quantity: 0.002),
+      Ingredient(description: 'olive oil', quantity: 0.02),
+    ],
+  );
+  return recipe;
+}
 
 Map<String, dynamic> _recipeToMap(Recipe recipe) => {
       '_id': recipe.key.isNotEmpty ? ObjectId.fromHexString(recipe.key) : null,
