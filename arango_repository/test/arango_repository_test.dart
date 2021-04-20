@@ -10,25 +10,29 @@ import 'test_conf.dart';
 
 const _testCollection = 'recipes';
 const _testUsername = 'alice';
+const _thirdUsername = 'bob';
+const _thirdTenantKey = 'acme';
 
 void main() async {
-  final testDbClient = await _connectTestDb();
-  final repository = ArangoDbRepository<Recipe>(testDbClient, _testCollection);
-  final principal = Principal(_testUsername);
-  var insertedKey;
-
   group('client can', () {
-    test('insert entity', () async {
-      var recipe = _scrambledEggs();
-      var map = _recipeToMap(recipe);
-      map = await repository.create(map, principal);
-      insertedKey = map['_key'];
+    Repository<Recipe>? repository;
+    final principal = Principal(_testUsername);
+    final thirdPrincipal = Principal(_thirdUsername, _thirdTenantKey);
 
-      expect(insertedKey, isNotNull);
+    setUp(() async {
+      final testDbClient = await _connectTestDb();
+      await _ensureEmptyTestCollection(testDbClient, _testCollection);
+      repository = ArangoDbRepository<Recipe>(testDbClient, _testCollection);
+    });
+
+    test('insert entity', () async {
+      final insertedKey = await _createScrambledEggs(repository!, principal);
+      expect(insertedKey, isNotEmpty);
     });
 
     test('read entity', () async {
-      var map = await repository.get(insertedKey, principal);
+      final insertedKey = await _createScrambledEggs(repository!, principal);
+      var map = await repository!.get(insertedKey, principal);
 
       var recipe = _recipeFromMap(map);
       expect(recipe.title, 'Scrambled eggs');
@@ -36,29 +40,32 @@ void main() async {
     });
 
     test('update entity', () async {
-      var map = await repository.get(insertedKey, principal);
+      final insertedKey = await _createScrambledEggs(repository!, principal);
+      var map = await repository!.get(insertedKey, principal);
 
       var recipe = _recipeFromMap(map);
       recipe = Recipe(
         key: recipe.key,
-        title: 'Updated scrambled eggs',
+        title: recipe.title,
+        description: 'updated description',
         ingredients: recipe.ingredients,
       );
 
       map = _recipeToMap(recipe);
 
-      await repository.update(map, principal);
-      map = await repository.get(insertedKey, principal);
+      await repository!.update(map, principal);
+      map = await repository!.get(insertedKey, principal);
       recipe = _recipeFromMap(map);
 
-      expect(recipe.title, 'Updated scrambled eggs');
+      expect(recipe.description, 'updated description');
     });
 
     test('search entity', () async {
+      final insertedKey = await _createScrambledEggs(repository!, principal);
       final criteria = SearchCriteria(searchConditions: [
-        Equal.fieldValue('entity.title', 'Updated scrambled eggs')
+        Equal.fieldValue('entity.title', 'Scrambled eggs')
       ]);
-      var searchResult = await repository
+      var searchResult = await repository!
           .search(
             criteria,
             principal,
@@ -69,19 +76,45 @@ void main() async {
     });
 
     test('search entity with action filter', () async {
-      final friedEggs = _friedEggsRecipe();
+      await _createScrambledEggs(repository!, principal);
+      await _createFriedEggs(repository!, [principal]);
 
-      var map = _recipeToMap(friedEggs);
-      map['meta'] = <String, dynamic>{
-        'shares': [
-          <String, dynamic>{
-            'userKey': principal.userKey,
-            'actions': ['write', 'read']
-          }
-        ]
-      };
+      final criteria = SearchCriteria(searchConditions: [
+        Expression.like('entity.title', '%eggs%'),
+      ]);
 
-      await repository.create(map, principal);
+      var filteredSearchResult = await repository!
+          .search(
+            criteria,
+            principal,
+            SearchPolicy(permission: 'non-existent'),
+          )
+          .toList();
+
+      var filteredSearchResult2 = await repository!
+          .search(
+            criteria,
+            principal,
+            // the same as passing SearchPolicy(permission: 'search_recipes')
+          )
+          .toList();
+
+      var unfilteredSearchResult = await repository!
+          .search(
+            criteria,
+            principal,
+            SearchPolicy(permission: 'search_recipes'),
+          )
+          .toList();
+
+      expect(filteredSearchResult.length, 1);
+      expect(filteredSearchResult2.length, 2);
+      expect(unfilteredSearchResult.length, 2);
+    });
+
+    test('search entity with third principal', () async {
+      await _createScrambledEggs(repository!, principal);
+      await _createFriedEggs(repository!, [principal, thirdPrincipal]);
 
       final criteria = SearchCriteria(searchConditions: [
         Expression.like('entity.title', '%eggs%'),
@@ -89,18 +122,51 @@ void main() async {
 
       // because the user has the 'search_recipes' permission,
       // all records of the same tenant will be returned
-      var filteredSearchResult = await repository
+      var filteredSearchResult = await repository!
           .search(
             criteria,
-            principal,
-            SearchPolicy(permission: 'search_all_recipes'),
+            thirdPrincipal,
+            SearchPolicy(),
           )
           .toList();
 
-      var unfilteredSearchResult = await repository
+      var unfilteredSearchResult = await repository!
           .search(
             criteria,
-            principal,
+            thirdPrincipal,
+          )
+          .toList();
+
+      expect(filteredSearchResult.length, 0);
+      expect(unfilteredSearchResult.length, 0);
+    });
+
+    test('search entity with unfiltered third principal', () async {
+      await _createScrambledEggs(repository!, principal);
+      await _createFriedEggs(repository!, [principal, thirdPrincipal]);
+
+      final criteria = SearchCriteria(searchConditions: [
+        Expression.like('entity.title', '%eggs%'),
+      ]);
+
+      // because the user has the 'search_recipes' permission,
+      // all records of the same tenant will be returned
+      var filteredSearchResult = await repository!
+          .search(
+            criteria,
+            thirdPrincipal,
+            SearchPolicy(
+              permission: 'non-existent',
+              filterByTenant: false,
+            ),
+          )
+          .toList();
+
+      var unfilteredSearchResult = await repository!
+          .search(
+            criteria,
+            thirdPrincipal,
+            SearchPolicy(filterByTenant: false, permission: 'search_recipes'),
           )
           .toList();
 
@@ -108,8 +174,72 @@ void main() async {
       expect(unfilteredSearchResult.length, 2);
     });
 
+    test('search entity with unfiltered, unshared, third principal', () async {
+      await _createScrambledEggs(repository!, principal);
+      await _createFriedEggs(repository!, [principal]);
+
+      final criteria = SearchCriteria(searchConditions: [
+        Expression.like('entity.title', '%eggs%'),
+      ]);
+
+      // because the user has the 'search_recipes' permission,
+      // all records of the same tenant will be returned
+      var filteredSearchResult = await repository!
+          .search(
+            criteria,
+            thirdPrincipal,
+            SearchPolicy(
+              permission: 'non-existent',
+              filterByTenant: false,
+            ),
+          )
+          .toList();
+
+      var unfilteredSearchResult = await repository!
+          .search(
+            criteria,
+            thirdPrincipal,
+            SearchPolicy(filterByTenant: false, permission: 'search_recipes'),
+          )
+          .toList();
+
+      expect(filteredSearchResult.length, 0);
+      expect(unfilteredSearchResult.length, 2);
+    });
+
     // end of group
   });
+}
+
+Future<String> _createScrambledEggs(
+  Repository<Recipe> repository,
+  Principal principal,
+) async {
+  final recipe = _scrambledEggs();
+  var map = _recipeToMap(recipe);
+  map = await repository.create(map, principal);
+  final insertedKey = map['_key'];
+  return insertedKey;
+}
+
+Future _createFriedEggs(
+  Repository<Recipe> repository,
+  List<Principal> principals,
+) async {
+  final friedEggs = _friedEggsRecipe();
+
+  final map = _recipeToMap(friedEggs);
+  map['meta'] = <String, dynamic>{
+    'shares': [
+      for (final principal in principals)
+        <String, dynamic>{
+          'userKey': principal.userKey,
+          'actions': ['write', 'read']
+        }
+    ]
+  };
+
+  await repository.create(map, principals.first);
 }
 
 Future _ensureEmptyTestCollection(
@@ -144,7 +274,6 @@ Future<ArangoDBClient> _connectTestDb() async {
     }
   }
   final testDbClient = _connectArangoDb(testDb);
-  await _ensureEmptyTestCollection(testDbClient, _testCollection);
 
   return testDbClient;
 }
@@ -164,6 +293,7 @@ ArangoDBClient _connectArangoDb(String db) {
 Recipe _scrambledEggs() {
   return Recipe(
     title: 'Scrambled eggs',
+    description: 'simple scrambled eggs recipe',
     ingredients: [
       Ingredient(description: 'eggs', quantity: 6.0),
       Ingredient(description: 'salt', quantity: 0.01),
@@ -176,6 +306,7 @@ Recipe _scrambledEggs() {
 Recipe _friedEggsRecipe() {
   var recipe = Recipe(
     title: 'Fried eggs',
+    description: 'simple fried eggs recipe',
     ingredients: [
       Ingredient(description: 'eggs', quantity: 2.0),
       Ingredient(description: 'salt', quantity: 0.002),
@@ -188,6 +319,7 @@ Recipe _friedEggsRecipe() {
 Map<String, dynamic> _recipeToMap(Recipe recipe) => {
       '_key': recipe.key,
       'title': recipe.title,
+      'description': recipe.description,
       'ingredients':
           recipe.ingredients.map((e) => _ingredientToMap(e)).toList(),
     };
@@ -196,6 +328,7 @@ Recipe _recipeFromMap(Map<String, dynamic> map) {
   return Recipe(
     key: map['_key'],
     title: map['title'],
+    description: map['description'],
     ingredients: List<Ingredient>.from(
         map['ingredients'].map((e) => _ingredientFromMap(e))),
   );
