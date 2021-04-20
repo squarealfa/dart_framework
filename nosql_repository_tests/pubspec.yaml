@@ -1,0 +1,15 @@
+name: nosql_repository_tests
+description: A starting point for Dart libraries or applications.
+# version: 1.0.0
+# homepage: https://www.example.com
+
+environment:
+  sdk: '>=2.12.0 <3.0.0'
+
+dependencies:
+  nosql_repository:
+    path: ../nosql_repository
+
+dev_dependencies:
+  pedantic: ^1.10.0-nullsafety.3
+  test: ^1.14.4
