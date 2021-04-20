@@ -65,12 +65,32 @@ void main() async {
       final criteria = SearchCriteria(searchConditions: [
         Equal.fieldValue('entity.title', 'Scrambled eggs')
       ]);
-      var searchResult = await repository!
-          .search(
-            criteria,
-            principal,
-          )
-          .toList();
+      var searchResult = await repository!.searchToList(
+        criteria,
+        principal,
+      );
+
+      expect(searchResult.first['_key'], insertedKey);
+    });
+
+    test('search not found', () async {
+      await _createScrambledEggs(repository!, principal);
+      final criteria = SearchCriteria(searchConditions: [
+        Equal.fieldValue('entity.title', 'unscrambled eggs')
+      ]);
+      var searchResult = await repository!.searchToList(
+        criteria,
+        principal,
+      );
+
+      expect(searchResult, isEmpty);
+    });
+
+    test('getAll', () async {
+      final insertedKey = await _createScrambledEggs(repository!, principal);
+      var searchResult = await repository!.getAllToList(
+        principal,
+      );
 
       expect(searchResult.first['_key'], insertedKey);
     });
@@ -83,29 +103,47 @@ void main() async {
         Expression.like('entity.title', '%eggs%'),
       ]);
 
-      var filteredSearchResult = await repository!
-          .search(
-            criteria,
-            principal,
-            SearchPolicy(permission: 'non-existent'),
-          )
-          .toList();
+      var filteredSearchResult = await repository!.searchToList(
+        criteria,
+        principal,
+        SearchPolicy(permission: 'non-existent'),
+      );
 
-      var filteredSearchResult2 = await repository!
-          .search(
-            criteria,
-            principal,
-            // the same as passing SearchPolicy(permission: 'search_recipes')
-          )
-          .toList();
+      var filteredSearchResult2 = await repository!.searchToList(
+        criteria,
+        principal,
+        // the same as passing SearchPolicy(permission: 'search_recipes')
+      );
 
-      var unfilteredSearchResult = await repository!
-          .search(
-            criteria,
-            principal,
-            SearchPolicy(permission: 'search_recipes'),
-          )
-          .toList();
+      var unfilteredSearchResult = await repository!.searchToList(
+        criteria,
+        principal,
+        SearchPolicy(permission: 'search_recipes'),
+      );
+
+      expect(filteredSearchResult.length, 1);
+      expect(filteredSearchResult2.length, 2);
+      expect(unfilteredSearchResult.length, 2);
+    });
+
+    test('get all with action filter', () async {
+      await _createScrambledEggs(repository!, principal);
+      await _createFriedEggs(repository!, [principal]);
+
+      var filteredSearchResult = await repository!.getAllToList(
+        principal,
+        SearchPolicy(permission: 'non-existent'),
+      );
+
+      var filteredSearchResult2 = await repository!.getAllToList(
+        principal,
+        // the same as passing SearchPolicy(permission: 'search_recipes')
+      );
+
+      var unfilteredSearchResult = await repository!.getAllToList(
+        principal,
+        SearchPolicy(permission: 'search_recipes'),
+      );
 
       expect(filteredSearchResult.length, 1);
       expect(filteredSearchResult2.length, 2);
@@ -122,20 +160,35 @@ void main() async {
 
       // because the user has the 'search_recipes' permission,
       // all records of the same tenant will be returned
-      var filteredSearchResult = await repository!
-          .search(
-            criteria,
-            thirdPrincipal,
-            SearchPolicy(),
-          )
-          .toList();
+      var filteredSearchResult = await repository!.searchToList(
+        criteria,
+        thirdPrincipal,
+        SearchPolicy(),
+      );
 
-      var unfilteredSearchResult = await repository!
-          .search(
-            criteria,
-            thirdPrincipal,
-          )
-          .toList();
+      var unfilteredSearchResult = await repository!.searchToList(
+        criteria,
+        thirdPrincipal,
+      );
+
+      expect(filteredSearchResult.length, 0);
+      expect(unfilteredSearchResult.length, 0);
+    });
+
+    test('getAll with third principal', () async {
+      await _createScrambledEggs(repository!, principal);
+      await _createFriedEggs(repository!, [principal, thirdPrincipal]);
+
+      // because the user has the 'search_recipes' permission,
+      // all records of the same tenant will be returned
+      var filteredSearchResult = await repository!.getAllToList(
+        thirdPrincipal,
+        SearchPolicy(),
+      );
+
+      var unfilteredSearchResult = await repository!.getAllToList(
+        thirdPrincipal,
+      );
 
       expect(filteredSearchResult.length, 0);
       expect(unfilteredSearchResult.length, 0);
@@ -151,24 +204,43 @@ void main() async {
 
       // because the user has the 'search_recipes' permission,
       // all records of the same tenant will be returned
-      var filteredSearchResult = await repository!
-          .search(
-            criteria,
-            thirdPrincipal,
-            SearchPolicy(
-              permission: 'non-existent',
-              filterByTenant: false,
-            ),
-          )
-          .toList();
+      var filteredSearchResult = await repository!.searchToList(
+        criteria,
+        thirdPrincipal,
+        SearchPolicy(
+          permission: 'non-existent',
+          filterByTenant: false,
+        ),
+      );
 
-      var unfilteredSearchResult = await repository!
-          .search(
-            criteria,
-            thirdPrincipal,
-            SearchPolicy(filterByTenant: false, permission: 'search_recipes'),
-          )
-          .toList();
+      var unfilteredSearchResult = await repository!.searchToList(
+        criteria,
+        thirdPrincipal,
+        SearchPolicy(filterByTenant: false, permission: 'search_recipes'),
+      );
+
+      expect(filteredSearchResult.length, 1);
+      expect(unfilteredSearchResult.length, 2);
+    });
+
+    test('getAll with unfiltered third principal', () async {
+      await _createScrambledEggs(repository!, principal);
+      await _createFriedEggs(repository!, [principal, thirdPrincipal]);
+
+      // because the user has the 'search_recipes' permission,
+      // all records of the same tenant will be returned
+      var filteredSearchResult = await repository!.getAllToList(
+        thirdPrincipal,
+        SearchPolicy(
+          permission: 'non-existent',
+          filterByTenant: false,
+        ),
+      );
+
+      var unfilteredSearchResult = await repository!.getAllToList(
+        thirdPrincipal,
+        SearchPolicy(filterByTenant: false, permission: 'search_recipes'),
+      );
 
       expect(filteredSearchResult.length, 1);
       expect(unfilteredSearchResult.length, 2);
@@ -184,24 +256,43 @@ void main() async {
 
       // because the user has the 'search_recipes' permission,
       // all records of the same tenant will be returned
-      var filteredSearchResult = await repository!
-          .search(
-            criteria,
-            thirdPrincipal,
-            SearchPolicy(
-              permission: 'non-existent',
-              filterByTenant: false,
-            ),
-          )
-          .toList();
+      var filteredSearchResult = await repository!.searchToList(
+        criteria,
+        thirdPrincipal,
+        SearchPolicy(
+          permission: 'non-existent',
+          filterByTenant: false,
+        ),
+      );
 
-      var unfilteredSearchResult = await repository!
-          .search(
-            criteria,
-            thirdPrincipal,
-            SearchPolicy(filterByTenant: false, permission: 'search_recipes'),
-          )
-          .toList();
+      var unfilteredSearchResult = await repository!.searchToList(
+        criteria,
+        thirdPrincipal,
+        SearchPolicy(filterByTenant: false, permission: 'search_recipes'),
+      );
+
+      expect(filteredSearchResult.length, 0);
+      expect(unfilteredSearchResult.length, 2);
+    });
+
+    test('getAll with unfiltered, unshared, third principal', () async {
+      await _createScrambledEggs(repository!, principal);
+      await _createFriedEggs(repository!, [principal]);
+
+      // because the user has the 'search_recipes' permission,
+      // all records of the same tenant will be returned
+      var filteredSearchResult = await repository!.getAllToList(
+        thirdPrincipal,
+        SearchPolicy(
+          permission: 'non-existent',
+          filterByTenant: false,
+        ),
+      );
+
+      var unfilteredSearchResult = await repository!.getAllToList(
+        thirdPrincipal,
+        SearchPolicy(filterByTenant: false, permission: 'search_recipes'),
+      );
 
       expect(filteredSearchResult.length, 0);
       expect(unfilteredSearchResult.length, 2);

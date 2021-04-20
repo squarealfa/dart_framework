@@ -8,7 +8,7 @@ import 'package:tuple/tuple.dart';
 import 'expression_rendering/context.dart';
 import 'expression_rendering/expression_extension.dart';
 
-class ArangoDbRepository<TEntity> implements Repository<TEntity> {
+class ArangoDbRepository<TEntity> extends Repository<TEntity> {
   final ArangoDBClient db;
   final String collectionName;
 
@@ -120,21 +120,21 @@ class ArangoDbRepository<TEntity> implements Repository<TEntity> {
   }
 
   @override
-  Stream<Map<String, dynamic>> getAll(
+  Future<Stream<Map<String, dynamic>>> getAllToStream(
     DbPrincipal principal, [
     SearchPolicy? searchPolicy,
-  ]) {
+  ]) async {
     searchPolicy ??= this.searchPolicy;
     var ret = _runQuery('', principal, searchPolicy, {}, '');
     return ret;
   }
 
   @override
-  Stream<Map<String, dynamic>> search(
+  Future<Stream<Map<String, dynamic>>> searchToStream(
     SearchCriteria criteria,
     DbPrincipal principal, [
     SearchPolicy? searchPolicy,
-  ]) {
+  ]) async {
     searchPolicy ??= this.searchPolicy;
     var filters = _createFilters(criteria);
     var filterQuery = filters.item1;
@@ -209,10 +209,14 @@ class ArangoDbRepository<TEntity> implements Repository<TEntity> {
     Map<String, dynamic> parameters,
     String collectionAlias,
   ) {
+    final fquery = query.isNotEmpty
+        ? query
+        : '''for c in ${collectionAlias.isEmpty ? collectionName : collectionAlias} return c''';
+
     var q = _createTenantBoundQuery(principal, searchPolicy)
       ..addLineIfThen(collectionAlias != '',
           'let $collectionAlias = (for c in $collectionName return c)')
-      ..addLineIfThen(query != '', query);
+      ..addLine(fquery);
 
     for (var entry in parameters.entries) {
       q = q.addBindVar(entry.key, entry.value);

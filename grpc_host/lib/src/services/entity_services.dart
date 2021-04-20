@@ -38,17 +38,26 @@ class EntityServices<TEntity> {
     throw GrpcError.notFound();
   }
 
-  Stream<Map<String, dynamic>> findToStream([
+  Future<Stream<Map<String, dynamic>>> findToStream([
     SearchCriteria criteria = const SearchCriteria(),
-  ]) {
-    var result = repository.search(criteria, principal);
+  ]) async {
+    var result = await repository.searchToStream(criteria, principal);
     return result;
+  }
+
+  Future<Stream<TEntity>> findToEntityStream([
+    SearchCriteria criteria = const SearchCriteria(),
+  ]) async {
+    final mapStream = await findToStream(criteria);
+    var entityStream = mapStream.map((m) => mapMapper.fromMap(m));
+
+    return entityStream;
   }
 
   Future<List<TEntity>> findToEntityList([
     SearchCriteria criteria = const SearchCriteria(),
   ]) async {
-    var stream = findToStream(criteria);
+    var stream = await findToStream(criteria);
     var list = stream.map((m) => mapMapper.fromMap(m)).toList();
     return list;
   }

@@ -54,12 +54,10 @@ void main(List<String> args) async {
 
   // because the user has the 'search_recipes' permission,
   // all records of the same tenant will be returned
-  var searchResult = await repository
-      .search(
-        criteria,
-        principal,
-      )
-      .toList();
+  var searchResult = await repository.searchToList(
+    criteria,
+    principal,
+  );
   for (var item in searchResult) {
     print(item.toString());
   }
@@ -71,13 +69,11 @@ void main(List<String> args) async {
   // only, the recipes explicitly shared with the
   // user will be returned, in this case
   // the fried eggs.
-  searchResult = await repository
-      .search(
-        criteria,
-        principal,
-        SearchPolicy(permission: 'search_all_recipes'),
-      )
-      .toList();
+  searchResult = await repository.searchToList(
+    criteria,
+    principal,
+    SearchPolicy(permission: 'search_all_recipes'),
+  );
   for (var item in searchResult) {
     print(item.toString());
   }

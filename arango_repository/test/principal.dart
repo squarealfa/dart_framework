@@ -37,6 +37,4 @@ class Principal extends DbPrincipal {
       if (username == 'root') 'change_settings',
     ];
   }
-
-  static String _loadTenantKey(String username) => 'single_tenant';
 }

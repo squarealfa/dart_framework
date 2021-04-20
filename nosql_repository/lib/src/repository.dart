@@ -119,10 +119,19 @@ abstract class Repository<TEntity> {
   /// if the user represented by the [principal] does have the
   /// permission before actually returning the elements. Otherwise,
   /// an error is thrown.
-  Stream<Map<String, dynamic>> getAll(
+  Future<Stream<Map<String, dynamic>>> getAllToStream(
     DbPrincipal principal, [
     SearchPolicy? searchPolicy,
   ]);
+
+  Future<List<Map<String, dynamic>>> getAllToList(
+    DbPrincipal principal, [
+    SearchPolicy? searchPolicy,
+  ]) async {
+    final stream = await getAllToStream(principal, searchPolicy);
+    final list = await stream.toList();
+    return list;
+  }
 
   /// Searches entities according to [criteria],
   /// returning a page of entities and the count
@@ -191,9 +200,16 @@ abstract class Repository<TEntity> {
   /// belonging to the tenant within the criteria
   /// defined by the [criteria], regardless of
   /// their owner within the tenant.
-  Stream<Map<String, dynamic>> search(
+  Future<Stream<Map<String, dynamic>>> searchToStream(
     SearchCriteria criteria,
     DbPrincipal principal, [
     SearchPolicy? searchPolicy,
   ]);
+
+  Future<List<Map<String, dynamic>>> searchToList(
+    SearchCriteria criteria,
+    DbPrincipal principal, [
+    SearchPolicy? searchPolicy,
+  ]) async =>
+      (await searchToStream(criteria, principal, searchPolicy)).toList();
 }

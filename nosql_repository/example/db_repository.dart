@@ -71,7 +71,14 @@ class DbRepository<T> extends Repository<T> {
   }
 
   @override
-  Stream<Map<String, dynamic>> getAll(
+  Future<Stream<Map<String, dynamic>>> getAllToStream(
+    DbPrincipal principal, [
+    SearchPolicy? searchPolicy,
+  ]) async {
+    return _getAllToStream(principal, searchPolicy);
+  }
+
+  Stream<Map<String, dynamic>> _getAllToStream(
     DbPrincipal principal, [
     SearchPolicy? searchPolicy,
   ]) async* {
@@ -100,11 +107,11 @@ class DbRepository<T> extends Repository<T> {
   }
 
   @override
-  Stream<Map<String, dynamic>> search(
+  Future<Stream<Map<String, dynamic>>> searchToStream(
     SearchCriteria criteria,
     DbPrincipal principal, [
     SearchPolicy? searchPolicy,
-  ]) {
+  ]) async {
     throw UnimplementedError();
   }
 

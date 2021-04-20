@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:mongo_dart/mongo_dart.dart';
 import 'package:nosql_repository/nosql_repository.dart';
-// import 'package:tuple/tuple.dart';
+import 'package:squarealfa_security/squarealfa_security.dart';
 
 import 'entity_db.dart';
 // import 'expression_rendering/context.dart';
 // import 'expression_rendering/expression_extension.dart';
 
-class MongoRepository<TEntity> implements Repository<TEntity> {
+class MongoRepository<TEntity> extends Repository<TEntity> {
   final Db db;
   final String collectionName;
   final EntityDb entityDb;
@@ -145,24 +145,27 @@ class MongoRepository<TEntity> implements Repository<TEntity> {
   }
 
   @override
-  Stream<Map<String, dynamic>> getAll(
+  Future<Stream<Map<String, dynamic>>> getAllToStream(
     DbPrincipal principal, [
     SearchPolicy? searchPolicy,
-  ]) {
+  ]) async {
     searchPolicy ??= this.searchPolicy;
-    throw UnimplementedError();
+
+    final collection = await entityDb.collection;
+    final stream = collection.aggregateToStream([]);
+    return stream;
     // var ret = _runQuery('', principal, searchPolicy, {}, '');
     // return ret;
   }
 
   @override
-  Stream<Map<String, dynamic>> search(
+  Future<Stream<Map<String, dynamic>>> searchToStream(
     SearchCriteria criteria,
     DbPrincipal principal, [
     SearchPolicy? searchPolicy,
   ]) {
+    searchPolicy ??= this.searchPolicy;
     throw UnimplementedError();
-    // searchPolicy ??= this.searchPolicy;
     // var filters = _createFilters(criteria);
     // var filterQuery = filters.item1;
     // var parameters = filters.item2;

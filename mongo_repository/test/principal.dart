@@ -7,10 +7,13 @@ class Principal extends DbPrincipal {
 
   Principal._(this._permissions, this._tenantKey, this._userKey);
 
-  factory Principal(String username) {
-    var permissions = _loadPermissions(username);
-    var tenantKey = _loadTenantKey(username);
-    return Principal._(permissions, tenantKey, username);
+  factory Principal(
+    String username, [
+    String? tenantKey,
+  ]) {
+    final permissions = _loadPermissions(username);
+    final tkey = tenantKey ?? 'single_tenant';
+    return Principal._(permissions, tkey, username);
   }
 
   @override
@@ -30,11 +33,8 @@ class Principal extends DbPrincipal {
       'create_recipes',
       'read_recipes',
       'update_recipes',
-      'delete_recipes',
       'search_recipes',
       if (username == 'root') 'change_settings',
     ];
   }
-
-  static String _loadTenantKey(String username) => 'single_tenant';
 }
