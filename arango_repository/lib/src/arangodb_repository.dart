@@ -209,7 +209,7 @@ class ArangoDbRepository<TEntity> implements Repository<TEntity> {
     Map<String, dynamic> parameters,
     String collectionAlias,
   ) {
-    var q = createTenantBoundQuery(principal, searchPolicy)
+    var q = _createTenantBoundQuery(principal, searchPolicy)
       ..addLineIfThen(collectionAlias != '',
           'let $collectionAlias = (for c in $collectionName return c)')
       ..addLineIfThen(query != '', query);
@@ -222,7 +222,7 @@ class ArangoDbRepository<TEntity> implements Repository<TEntity> {
     return stream;
   }
 
-  QueryWithClient createTenantBoundQuery(
+  QueryWithClient _createTenantBoundQuery(
     DbPrincipal principal,
     SearchPolicy policy,
   ) {
@@ -230,18 +230,26 @@ class ArangoDbRepository<TEntity> implements Repository<TEntity> {
     if (action == '' && !policy.filterByTenant) {
       return db.newQuery();
     }
-    final actionFilter = action == ''
-        ? ''
-        : '''&& length(c.meta.shares[* FILTER CURRENT.userKey == @userKey && @action IN CURRENT.actions ]) > 0 ''';
+
+    final filterBuffer = StringBuffer();
+    if (policy.filterByTenant) {
+      filterBuffer.writeln(' c.meta.tenantKey == @tenantKey ');
+    }
+    if (action != '') {
+      filterBuffer.writeln(
+          ''' ${filterBuffer.isEmpty ? '' : ' && '} length(c.meta.shares[* FILTER CURRENT.userKey == @userKey && @action IN CURRENT.actions ]) > 0 ''');
+    }
+
+    final filter = filterBuffer.toString();
 
     var q = db.newQuery()
       ..addLine('''let $collectionName = (
                     for c in $collectionName 
-                    filter c.meta.tenantKey == @tenantKey 
-                      $actionFilter
+                    filter $filter
                     return c
                   )''')
-      ..addBindVar('tenantKey', principal.tenantKey)
+      ..addBindVarIfThen(
+          policy.filterByTenant, 'tenantKey', principal.tenantKey)
       ..addBindVarIfThen(action != '', 'userKey', principal.userKey)
       ..addBindVarIfThen(action != '', 'action', action);
     return q;
