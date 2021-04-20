@@ -13,7 +13,7 @@ const _testUsername = 'alice';
 const _thirdUsername = 'bob';
 const _thirdTenantKey = 'acme';
 
-void main() async {
+void main() {
   group('client can', () {
     Repository<Recipe>? repository;
     final principal = Principal(_testUsername);
@@ -47,6 +47,7 @@ void main() async {
       recipe = Recipe(
         key: recipe.key,
         title: recipe.title,
+        time: recipe.time,
         description: 'updated description',
         ingredients: recipe.ingredients,
       );
@@ -298,6 +299,138 @@ void main() async {
       expect(unfilteredSearchResult.length, 2);
     });
 
+    test('test And expression', () async {
+      await _createScrambledEggs(repository!, principal);
+      await _createFriedEggs(repository!, [principal]);
+
+      final criteria = SearchCriteria(searchConditions: [
+        And(
+          Like.fieldValue('entity.title', '%eggs%'),
+          Like.fieldValue('entity.description', '%fried%'),
+        )
+      ]);
+      var searchResult = await repository!.searchToList(
+        criteria,
+        principal,
+      );
+
+      expect(searchResult.length, 1);
+      expect(searchResult.first['title'], 'Fried eggs');
+    });
+
+    test('test implicit And expression', () async {
+      await _createScrambledEggs(repository!, principal);
+      await _createFriedEggs(repository!, [principal]);
+
+      final criteria = SearchCriteria(searchConditions: [
+        Like.fieldValue('entity.title', '%eggs%'),
+        Like.fieldValue('entity.description', '%fried%'),
+      ]);
+      var searchResult = await repository!.searchToList(
+        criteria,
+        principal,
+      );
+
+      expect(searchResult.length, 1);
+      expect(searchResult.first['title'], 'Fried eggs');
+    });
+
+    test('test not expression', () async {
+      await _createScrambledEggs(repository!, principal);
+      await _createFriedEggs(repository!, [principal]);
+
+      final criteria = SearchCriteria(searchConditions: [
+        Not(
+          Like.fieldValue('entity.title', '%Scrambled%'),
+        ),
+      ]);
+      var searchResult = await repository!.searchToList(
+        criteria,
+        principal,
+      );
+
+      expect(searchResult.length, 1);
+      expect(searchResult.first['title'], 'Fried eggs');
+    });
+
+    test('test in expression', () async {
+      await _createScrambledEggs(repository!, principal);
+      await _createFriedEggs(repository!, [principal]);
+
+      final criteria = SearchCriteria(searchConditions: [
+        In(FieldPath('entity.title'),
+            ListInput(['Steak', 'Fried eggs', 'Cake']))
+      ]);
+      var searchResult = await repository!.searchToList(
+        criteria,
+        principal,
+      );
+
+      expect(searchResult.length, 1);
+      expect(searchResult.first['title'], 'Fried eggs');
+    });
+
+    test('test greaterthan', () async {
+      await _createScrambledEggs(repository!, principal);
+      await _createFriedEggs(repository!, [principal]);
+
+      final criteria = SearchCriteria(searchConditions: [
+        GreaterThan(FieldPath('entity.time'), Input(5)),
+      ]);
+      var searchResult = await repository!.searchToList(
+        criteria,
+        principal,
+      );
+
+      expect(searchResult.length, 1);
+      expect(searchResult.first['title'], 'Scrambled eggs');
+    });
+
+    test('test greater or equal than', () async {
+      await _createScrambledEggs(repository!, principal);
+      await _createFriedEggs(repository!, [principal]);
+
+      final criteria = SearchCriteria(searchConditions: [
+        GreaterOrEqualThan(FieldPath('entity.time'), Input(5)),
+      ]);
+      var searchResult = await repository!.searchToList(
+        criteria,
+        principal,
+      );
+
+      expect(searchResult.length, 2);
+    });
+
+    test('test less than', () async {
+      await _createScrambledEggs(repository!, principal);
+      await _createFriedEggs(repository!, [principal]);
+
+      final criteria = SearchCriteria(searchConditions: [
+        LessThan(FieldPath('entity.time'), Input(10)),
+      ]);
+      var searchResult = await repository!.searchToList(
+        criteria,
+        principal,
+      );
+
+      expect(searchResult.length, 1);
+      expect(searchResult.first['title'], 'Fried eggs');
+    });
+
+    test('test less or equal than', () async {
+      await _createScrambledEggs(repository!, principal);
+      await _createFriedEggs(repository!, [principal]);
+
+      final criteria = SearchCriteria(searchConditions: [
+        LessOrEqualThan(FieldPath('entity.time'), Input(10)),
+      ]);
+      var searchResult = await repository!.searchToList(
+        criteria,
+        principal,
+      );
+
+      expect(searchResult.length, 2);
+    });
     // end of group
   });
 }
@@ -385,6 +518,7 @@ Recipe _scrambledEggs() {
   return Recipe(
     title: 'Scrambled eggs',
     description: 'simple scrambled eggs recipe',
+    time: 10,
     ingredients: [
       Ingredient(description: 'eggs', quantity: 6.0),
       Ingredient(description: 'salt', quantity: 0.01),
@@ -398,6 +532,7 @@ Recipe _friedEggsRecipe() {
   var recipe = Recipe(
     title: 'Fried eggs',
     description: 'simple fried eggs recipe',
+    time: 5,
     ingredients: [
       Ingredient(description: 'eggs', quantity: 2.0),
       Ingredient(description: 'salt', quantity: 0.002),
@@ -411,6 +546,7 @@ Map<String, dynamic> _recipeToMap(Recipe recipe) => {
       '_key': recipe.key,
       'title': recipe.title,
       'description': recipe.description,
+      'time': recipe.time,
       'ingredients':
           recipe.ingredients.map((e) => _ingredientToMap(e)).toList(),
     };
@@ -420,6 +556,7 @@ Recipe _recipeFromMap(Map<String, dynamic> map) {
     key: map['_key'],
     title: map['title'],
     description: map['description'],
+    time: map['time'],
     ingredients: List<Ingredient>.from(
         map['ingredients'].map((e) => _ingredientFromMap(e))),
   );

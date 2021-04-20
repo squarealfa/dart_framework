@@ -16,9 +16,9 @@ extension ExpressionExtension on Expression {
     if (this is GreaterOrEqualThan) {
       return renderGreaterOrEqualThan(this as GreaterOrEqualThan, context);
     }
-    if (this is LessThan) return renderLessThan(this as GreaterThan, context);
+    if (this is LessThan) return renderLessThan(this as LessThan, context);
     if (this is LessOrEqualThan) {
-      return renderLessOrEqualThan(this as GreaterOrEqualThan, context);
+      return renderLessOrEqualThan(this as LessOrEqualThan, context);
     }
 
     throw UnimplementedError();
@@ -87,7 +87,7 @@ extension ExpressionExtension on Expression {
     return ret;
   }
 
-  String renderLessThan(GreaterThan expr, Context context) {
+  String renderLessThan(LessThan expr, Context context) {
     var left = renderOperand(expr.left, context);
     var right = renderOperand(expr.right, context);
 
@@ -95,7 +95,7 @@ extension ExpressionExtension on Expression {
     return ret;
   }
 
-  String renderLessOrEqualThan(GreaterOrEqualThan expr, Context context) {
+  String renderLessOrEqualThan(LessOrEqualThan expr, Context context) {
     var left = renderOperand(expr.left, context);
     var right = renderOperand(expr.right, context);
 
