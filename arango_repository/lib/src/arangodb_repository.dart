@@ -392,8 +392,16 @@ class ArangoDbRepository<TEntity> extends Repository<TEntity> {
     queryBuffer.writeln(sort);
 
     if (criteria.skip != null || criteria.take != null) {
-      queryBuffer.writeln('LIMIT @skip, @take');
-      parameters.addAll({'skip': criteria.skip, 'take': criteria.take});
+      if (criteria.skip == null) {
+        queryBuffer.writeln('LIMIT @take');
+        parameters.addAll({'take': criteria.take});
+      } else if (criteria.take == null) {
+        queryBuffer.writeln('LIMIT @skip, null');
+        parameters.addAll({'skip': criteria.skip});
+      } else {
+        queryBuffer.writeln('LIMIT @skip, @take');
+        parameters.addAll({'skip': criteria.skip, 'take': criteria.take});
+      }
     }
 
     var retrn = _createReturn(criteria);
@@ -417,7 +425,8 @@ class ArangoDbRepository<TEntity> extends Repository<TEntity> {
       if (sortBuffer.isEmpty) {
         sortBuffer.write(sortBuffer.isEmpty ? 'sort' : ',');
       }
-      sortBuffer.write(' entity.${_sanitizePath(f.path)}');
+      sortBuffer.write(
+          ' entity.${_sanitizePath(f.path)} ${f.isDescending ? 'desc' : ''} ');
     }
 
     return sortBuffer.toString();
@@ -437,7 +446,7 @@ class ArangoDbRepository<TEntity> extends Repository<TEntity> {
         sb.write(', ');
       }
 
-      var alias = rf.alias ?? rf.path!.replaceAll('.', '_');
+      var alias = rf.alias ?? rf.path.replaceAll('.', '_');
       sb.write(' $alias : entity.${rf.path} ');
     }
     sb.write('}');

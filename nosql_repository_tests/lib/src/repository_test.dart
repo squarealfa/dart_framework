@@ -477,6 +477,167 @@ void repositoryTests(RepositoryTestHandler handler) {
 
       expect(searchResult.length, 2);
     });
+
+    test('search big batch', () async {
+      for (var i = 0; i < 200; i++) {
+        await _createScrambledEggs(repository!, principal, handler,
+            title: 'recipe number $i');
+      }
+
+      final criteria = SearchCriteria(
+          searchConditions: [Like.fieldValue('title', 'recipe number %')]);
+      var searchResult = await repository!.searchToList(
+        criteria,
+        principal,
+      );
+
+      expect(searchResult.length, 200);
+    });
+
+    test('test order by', () async {
+      for (var i = 0; i < 200; i++) {
+        await _createScrambledEggs(repository!, principal, handler,
+            title: 'recipe number $i');
+      }
+
+      final criteria = SearchCriteria(searchConditions: [
+        Like.fieldValue('title', 'recipe number %'),
+      ], orderByFields: [
+        OrderBy('title')
+      ]);
+      var searchResult = await repository!.searchToList(
+        criteria,
+        principal,
+      );
+
+      expect(searchResult.length, 200);
+      expect(searchResult[2]['title'], 'recipe number 10');
+    });
+
+    test('test order by descending', () async {
+      for (var i = 0; i < 200; i++) {
+        await _createScrambledEggs(repository!, principal, handler,
+            title: 'recipe number $i');
+      }
+
+      final criteria = SearchCriteria(searchConditions: [
+        Like.fieldValue('title', 'recipe number %'),
+      ], orderByFields: [
+        OrderBy('title', isDescending: true)
+      ]);
+      var searchResult = await repository!.searchToList(
+        criteria,
+        principal,
+      );
+
+      expect(searchResult.length, 200);
+      expect(searchResult.first['title'], 'recipe number 99');
+    });
+
+    test('test skip', () async {
+      for (var i = 0; i < 200; i++) {
+        await _createScrambledEggs(repository!, principal, handler,
+            title: 'recipe number $i');
+      }
+
+      final criteria = SearchCriteria(searchConditions: [
+        Like.fieldValue('title', 'recipe number %'),
+      ], orderByFields: [
+        OrderBy('title', isDescending: true)
+      ], skip: 20);
+      var searchResult = await repository!.searchToList(
+        criteria,
+        principal,
+      );
+
+      expect(searchResult.length, 180);
+      expect(searchResult.first['title'], 'recipe number 80');
+    });
+
+    test('test take', () async {
+      for (var i = 0; i < 200; i++) {
+        await _createScrambledEggs(repository!, principal, handler,
+            title: 'recipe number $i');
+      }
+
+      final criteria = SearchCriteria(searchConditions: [
+        Like.fieldValue('title', 'recipe number %'),
+      ], orderByFields: [
+        OrderBy('title', isDescending: true)
+      ], take: 15);
+      var searchResult = await repository!.searchToList(
+        criteria,
+        principal,
+      );
+
+      expect(searchResult.length, 15);
+      expect(searchResult.first['title'], 'recipe number 99');
+      expect(searchResult.last['title'], 'recipe number 86');
+    });
+
+    test('test skip and take', () async {
+      for (var i = 0; i < 200; i++) {
+        await _createScrambledEggs(repository!, principal, handler,
+            title: 'recipe number $i');
+      }
+
+      final criteria = SearchCriteria(searchConditions: [
+        Like.fieldValue('title', 'recipe number %'),
+      ], orderByFields: [
+        OrderBy('title', isDescending: true)
+      ], skip: 120, take: 25);
+      var searchResult = await repository!.searchToList(
+        criteria,
+        principal,
+      );
+
+      expect(searchResult.length, 25);
+      expect(searchResult.first['title'], 'recipe number 17');
+      expect(searchResult.last['title'], 'recipe number 148');
+    });
+
+    test('test projection', () async {
+      for (var i = 0; i < 200; i++) {
+        await _createScrambledEggs(repository!, principal, handler,
+            title: 'recipe number $i');
+      }
+
+      final criteria = SearchCriteria(
+        searchConditions: [
+          Like.fieldValue('title', 'recipe number %'),
+        ],
+        orderByFields: [OrderBy('title', isDescending: true)],
+        skip: 120,
+        take: 25,
+        returnFields: [
+          ReturnField('title'),
+          ReturnField('time', 'minutes'),
+          ReturnField('meta.tenantKey'),
+          ReturnField('meta.tenantKey', 'tk')
+        ],
+      );
+      var searchResult = await repository!.searchToList(
+        criteria,
+        principal,
+      );
+
+      final second = searchResult[1];
+      final secondKeys = second.keys.toList();
+
+      expect(searchResult.length, 25);
+      expect(searchResult.first['title'], 'recipe number 17');
+      expect(searchResult.last['title'], 'recipe number 148');
+      expect(second.keys.length, 4);
+      expect(secondKeys[0], 'title');
+      expect(secondKeys[1], 'minutes');
+      expect(secondKeys[2], 'meta_tenantKey');
+      expect(secondKeys[3], 'tk');
+      expect(second['title'], 'recipe number 169');
+      expect(second['minutes'], 10);
+      expect(second['meta_tenantKey'], '607f866f98b65b55e497cee0');
+      expect(second['tk'], '607f866f98b65b55e497cee0');
+    });
+
     // end of group
   });
 }

@@ -1,8 +1,12 @@
 part of 'repository_test.dart';
 
-Future<Map<String, dynamic>> _createScrambledEggs(Repository<Recipe> repository,
-    Principal principal, RepositoryTestHandler handler) async {
-  final recipe = _scrambledEggs();
+Future<Map<String, dynamic>> _createScrambledEggs(
+  Repository<Recipe> repository,
+  Principal principal,
+  RepositoryTestHandler handler, {
+  String? title,
+}) async {
+  final recipe = _scrambledEggs(title: title);
   var map = _recipeToMap(recipe, handler);
   map = await repository.create(map, principal);
   return map;
@@ -29,9 +33,9 @@ Future _createFriedEggs(
   await repository.create(map, principals.first);
 }
 
-Recipe _scrambledEggs() {
+Recipe _scrambledEggs({String? title}) {
   return Recipe(
-    title: 'Scrambled eggs',
+    title: title ?? 'Scrambled eggs',
     description: 'simple scrambled eggs recipe',
     time: 10,
     ingredients: [
