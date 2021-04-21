@@ -602,6 +602,8 @@ void repositoryTests(RepositoryTestHandler handler) {
             title: 'recipe number $i');
       }
 
+      final tenantKeyFieldName = handler.mapKeyFieldName('meta.tenantKey');
+
       final criteria = SearchCriteria(
         searchConditions: [
           Like.fieldValue('title', 'recipe number %'),
@@ -612,8 +614,8 @@ void repositoryTests(RepositoryTestHandler handler) {
         returnFields: [
           ReturnField('title'),
           ReturnField('time', 'minutes'),
-          ReturnField('meta.tenantKey'),
-          ReturnField('meta.tenantKey', 'tk')
+          ReturnField(tenantKeyFieldName),
+          ReturnField(tenantKeyFieldName, 'tk')
         ],
       );
       var searchResult = await repository!.searchToList(
@@ -623,6 +625,8 @@ void repositoryTests(RepositoryTestHandler handler) {
 
       final second = searchResult[1];
       final secondKeys = second.keys.toList();
+      final expectedTenantKeyFieldName =
+          handler.mapKeyFieldName('meta_tenantKey');
 
       expect(searchResult.length, 25);
       expect(searchResult.first['title'], 'recipe number 17');
@@ -630,12 +634,13 @@ void repositoryTests(RepositoryTestHandler handler) {
       expect(second.keys.length, 4);
       expect(secondKeys[0], 'title');
       expect(secondKeys[1], 'minutes');
-      expect(secondKeys[2], 'meta_tenantKey');
+      expect(secondKeys[2], expectedTenantKeyFieldName);
       expect(secondKeys[3], 'tk');
       expect(second['title'], 'recipe number 169');
       expect(second['minutes'], 10);
-      expect(second['meta_tenantKey'], '607f866f98b65b55e497cee0');
-      expect(second['tk'], '607f866f98b65b55e497cee0');
+      expect(handler.getIdFromMap(second, 'meta_tenantKey'),
+          '607f866f98b65b55e497cee0');
+      expect(handler.getIdFromMap(second, 'tk'), '607f866f98b65b55e497cee0');
     });
 
     test('search with count only', () async {
@@ -672,6 +677,8 @@ void repositoryTests(RepositoryTestHandler handler) {
             title: 'recipe number $i');
       }
 
+      final tenantKeyFieldName = handler.mapKeyFieldName('meta.tenantKey');
+
       final criteria = SearchCriteria(
         searchConditions: [
           Like.fieldValue('title', 'recipe number %'),
@@ -682,8 +689,8 @@ void repositoryTests(RepositoryTestHandler handler) {
         returnFields: [
           ReturnField('title'),
           ReturnField('time', 'minutes'),
-          ReturnField('meta.tenantKey'),
-          ReturnField('meta.tenantKey', 'tk')
+          ReturnField(tenantKeyFieldName),
+          ReturnField(tenantKeyFieldName, 'tk')
         ],
       );
       var srCount = await repository!.searchWithCount(
@@ -697,20 +704,23 @@ void repositoryTests(RepositoryTestHandler handler) {
       final second = searchResult[1];
       final secondKeys = second.keys.toList();
 
-      expect(cnt, 200);
+      final expectedTenantKeyFieldName =
+          handler.mapKeyFieldName('meta_tenantKey');
 
+      expect(cnt, 200);
       expect(searchResult.length, 25);
       expect(searchResult.first['title'], 'recipe number 17');
       expect(searchResult.last['title'], 'recipe number 148');
       expect(second.keys.length, 4);
       expect(secondKeys[0], 'title');
       expect(secondKeys[1], 'minutes');
-      expect(secondKeys[2], 'meta_tenantKey');
+      expect(secondKeys[2], expectedTenantKeyFieldName);
       expect(secondKeys[3], 'tk');
       expect(second['title'], 'recipe number 169');
       expect(second['minutes'], 10);
-      expect(second['meta_tenantKey'], '607f866f98b65b55e497cee0');
-      expect(second['tk'], '607f866f98b65b55e497cee0');
+      expect(handler.getIdFromMap(second, 'meta_tenantKey'),
+          '607f866f98b65b55e497cee0');
+      expect(handler.getIdFromMap(second, 'tk'), '607f866f98b65b55e497cee0');
     });
 
     // end of group

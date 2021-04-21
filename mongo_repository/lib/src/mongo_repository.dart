@@ -175,6 +175,16 @@ class MongoRepository<TEntity> extends Repository<TEntity> {
       pipeline.addStage(stage);
     }
 
+    _addSort(criteria, pipeline);
+    if (criteria.skip != null) {
+      pipeline.addStage(Skip(criteria.skip!));
+    }
+    if (criteria.take != null) {
+      pipeline.addStage(Limit(criteria.take!));
+    }
+
+    _addProjection(criteria, pipeline);
+
     final stages = pipeline.build();
 
     final collection = await entityDb.collection;
@@ -219,20 +229,25 @@ class MongoRepository<TEntity> extends Repository<TEntity> {
     DbPrincipal principal, [
     SearchPolicy? searchPolicy,
   ]) async {
-    throw UnimplementedError();
-    // searchPolicy ??= this.searchPolicy;
+    searchPolicy ??= this.searchPolicy;
 
-    // var filters = _createFilters(criteria);
-    // var baseQuery = filters.item1;
-    // var parameters = filters.item2;
-    // var count = await _getCount(
-    //   baseQuery,
-    //   parameters,
-    //   principal,
-    //   searchPolicy,
-    // );
+    final pipeline = AggregationPipelineBuilder();
 
-    // return count;
+    addAccessFilters(pipeline, searchPolicy, principal);
+
+    for (final exp in criteria.searchConditions) {
+      final stage = exp.render();
+      pipeline.addStage(stage);
+    }
+
+    pipeline.addStage(Count('cnt'));
+
+    final stages = pipeline.build();
+
+    final collection = await entityDb.collection;
+    final lst = await collection.aggregateToStream(stages).toList();
+    final cnt = lst.first['cnt'] as int;
+    return cnt;
   }
 
   @override
@@ -241,29 +256,11 @@ class MongoRepository<TEntity> extends Repository<TEntity> {
     DbPrincipal principal, [
     SearchPolicy? searchPolicy,
   ]) async {
-    throw UnimplementedError();
-    // searchPolicy ??= this.searchPolicy;
+    final cnt = await count(criteria, principal, searchPolicy);
+    final page = await searchToStream(criteria, principal, searchPolicy);
 
-    // var filters = _createFilters(criteria);
-    // var filterQuery = filters.item1;
-    // var parameters = filters.item2;
-    // var count = await (_getCount(
-    //   filterQuery,
-    //   {...parameters},
-    //   principal,
-    //   searchPolicy,
-    // ));
-
-    // var page = _createPage(
-    //   filterQuery,
-    //   criteria,
-    //   parameters,
-    //   principal,
-    //   searchPolicy,
-    // );
-
-    // var ret = SearchResult(page, count);
-    // return ret;
+    final sr = SearchResult(page, cnt);
+    return sr;
   }
 
   DbException _exToDbException(Object ex) {
@@ -284,7 +281,6 @@ class MongoRepository<TEntity> extends Repository<TEntity> {
       number: wr.codeName,
     );
   }
-
 
   String get actionToDemand => 'read';
 
@@ -386,4 +382,36 @@ class MongoRepository<TEntity> extends Repository<TEntity> {
     throw Unauthorized();
   }
 
+  void _addSort(SearchCriteria criteria, AggregationPipelineBuilder pipeline) {
+    if (criteria.orderByFields.isEmpty) {
+      return;
+    }
+
+    final map = <String, dynamic>{};
+    for (final orf in criteria.orderByFields) {
+      map[orf.path] = orf.isDescending ? -1 : 1;
+    }
+
+    pipeline.addStage(Sort(map));
+  }
+
+  void _addProjection(
+    SearchCriteria criteria,
+    AggregationPipelineBuilder pipeline,
+  ) {
+    if (criteria.returnFields.isEmpty) {
+      return;
+    }
+    final map = <String, dynamic>{};
+
+    for (final rf in criteria.returnFields) {
+      final fname = rf.alias ?? rf.path.replaceAll('.', '_');
+      map[fname] = '\$${rf.path}';
+    }
+    if (!criteria.returnFields.any((rf) => rf.path == '_id')) {
+      map['_id'] = 0;
+    }
+
+    pipeline.addStage(Project(map));
+  }
 }

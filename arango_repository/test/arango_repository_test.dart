@@ -20,14 +20,19 @@ class ArangoRepositoryTestHandler extends RepositoryTestHandler {
   }
 
   @override
-  String getIdFromMap(Map<String, dynamic> map) {
-    return map['_key'];
+  String getIdFromMap(Map<String, dynamic> map, [String? fieldName]) {
+    fieldName ??= '_key';
+    fieldName = mapKeyFieldName(fieldName);
+    return map[fieldName];
   }
 
   @override
   Map<String, dynamic> toIdMap(String key) {
     return {'_key': key};
   }
+
+  @override
+  String mapKeyFieldName(String keyFieldName) => keyFieldName;
 }
 
 Future _ensureEmptyTestCollection(

@@ -21,14 +21,27 @@ class MongoRepositoryTestHandler extends RepositoryTestHandler {
   }
 
   @override
-  String getIdFromMap(Map<String, dynamic> map) {
-    return (map['_id'] as ObjectId).toHexString();
+  String getIdFromMap(Map<String, dynamic> map, [String? fieldName]) {
+    fieldName ??= '_id';
+    fieldName = mapKeyFieldName(fieldName);
+    return (map[fieldName] as ObjectId).toHexString();
   }
 
   @override
   Map<String, dynamic> toIdMap(String key) => {
         '_id': key.isNotEmpty ? ObjectId.fromHexString(key) : null,
       };
+
+  @override
+  String mapKeyFieldName(String keyFieldName) {
+    if (keyFieldName == '_key' || keyFieldName == 'key') {
+      return '_id';
+    }
+    if (keyFieldName.endsWith('Key')) {
+      return keyFieldName.substring(0, keyFieldName.length - 3) + 'Id';
+    }
+    return keyFieldName;
+  }
 }
 
 Db _connectDb(String connectionString) {
