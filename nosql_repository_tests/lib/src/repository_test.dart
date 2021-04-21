@@ -7,7 +7,7 @@ import 'recipe.dart';
 
 const _testUsername = 'alice';
 const _thirdUsername = 'bob';
-const _thirdTenantKey = 'acme';
+const _thirdTenantKey = '607fe42698b65b55e497cee3';
 
 abstract class RepositoryTestHandler {
   Future<Repository<Recipe>> createRepositoryForCleanCollection();
@@ -26,13 +26,15 @@ void repositoryTests(RepositoryTestHandler handler) {
     });
 
     test('insert entity', () async {
-      final insertedMap = await _createScrambledEggs(repository!, principal, handler);
+      final insertedMap =
+          await _createScrambledEggs(repository!, principal, handler);
       final insertedKey = handler.getIdFromMap(insertedMap);
       expect(insertedKey, isNotEmpty);
     });
 
     test('read entity', () async {
-      final insertedMap = await _createScrambledEggs(repository!, principal, handler);
+      final insertedMap =
+          await _createScrambledEggs(repository!, principal, handler);
       final insertedKey = handler.getIdFromMap(insertedMap);
       var map = await repository!.get(insertedKey, principal);
 
@@ -42,7 +44,8 @@ void repositoryTests(RepositoryTestHandler handler) {
     });
 
     test('update entity', () async {
-      final insertedMap = await _createScrambledEggs(repository!, principal, handler);
+      final insertedMap =
+          await _createScrambledEggs(repository!, principal, handler);
       final insertedKey = handler.getIdFromMap(insertedMap);
       var map = await repository!.get(insertedKey, principal);
 
@@ -65,11 +68,11 @@ void repositoryTests(RepositoryTestHandler handler) {
     });
 
     test('search entity', () async {
-      final insertedMap = await _createScrambledEggs(repository!, principal, handler);
+      final insertedMap =
+          await _createScrambledEggs(repository!, principal, handler);
       final insertedKey = handler.getIdFromMap(insertedMap);
-      final criteria = SearchCriteria(searchConditions: [
-        Equal.fieldValue('entity.title', 'Scrambled eggs')
-      ]);
+      final criteria = SearchCriteria(
+          searchConditions: [Equal.fieldValue('title', 'Scrambled eggs')]);
       var searchResult = await repository!.searchToList(
         criteria,
         principal,
@@ -78,11 +81,25 @@ void repositoryTests(RepositoryTestHandler handler) {
       expect(handler.getIdFromMap(searchResult.first), insertedKey);
     });
 
+    test('test not equal', () async {
+      await _createScrambledEggs(repository!, principal, handler);
+      await _createFriedEggs(repository!, [principal], handler);
+
+      final criteria = SearchCriteria(
+          searchConditions: [NotEqual.fieldValue('title', 'Scrambled eggs')]);
+      var searchResult = await repository!.searchToList(
+        criteria,
+        principal,
+      );
+
+      expect(searchResult.length, 1);
+      expect(searchResult.first['title'], 'Fried eggs');
+    });
+
     test('search not found', () async {
       await _createScrambledEggs(repository!, principal, handler);
-      final criteria = SearchCriteria(searchConditions: [
-        Equal.fieldValue('entity.title', 'unscrambled eggs')
-      ]);
+      final criteria = SearchCriteria(
+          searchConditions: [Equal.fieldValue('title', 'unscrambled eggs')]);
       var searchResult = await repository!.searchToList(
         criteria,
         principal,
@@ -92,7 +109,8 @@ void repositoryTests(RepositoryTestHandler handler) {
     });
 
     test('getAll', () async {
-      final insertedMap = await _createScrambledEggs(repository!, principal, handler);
+      final insertedMap =
+          await _createScrambledEggs(repository!, principal, handler);
       final insertedKey = handler.getIdFromMap(insertedMap);
       var searchResult = await repository!.getAllToList(
         principal,
@@ -101,12 +119,39 @@ void repositoryTests(RepositoryTestHandler handler) {
       expect(handler.getIdFromMap(searchResult.first), insertedKey);
     });
 
+    test('test like', () async {
+      await _createScrambledEggs(repository!, principal, handler);
+      await _createFriedEggs(repository!, [principal], handler);
+
+      final criteria = SearchCriteria(searchConditions: [
+        Expression.like('title', '%eggs%'),
+      ]);
+
+      var filteredSearchResult = await repository!.searchToList(
+        criteria,
+        principal,
+      );
+
+      final criteria2 = SearchCriteria(searchConditions: [
+        Expression.like('title', '%ried%'),
+      ]);
+
+      var searchResult2 = await repository!.searchToList(
+        criteria2,
+        principal,
+      );
+
+      expect(filteredSearchResult.length, 2);
+      expect(searchResult2.length, 1);
+      expect(searchResult2.first['title'], 'Fried eggs');
+    });
+
     test('search entity with action filter', () async {
       await _createScrambledEggs(repository!, principal, handler);
       await _createFriedEggs(repository!, [principal], handler);
 
       final criteria = SearchCriteria(searchConditions: [
-        Expression.like('entity.title', '%eggs%'),
+        Expression.like('title', '%eggs%'),
       ]);
 
       var filteredSearchResult = await repository!.searchToList(
@@ -161,7 +206,7 @@ void repositoryTests(RepositoryTestHandler handler) {
       await _createFriedEggs(repository!, [principal, thirdPrincipal], handler);
 
       final criteria = SearchCriteria(searchConditions: [
-        Expression.like('entity.title', '%eggs%'),
+        Expression.like('title', '%eggs%'),
       ]);
 
       // because the user has the 'search_recipes' permission,
@@ -205,7 +250,7 @@ void repositoryTests(RepositoryTestHandler handler) {
       await _createFriedEggs(repository!, [principal, thirdPrincipal], handler);
 
       final criteria = SearchCriteria(searchConditions: [
-        Expression.like('entity.title', '%eggs%'),
+        Expression.like('title', '%eggs%'),
       ]);
 
       // because the user has the 'search_recipes' permission,
@@ -257,7 +302,7 @@ void repositoryTests(RepositoryTestHandler handler) {
       await _createFriedEggs(repository!, [principal], handler);
 
       final criteria = SearchCriteria(searchConditions: [
-        Expression.like('entity.title', '%eggs%'),
+        Expression.like('title', '%eggs%'),
       ]);
 
       // because the user has the 'search_recipes' permission,
@@ -310,8 +355,8 @@ void repositoryTests(RepositoryTestHandler handler) {
 
       final criteria = SearchCriteria(searchConditions: [
         And(
-          Like.fieldValue('entity.title', '%eggs%'),
-          Like.fieldValue('entity.description', '%fried%'),
+          Like.fieldValue('title', '%eggs%'),
+          Like.fieldValue('description', '%fried%'),
         )
       ]);
       var searchResult = await repository!.searchToList(
@@ -328,8 +373,8 @@ void repositoryTests(RepositoryTestHandler handler) {
       await _createFriedEggs(repository!, [principal], handler);
 
       final criteria = SearchCriteria(searchConditions: [
-        Like.fieldValue('entity.title', '%eggs%'),
-        Like.fieldValue('entity.description', '%fried%'),
+        Like.fieldValue('title', '%eggs%'),
+        Like.fieldValue('description', '%fried%'),
       ]);
       var searchResult = await repository!.searchToList(
         criteria,
@@ -346,7 +391,7 @@ void repositoryTests(RepositoryTestHandler handler) {
 
       final criteria = SearchCriteria(searchConditions: [
         Not(
-          Like.fieldValue('entity.title', '%Scrambled%'),
+          Like.fieldValue('title', '%Scrambled%'),
         ),
       ]);
       var searchResult = await repository!.searchToList(
@@ -363,8 +408,7 @@ void repositoryTests(RepositoryTestHandler handler) {
       await _createFriedEggs(repository!, [principal], handler);
 
       final criteria = SearchCriteria(searchConditions: [
-        In(FieldPath('entity.title'),
-            ListInput(['Steak', 'Fried eggs', 'Cake']))
+        In(FieldPath('title'), ListInput(['Steak', 'Fried eggs', 'Cake']))
       ]);
       var searchResult = await repository!.searchToList(
         criteria,
@@ -380,7 +424,7 @@ void repositoryTests(RepositoryTestHandler handler) {
       await _createFriedEggs(repository!, [principal], handler);
 
       final criteria = SearchCriteria(searchConditions: [
-        GreaterThan(FieldPath('entity.time'), Input(5)),
+        GreaterThan(FieldPath('time'), Input(5)),
       ]);
       var searchResult = await repository!.searchToList(
         criteria,
@@ -396,7 +440,7 @@ void repositoryTests(RepositoryTestHandler handler) {
       await _createFriedEggs(repository!, [principal], handler);
 
       final criteria = SearchCriteria(searchConditions: [
-        GreaterOrEqualThan(FieldPath('entity.time'), Input(5)),
+        GreaterOrEqualThan(FieldPath('time'), Input(5)),
       ]);
       var searchResult = await repository!.searchToList(
         criteria,
@@ -411,7 +455,7 @@ void repositoryTests(RepositoryTestHandler handler) {
       await _createFriedEggs(repository!, [principal], handler);
 
       final criteria = SearchCriteria(searchConditions: [
-        LessThan(FieldPath('entity.time'), Input(10)),
+        LessThan(FieldPath('time'), Input(10)),
       ]);
       var searchResult = await repository!.searchToList(
         criteria,
@@ -427,7 +471,7 @@ void repositoryTests(RepositoryTestHandler handler) {
       await _createFriedEggs(repository!, [principal], handler);
 
       final criteria = SearchCriteria(searchConditions: [
-        LessOrEqualThan(FieldPath('entity.time'), Input(10)),
+        LessOrEqualThan(FieldPath('time'), Input(10)),
       ]);
       var searchResult = await repository!.searchToList(
         criteria,

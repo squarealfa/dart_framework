@@ -8,6 +8,7 @@ extension ExpressionExtension on Expression {
     if (this is Or) return renderOr(this as Or, context);
     if (this is Not) return renderNot(this as Not, context);
     if (this is Equal) return renderEqual(this as Equal, context);
+    if (this is NotEqual) return renderNotEqual(this as NotEqual, context);
     if (this is In) return renderIn(this as In, context);
     if (this is Like) return renderLike(this as Like, context);
     if (this is GreaterThan) {
@@ -52,6 +53,14 @@ extension ExpressionExtension on Expression {
     var right = renderOperand(expr.right, context);
 
     var ret = '($left == $right)';
+    return ret;
+  }
+
+  String renderNotEqual(NotEqual expr, Context context) {
+    var left = renderOperand(expr.left, context);
+    var right = renderOperand(expr.right, context);
+
+    var ret = '($left != $right)';
     return ret;
   }
 
@@ -111,7 +120,7 @@ extension ExpressionExtension on Expression {
   }
 
   String renderFieldPath(FieldPath operand, Context context) {
-    return operand.fieldPath;
+    return 'entity.' + operand.fieldPath;
   }
 
   String renderInput(Input operand, Context context) {

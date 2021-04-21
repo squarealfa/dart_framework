@@ -12,7 +12,7 @@ class Principal extends DbPrincipal {
     String? tenantKey,
   ]) {
     final permissions = _loadPermissions(username);
-    final tkey = tenantKey ?? 'single_tenant';
+    final tkey = tenantKey ?? '607f866f98b65b55e497cee0';
     return Principal._(permissions, tkey, username);
   }
 

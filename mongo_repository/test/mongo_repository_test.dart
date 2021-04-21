@@ -9,7 +9,7 @@ void main() {
   repositoryTests(MongoRepositoryTestHandler());
 }
 
-class MongoRepositoryTestHandler implements RepositoryTestHandler {
+class MongoRepositoryTestHandler extends RepositoryTestHandler {
   @override
   Future<Repository<Recipe>> createRepositoryForCleanCollection() async {
     final testDbClient = _connectDb(connectionString);

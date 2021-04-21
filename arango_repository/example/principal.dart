@@ -34,5 +34,5 @@ class Principal extends DbPrincipal {
     ];
   }
 
-  static String _loadTenantKey(String username) => 'single_tenant';
+  static String _loadTenantKey(String username) => '607f866f98b65b55e497cee0';
 }

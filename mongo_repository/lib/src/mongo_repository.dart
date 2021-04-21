@@ -5,8 +5,7 @@ import 'package:nosql_repository/nosql_repository.dart';
 import 'package:squarealfa_security/squarealfa_security.dart';
 
 import 'entity_db.dart';
-// import 'expression_rendering/context.dart';
-// import 'expression_rendering/expression_extension.dart';
+import 'expression_rendering/expression_extension.dart';
 
 class MongoRepository<TEntity> extends Repository<TEntity> {
   final Db db;
@@ -152,10 +151,11 @@ class MongoRepository<TEntity> extends Repository<TEntity> {
     searchPolicy ??= this.searchPolicy;
 
     final collection = await entityDb.collection;
-    final stream = collection.aggregateToStream([]);
+    final pipeline = AggregationPipelineBuilder();
+    addAccessFilters(pipeline, searchPolicy, principal);
+    final stages = pipeline.build();
+    final stream = collection.aggregateToStream(stages);
     return stream;
-    // var ret = _runQuery('', principal, searchPolicy, {}, '');
-    // return ret;
   }
 
   @override
@@ -163,9 +163,23 @@ class MongoRepository<TEntity> extends Repository<TEntity> {
     SearchCriteria criteria,
     DbPrincipal principal, [
     SearchPolicy? searchPolicy,
-  ]) {
+  ]) async {
     searchPolicy ??= this.searchPolicy;
-    throw UnimplementedError();
+
+    final pipeline = AggregationPipelineBuilder();
+
+    addAccessFilters(pipeline, searchPolicy, principal);
+
+    for (final exp in criteria.searchConditions) {
+      final stage = exp.render();
+      pipeline.addStage(stage);
+    }
+
+    final stages = pipeline.build();
+
+    final collection = await entityDb.collection;
+    final stream = collection.aggregateToStream(stages);
+    return stream;
     // var filters = _createFilters(criteria);
     // var filterQuery = filters.item1;
     // var parameters = filters.item2;
@@ -179,6 +193,24 @@ class MongoRepository<TEntity> extends Repository<TEntity> {
     // );
 
     // return page;
+  }
+
+  void addAccessFilters(AggregationPipelineBuilder pipeline,
+      SearchPolicy searchPolicy, DbPrincipal principal) {
+    if (searchPolicy.filterByTenant) {
+      pipeline.addStage(Match(where
+          .eq('meta.tenantId', ObjectId.fromHexString(principal.tenantKey))
+          .map[r'$query']));
+    }
+
+    final action = searchPolicy.actionToDemandOnPrincipal(principal);
+    if (action.isNotEmpty) {
+      pipeline.addStage(Unwind(Field('meta.shares')));
+      pipeline.addStage(Match({
+        'meta.shares.userKey': principal.userKey,
+        'meta.shares.actions': 'read',
+      }));
+    }
   }
 
   @override
@@ -253,51 +285,6 @@ class MongoRepository<TEntity> extends Repository<TEntity> {
     );
   }
 
-  // Stream<Map<String, dynamic>> _runQuery(
-  //   String query,
-  //   DbPrincipal principal,
-  //   SearchPolicy searchPolicy,
-  //   Map<String, dynamic> parameters,
-  //   String collectionAlias,
-  // ) {
-  //   var q = createTenantBoundQuery(principal, searchPolicy)
-  //     ..addLineIfThen(collectionAlias != '',
-  //         'let $collectionAlias = (for c in $collectionName return c)')
-  //     ..addLineIfThen(query != '', query);
-
-  //   for (var entry in parameters.entries) {
-  //     q = q.addBindVar(entry.key, entry.value);
-  //   }
-  //   var stream = q.runAndReturnStream();
-
-  //   return stream;
-  // }
-
-  // QueryWithClient createTenantBoundQuery(
-  //   DbPrincipal principal,
-  //   SearchPolicy policy,
-  // ) {
-  //   final action = policy.actionToDemandOnPrincipal(principal);
-  //   if (action == '' && !policy.filterByTenant) {
-  //     return db.newQuery();
-  //   }
-  //   final actionFilter = action == ''
-  //       ? ''
-  //       : '''&& length(c.meta.shares[* FILTER CURRENT.userKey == @userKey
-  // && @action IN CURRENT.actions ]) > 0 ''';
-
-  //   var q = db.newQuery()
-  //     ..addLine('''let $collectionName = (
-  //                   for c in $collectionName
-  //                   filter c.meta.tenantKey == @tenantKey
-  //                     $actionFilter
-  //                   return c
-  //                 )''')
-  //     ..addBindVar('tenantKey', principal.tenantKey)
-  //     ..addBindVarIfThen(action != '', 'userKey', principal.userKey)
-  //     ..addBindVarIfThen(action != '', 'action', action);
-  //   return q;
-  // }
 
   String get actionToDemand => 'read';
 
@@ -328,12 +315,14 @@ class MongoRepository<TEntity> extends Repository<TEntity> {
       return;
     }
 
-    if (meta['tenantKey'] == null && createTenantKey) {
-      meta['tenantKey'] = principal.tenantKey;
+    final tenantId = ObjectId.fromHexString(principal.tenantKey);
+
+    if (meta['tenantId'] == null && createTenantKey) {
+      meta['tenantId'] = tenantId;
       return;
     }
 
-    if (meta['tenantKey'] != principal.tenantKey) {
+    if (meta['tenantId'] != tenantId) {
       throw Unauthorized();
     }
   }
@@ -369,10 +358,10 @@ class MongoRepository<TEntity> extends Repository<TEntity> {
   }
 
   bool _isValidateTenant(DbPrincipal principal, Map<String, dynamic> map) {
-    final entityTenantKey = (map['meta'] ?? {})['tenantKey'] as String?;
+    final entityTenantId = (map['meta'] ?? {})['tenantId'] as ObjectId?;
 
-    final isValid =
-        entityTenantKey != null && entityTenantKey == principal.tenantKey;
+    final isValid = entityTenantId != null &&
+        entityTenantId.toHexString() == principal.tenantKey;
     return isValid;
   }
 
@@ -397,120 +386,4 @@ class MongoRepository<TEntity> extends Repository<TEntity> {
     throw Unauthorized();
   }
 
-  // String _handleDataResult(OperationResult operationResult) {
-  //   if (operationResult.result.error) {
-  //     throw DbException(
-  //       message: operationResult.result.errorMessage,
-  //       code: operationResult.result.code.toString(),
-  //       number: operationResult.result.errorNum.toString(),
-  //     );
-  //   }
-  //   return operationResult.identifier.key;
-  // }
-
-  // Tuple2<String, Map<String, dynamic>>
-  // _createFilters(SearchCriteria criteria) {
-  //   var context = Context();
-  //   var buffer = StringBuffer();
-  //   for (var condition in criteria.searchConditions) {
-  //     var expression = condition.render(context);
-  //     buffer.writeln('FILTER $expression');
-  //   }
-  //   var ret = Tuple2(buffer.toString(), context.parameters);
-  //   return ret;
-  // }
-
-  // Stream<Map<String, dynamic>> _createPage(
-  //   String filterQuery,
-  //   SearchCriteria criteria,
-  //   Map<String, dynamic> parameters,
-  //   DbPrincipal principal,
-  //   SearchPolicy searchPolicy,
-  // ) {
-  //   final queryBuffer = StringBuffer();
-
-  //   queryBuffer.writeln('FOR entity in entities ');
-  //   queryBuffer.writeln(filterQuery);
-
-  //   var sort = _createSort(criteria);
-  //   queryBuffer.writeln(sort);
-
-  //   if (criteria.skip != null || criteria.take != null) {
-  //     queryBuffer.writeln('LIMIT @skip, @take');
-  //     parameters.addAll({'skip': criteria.skip, 'take': criteria.take});
-  //   }
-
-  //   var retrn = _createReturn(criteria);
-  //   queryBuffer.writeln(retrn);
-
-  //   var query = queryBuffer.toString();
-
-  //   var page = _runQuery(
-  //     query,
-  //     principal,
-  //     searchPolicy,
-  //     parameters,
-  //     'entities',
-  //   );
-  //   return page;
-  // }
-
-  // String _createSort(SearchCriteria criteria) {
-  //   var sortBuffer = StringBuffer();
-  //   for (var f in criteria.orderByFields) {
-  //     if (sortBuffer.isEmpty) {
-  //       sortBuffer.write(sortBuffer.isEmpty ? 'sort' : ',');
-  //     }
-  //     sortBuffer.write(' entity.${_sanitizePath(f.path)}');
-  //   }
-
-  //   return sortBuffer.toString();
-  // }
-
-  // String _createReturn(SearchCriteria criteria) {
-  //   if ((criteria.returnFields).isEmpty) {
-  //     return 'RETURN entity';
-  //   }
-
-  //   var sb = StringBuffer();
-
-  //   for (var rf in criteria.returnFields) {
-  //     if (sb.isEmpty) {
-  //       sb.write('RETURN {');
-  //     } else {
-  //       sb.write(', ');
-  //     }
-
-  //     var alias = rf.alias ?? rf.path!.replaceAll('.', '_');
-  //     sb.write(' $alias : entity.${rf.path} ');
-  //   }
-  //   sb.write('}');
-
-  //   var ret = sb.toString();
-  //   return ret;
-  // }
-
-  // Future<int> _getCount(
-  //   String query,
-  //   Map<String, dynamic> parameters,
-  //   DbPrincipal principal,
-  //   SearchPolicy searchPolicy,
-  // ) async {
-  //   var countQuery = 'RETURN { cnt: length($query) }';
-  //   var count = (await _runQuery(
-  //     countQuery,
-  //     principal,
-  //     searchPolicy,
-  //     parameters,
-  //     'entities',
-  //   ).first)['cnt'] as int;
-
-  //   return count;
-  // }
-
-  // String _sanitizePath(String path) {
-  //   var sanitized = path.replaceAll(RegExp(r'[^a-zA-Z0-9\.\_]'), '');
-  //   return sanitized;
-  // }
-  //
 }

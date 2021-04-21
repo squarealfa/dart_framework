@@ -10,7 +10,7 @@ void main() {
   repositoryTests(ArangoRepositoryTestHandler());
 }
 
-class ArangoRepositoryTestHandler implements RepositoryTestHandler {
+class ArangoRepositoryTestHandler extends RepositoryTestHandler {
   @override
   Future<Repository<Recipe>> createRepositoryForCleanCollection() async {
     final testDbClient = await _connectTestDb();
