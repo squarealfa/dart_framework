@@ -461,7 +461,10 @@ class ArangoDbRepository<TEntity> extends Repository<TEntity> {
     DbPrincipal principal,
     SearchPolicy searchPolicy,
   ) async {
-    var countQuery = 'RETURN { cnt: length($query) }';
+    var countQuery = '''FOR entity in entities 
+           $query
+           return { 'cnt' : LENGTH(entities) }
+         ''';
     var count = (await _runQuery(
       countQuery,
       principal,
