@@ -1,3 +1,5 @@
+import 'package:arango_driver/src/transactions/transaction.dart';
+
 import 'arango_db_client.dart';
 import 'query.dart';
 import 'query/bind_name_value_pair.dart';
@@ -84,11 +86,12 @@ class QueryWithClient extends Query {
 
   /// Calls `client.queryToList( this.toMap() )`
   /// where `client` is [ArangoDBClient] saved in `client` property.
-  Future<List<Map<String, dynamic>>> runAndReturnFutureList() async =>
-      await client.queryToList(toMap());
+  Future<List<Map<String, dynamic>>> runAndReturnFutureList(
+          {Transaction? transaction}) async =>
+      await client.queryToList(toMap(), transaction: transaction);
 
   /// Calls `client.queryToStream( this.toMap() )`
   /// where `client` is [ArangoDBClient] saved in `client` property.
-  Stream<Map<String, dynamic>> runAndReturnStream() =>
-      client.queryToStream(toMap());
+  Stream<Map<String, dynamic>> runAndReturnStream({Transaction? transaction}) =>
+      client.queryToStream(toMap(), transaction: transaction);
 }

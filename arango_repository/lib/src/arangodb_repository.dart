@@ -310,7 +310,8 @@ class ArangoDbRepository<TEntity> extends Repository<TEntity> {
     for (var entry in parameters.entries) {
       q = q.addBindVar(entry.key, entry.value);
     }
-    var stream = q.runAndReturnStream();
+    final trx = _getDriverTransaction(transaction);
+    var stream = q.runAndReturnStream(transaction: trx);
 
     return stream;
   }
