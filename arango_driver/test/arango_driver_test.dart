@@ -457,6 +457,31 @@ void main() {
         transaction: transaction,
       );
 
+      final preCommitCount = (await testDbClient.documentsCount(testCollection))
+              .collectionInfo
+              .count ??
+          0;
+
+      final trxCount = (await testDbClient.documentsCount(
+            testCollection,
+            transaction: transaction,
+          ))
+              .collectionInfo
+              .count ??
+          0;
+
+      final results = await testDbClient.queryToList(
+        {
+          // See alse client.queryToStream().
+          'query': '''
+    FOR doc IN test_temp_collection
+    RETURN doc
+    ''',
+        },
+        transaction: transaction,
+      );
+      final resultCount = results.length;
+
       await testDbClient.commitTransaction(transaction);
 
       final commitCount = (await testDbClient.documentsCount(testCollection))
@@ -465,6 +490,9 @@ void main() {
           0;
 
       expect(commitCount, count + 1);
+      expect(trxCount, count + 1);
+      expect(resultCount, count + 1);
+      expect(preCommitCount, count);
     });
 
     test('delete document and abort', () async {

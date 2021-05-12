@@ -522,8 +522,14 @@ class ArangoDBClient {
     return lst;
   }
 
-  Stream<Map<String, dynamic>> queryToStream(Map<String, Object> data) async* {
-    var streamStream = _queryToStreamStream(data);
+  Stream<Map<String, dynamic>> queryToStream(
+    Map<String, Object> data, {
+    Transaction? transaction,
+  }) async* {
+    var streamStream = _queryToStreamStream(
+      data,
+      transaction: transaction,
+    );
     await for (var batch in streamStream) {
       var items = batch['result'];
       for (var item in items) {
@@ -551,21 +557,39 @@ class ArangoDBClient {
     }
   }
 
-  Future _queryFirstBatch(Map<String, Object> data) async =>
-      _httpPost(['_db', db, '_api', 'cursor'], data);
+  Future _queryFirstBatch(
+    Map<String, Object> data, {
+    Transaction? transaction,
+  }) async {
+    return _httpPost(
+      ['_db', db, '_api', 'cursor'],
+      data,
+      headers: _addTransactionHeader(transaction),
+    );
+  }
 
-  Future _fetchNextBatch(int cursorId) async =>
-      _httpPut(['_db', db, '_api', 'cursor', cursorId.toString()]);
+  Future _fetchNextBatch(
+    int cursorId, {
+    Transaction? transaction,
+  }) async {
+    return _httpPut(
+      ['_db', db, '_api', 'cursor', cursorId.toString()],
+      headers: _addTransactionHeader(transaction),
+    );
+  }
 
   /// Makes query to ArangoDB batabase.
-  Stream _queryToStreamStream(Map<String, Object> data) async* {
-    var resultData = await _queryFirstBatch(data);
+  Stream _queryToStreamStream(
+    Map<String, Object> data, {
+    Transaction? transaction,
+  }) async* {
+    var resultData = await _queryFirstBatch(data, transaction: transaction);
     yield resultData;
     while (resultData.containsKey('id') &&
         resultData.containsKey('hasMore') &&
         resultData['hasMore'] as bool == true) {
       var cursorId = int.parse(resultData['id'] as String);
-      resultData = await _fetchNextBatch(cursorId);
+      resultData = await _fetchNextBatch(cursorId, transaction: transaction);
       yield resultData;
     }
   }
@@ -574,10 +598,15 @@ class ArangoDBClient {
   /// collect results in memory and return as List.
   /// If result has error - throws error.
   Future<List<Map<String, dynamic>>> queryToList(
-      Map<String, Object> data) async {
+    Map<String, Object> data, {
+    Transaction? transaction,
+  }) async {
     var result = <Map<String, dynamic>>[];
 
-    await for (var batch in _queryToStreamStream(data)) {
+    await for (var batch in _queryToStreamStream(
+      data,
+      transaction: transaction,
+    )) {
       if (batch['error']) {
         throw batch;
       }
