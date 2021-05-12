@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:nosql_repository/nosql_repository.dart';
+import 'package:nosql_repository/src/transaction_options.dart';
 
 /// Defines data access methods to a specific
 /// database collection.
@@ -46,9 +47,10 @@ abstract class Repository<TEntity> {
   /// return the updated entity.
   Future<Map<String, dynamic>> create(
     Map<String, dynamic> map,
-    DbPrincipal principal, [
+    DbPrincipal principal, {
     CreatePolicy? createPolicy,
-  ]);
+    Transaction? transaction,
+  });
 
   /// Deletes the entity from the collection identified by the [key] parameter.
   ///
@@ -64,9 +66,10 @@ abstract class Repository<TEntity> {
   /// an error is thrown.
   Future delete(
     String key,
-    DbPrincipal principal, [
+    DbPrincipal principal, {
     DeletePolicy? deletePolicy,
-  ]);
+    Transaction? transaction,
+  });
 
   /// Update an entity in the collection contained in the [map] parameter.
   ///
@@ -82,9 +85,10 @@ abstract class Repository<TEntity> {
   /// an error is thrown.
   Future<Map<String, dynamic>> update(
     Map<String, dynamic> map,
-    DbPrincipal principal, [
+    DbPrincipal principal, {
     UpdatePolicy? updatePolicy,
-  ]);
+    Transaction? transaction,
+  });
 
   /// Retrieves an entity from the collection identified by the [key] parameter.
   ///
@@ -100,9 +104,10 @@ abstract class Repository<TEntity> {
   /// an error is thrown.
   Future<Map<String, dynamic>> get(
     String key,
-    DbPrincipal principal, [
+    DbPrincipal principal, {
     SearchPolicy? searchPolicy,
-  ]);
+    Transaction? transaction,
+  });
 
   /// Gets all the entities from the collection identified by the [key]
   /// parameter.
@@ -120,15 +125,21 @@ abstract class Repository<TEntity> {
   /// permission before actually returning the elements. Otherwise,
   /// an error is thrown.
   Future<Stream<Map<String, dynamic>>> getAllToStream(
-    DbPrincipal principal, [
+    DbPrincipal principal, {
     SearchPolicy? searchPolicy,
-  ]);
+    Transaction? transaction,
+  });
 
   Future<List<Map<String, dynamic>>> getAllToList(
-    DbPrincipal principal, [
+    DbPrincipal principal, {
     SearchPolicy? searchPolicy,
-  ]) async {
-    final stream = await getAllToStream(principal, searchPolicy);
+    Transaction? transaction,
+  }) async {
+    final stream = await getAllToStream(
+      principal,
+      searchPolicy: searchPolicy,
+      transaction: transaction,
+    );
     final list = await stream.toList();
     return list;
   }
@@ -154,9 +165,10 @@ abstract class Repository<TEntity> {
   /// their owner within the tenant.
   Future<SearchResult> searchWithCount(
     SearchCriteria criteria,
-    DbPrincipal principal, [
+    DbPrincipal principal, {
     SearchPolicy? searchPolicy,
-  ]);
+    Transaction? transaction,
+  });
 
   /// Searches entities according to [criteria] and returns the
   /// total count of entities fitting the constraints.
@@ -178,9 +190,10 @@ abstract class Repository<TEntity> {
   /// their owner within the tenant.
   Future<int> count(
     SearchCriteria criteria,
-    DbPrincipal principal, [
+    DbPrincipal principal, {
     SearchPolicy? searchPolicy,
-  ]);
+    Transaction? transaction,
+  });
 
   /// Searches entities according to [criteria],
   /// returning all the entities that fit the constraints.
@@ -202,14 +215,26 @@ abstract class Repository<TEntity> {
   /// their owner within the tenant.
   Future<Stream<Map<String, dynamic>>> searchToStream(
     SearchCriteria criteria,
-    DbPrincipal principal, [
+    DbPrincipal principal, {
     SearchPolicy? searchPolicy,
-  ]);
+    Transaction? transaction,
+  });
 
   Future<List<Map<String, dynamic>>> searchToList(
     SearchCriteria criteria,
-    DbPrincipal principal, [
+    DbPrincipal principal, {
     SearchPolicy? searchPolicy,
-  ]) async =>
-      (await searchToStream(criteria, principal, searchPolicy)).toList();
+    Transaction? transaction,
+  }) async =>
+      (await searchToStream(
+        criteria,
+        principal,
+        searchPolicy: searchPolicy,
+        transaction: transaction,
+      ))
+          .toList();
+
+  Future<Transaction> beginTransaction(TransactionOptions options);
+  Future commitTransaction(Transaction transaction);
+  Future abortTransaction(Transaction transaction);
 }

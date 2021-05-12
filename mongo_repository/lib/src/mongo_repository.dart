@@ -37,9 +37,10 @@ class MongoRepository<TEntity> extends Repository<TEntity> {
   @override
   Future<Map<String, dynamic>> create(
     Map<String, dynamic> map,
-    DbPrincipal principal, [
+    DbPrincipal principal, {
     CreatePolicy? createPolicy,
-  ]) async {
+    Transaction? transaction,
+  }) async {
     if (map['_id'] == null) {
       map['_id'] = ObjectId();
     }
@@ -70,9 +71,10 @@ class MongoRepository<TEntity> extends Repository<TEntity> {
   @override
   Future<Map<String, dynamic>> update(
     Map<String, dynamic> map,
-    DbPrincipal principal, [
+    DbPrincipal principal, {
     UpdatePolicy? updatePolicy,
-  ]) async {
+    Transaction? transaction,
+  }) async {
     var id = map['_id'] as ObjectId;
 
     var existing = await _getFromObjectId(
@@ -109,9 +111,10 @@ class MongoRepository<TEntity> extends Repository<TEntity> {
   @override
   Future delete(
     String id,
-    DbPrincipal principal, [
+    DbPrincipal principal, {
     DeletePolicy? deletePolicy,
-  ]) async {
+    Transaction? transaction,
+  }) async {
     var map = await _getFromId(id, principal);
 
     deletePolicy ??= this.deletePolicy;
@@ -131,9 +134,10 @@ class MongoRepository<TEntity> extends Repository<TEntity> {
   @override
   Future<Map<String, dynamic>> get(
     String id,
-    DbPrincipal principal, [
+    DbPrincipal principal, {
     SearchPolicy? searchPolicy,
-  ]) async {
+    Transaction? transaction,
+  }) async {
     final map = await _getFromId(id, principal);
     searchPolicy ??= this.searchPolicy;
 
@@ -145,9 +149,10 @@ class MongoRepository<TEntity> extends Repository<TEntity> {
 
   @override
   Future<Stream<Map<String, dynamic>>> getAllToStream(
-    DbPrincipal principal, [
+    DbPrincipal principal, {
     SearchPolicy? searchPolicy,
-  ]) async {
+    Transaction? transaction,
+  }) async {
     searchPolicy ??= this.searchPolicy;
 
     final collection = await entityDb.collection;
@@ -161,9 +166,10 @@ class MongoRepository<TEntity> extends Repository<TEntity> {
   @override
   Future<Stream<Map<String, dynamic>>> searchToStream(
     SearchCriteria criteria,
-    DbPrincipal principal, [
+    DbPrincipal principal, {
     SearchPolicy? searchPolicy,
-  ]) async {
+    Transaction? transaction,
+  }) async {
     searchPolicy ??= this.searchPolicy;
 
     final pipeline = AggregationPipelineBuilder();
@@ -226,9 +232,10 @@ class MongoRepository<TEntity> extends Repository<TEntity> {
   @override
   Future<int> count(
     SearchCriteria criteria,
-    DbPrincipal principal, [
+    DbPrincipal principal, {
     SearchPolicy? searchPolicy,
-  ]) async {
+    Transaction? transaction,
+  }) async {
     searchPolicy ??= this.searchPolicy;
 
     final pipeline = AggregationPipelineBuilder();
@@ -253,11 +260,13 @@ class MongoRepository<TEntity> extends Repository<TEntity> {
   @override
   Future<SearchResult> searchWithCount(
     SearchCriteria criteria,
-    DbPrincipal principal, [
+    DbPrincipal principal, {
     SearchPolicy? searchPolicy,
-  ]) async {
-    final cnt = await count(criteria, principal, searchPolicy);
-    final page = await searchToStream(criteria, principal, searchPolicy);
+    Transaction? transaction,
+  }) async {
+    final cnt = await count(criteria, principal, searchPolicy: searchPolicy);
+    final page =
+        await searchToStream(criteria, principal, searchPolicy: searchPolicy);
 
     final sr = SearchResult(page, cnt);
     return sr;
@@ -413,5 +422,20 @@ class MongoRepository<TEntity> extends Repository<TEntity> {
     }
 
     pipeline.addStage(Project(map));
+  }
+
+  @override
+  Future abortTransaction(Transaction transaction) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Transaction> beginTransaction(TransactionOptions options) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future commitTransaction(Transaction transaction) {
+    throw UnimplementedError();
   }
 }

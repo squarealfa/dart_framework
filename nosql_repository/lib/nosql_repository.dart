@@ -29,3 +29,5 @@ export 'src/repository.dart';
 export 'src/return_field.dart';
 export 'src/search_criteria.dart';
 export 'src/search_result.dart';
+export 'src/transaction.dart';
+export 'src/transaction_options.dart';

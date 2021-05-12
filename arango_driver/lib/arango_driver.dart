@@ -15,6 +15,7 @@ export 'src/results/db_info_response.dart';
 export 'src/results/id_response.dart';
 export 'src/results/identifier.dart';
 export 'src/results/operation_result.dart';
+export 'src/results/result.dart';
 export 'src/results/result_response.dart';
 export 'src/transactions/transaction.dart';
 export 'src/transactions/transaction_options.dart';

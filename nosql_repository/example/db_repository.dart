@@ -29,10 +29,8 @@ class DbRepository<T> extends Repository<T> {
 
   @override
   Future<Map<String, dynamic>> create(
-    Map<String, dynamic> map,
-    DbPrincipal principal, [
-    CreatePolicy? createPolicy,
-  ]) async {
+      Map<String, dynamic> map, DbPrincipal principal,
+      {CreatePolicy? createPolicy, Transaction? transaction}) async {
     print(
         '''This method would create the map in the database, in the $collectionName collection.
            It would fail if the [permission] parameter is set and the user principal does not
@@ -55,26 +53,25 @@ class DbRepository<T> extends Repository<T> {
   @override
   Future delete(
     String key,
-    DbPrincipal principal, [
+    DbPrincipal principal, {
     DeletePolicy? deletePolicy,
-  ]) async {
+    Transaction? transaction,
+  }) async {
     _storedMaps.remove(key);
   }
 
   @override
-  Future<Map<String, dynamic>> get(
-    String key,
-    DbPrincipal principal, [
-    SearchPolicy? searchPolicy,
-  ]) async {
+  Future<Map<String, dynamic>> get(String key, DbPrincipal principal,
+      {SearchPolicy? searchPolicy, Transaction? transaction}) async {
     return Future.value(_storedMaps[key]);
   }
 
   @override
   Future<Stream<Map<String, dynamic>>> getAllToStream(
-    DbPrincipal principal, [
+    DbPrincipal principal, {
     SearchPolicy? searchPolicy,
-  ]) async {
+    Transaction? transaction,
+  }) async {
     return _getAllToStream(principal, searchPolicy);
   }
 
@@ -90,9 +87,10 @@ class DbRepository<T> extends Repository<T> {
   @override
   Future<Map<String, dynamic>> update(
     Map<String, dynamic> map,
-    DbPrincipal principal, [
+    DbPrincipal principal, {
     UpdatePolicy? updatePolicy,
-  ]) {
+    Transaction? transaction,
+  }) {
     _storedMaps[map['_key']] = map;
     return Future.value(map);
   }
@@ -100,27 +98,45 @@ class DbRepository<T> extends Repository<T> {
   @override
   Future<int> count(
     SearchCriteria criteria,
-    DbPrincipal principal, [
+    DbPrincipal principal, {
     SearchPolicy? searchPolicy,
-  ]) {
+    Transaction? transaction,
+  }) {
     throw UnimplementedError();
   }
 
   @override
   Future<Stream<Map<String, dynamic>>> searchToStream(
     SearchCriteria criteria,
-    DbPrincipal principal, [
+    DbPrincipal principal, {
     SearchPolicy? searchPolicy,
-  ]) async {
+    Transaction? transaction,
+  }) async {
     throw UnimplementedError();
   }
 
   @override
   Future<SearchResult> searchWithCount(
     SearchCriteria criteria,
-    DbPrincipal principal, [
+    DbPrincipal principal, {
     SearchPolicy? searchPolicy,
-  ]) {
+    Transaction? transaction,
+  }) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future abortTransaction(Transaction transaction) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Transaction> beginTransaction(TransactionOptions options) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future commitTransaction(Transaction transaction) {
     throw UnimplementedError();
   }
 }

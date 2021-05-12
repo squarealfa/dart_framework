@@ -154,7 +154,7 @@ void repositoryTests(RepositoryTestHandler handler) {
       var filteredSearchResult = await repository!.searchToList(
         criteria,
         principal,
-        SearchPolicy(permission: 'non-existent'),
+        searchPolicy: SearchPolicy(permission: 'non-existent'),
       );
 
       var filteredSearchResult2 = await repository!.searchToList(
@@ -166,7 +166,7 @@ void repositoryTests(RepositoryTestHandler handler) {
       var unfilteredSearchResult = await repository!.searchToList(
         criteria,
         principal,
-        SearchPolicy(permission: 'search_recipes'),
+        searchPolicy: SearchPolicy(permission: 'search_recipes'),
       );
 
       expect(filteredSearchResult.length, 1);
@@ -180,7 +180,7 @@ void repositoryTests(RepositoryTestHandler handler) {
 
       var filteredSearchResult = await repository!.getAllToList(
         principal,
-        SearchPolicy(permission: 'non-existent'),
+        searchPolicy: SearchPolicy(permission: 'non-existent'),
       );
 
       var filteredSearchResult2 = await repository!.getAllToList(
@@ -190,7 +190,7 @@ void repositoryTests(RepositoryTestHandler handler) {
 
       var unfilteredSearchResult = await repository!.getAllToList(
         principal,
-        SearchPolicy(permission: 'search_recipes'),
+        searchPolicy: SearchPolicy(permission: 'search_recipes'),
       );
 
       expect(filteredSearchResult.length, 1);
@@ -211,7 +211,7 @@ void repositoryTests(RepositoryTestHandler handler) {
       var filteredSearchResult = await repository!.searchToList(
         criteria,
         thirdPrincipal,
-        SearchPolicy(),
+        searchPolicy: SearchPolicy(),
       );
 
       var unfilteredSearchResult = await repository!.searchToList(
@@ -231,7 +231,7 @@ void repositoryTests(RepositoryTestHandler handler) {
       // all records of the same tenant will be returned
       var filteredSearchResult = await repository!.getAllToList(
         thirdPrincipal,
-        SearchPolicy(),
+        searchPolicy: SearchPolicy(),
       );
 
       var unfilteredSearchResult = await repository!.getAllToList(
@@ -255,7 +255,7 @@ void repositoryTests(RepositoryTestHandler handler) {
       var filteredSearchResult = await repository!.searchToList(
         criteria,
         thirdPrincipal,
-        SearchPolicy(
+        searchPolicy: SearchPolicy(
           permission: 'non-existent',
           filterByTenant: false,
         ),
@@ -264,7 +264,7 @@ void repositoryTests(RepositoryTestHandler handler) {
       var unfilteredSearchResult = await repository!.searchToList(
         criteria,
         thirdPrincipal,
-        SearchPolicy(filterByTenant: false, permission: 'search_recipes'),
+        searchPolicy: SearchPolicy(filterByTenant: false, permission: 'search_recipes'),
       );
 
       expect(filteredSearchResult.length, 1);
@@ -279,7 +279,7 @@ void repositoryTests(RepositoryTestHandler handler) {
       // all records of the same tenant will be returned
       var filteredSearchResult = await repository!.getAllToList(
         thirdPrincipal,
-        SearchPolicy(
+        searchPolicy: SearchPolicy(
           permission: 'non-existent',
           filterByTenant: false,
         ),
@@ -287,7 +287,7 @@ void repositoryTests(RepositoryTestHandler handler) {
 
       var unfilteredSearchResult = await repository!.getAllToList(
         thirdPrincipal,
-        SearchPolicy(filterByTenant: false, permission: 'search_recipes'),
+        searchPolicy: SearchPolicy(filterByTenant: false, permission: 'search_recipes'),
       );
 
       expect(filteredSearchResult.length, 1);
@@ -307,7 +307,7 @@ void repositoryTests(RepositoryTestHandler handler) {
       var filteredSearchResult = await repository!.searchToList(
         criteria,
         thirdPrincipal,
-        SearchPolicy(
+        searchPolicy: SearchPolicy(
           permission: 'non-existent',
           filterByTenant: false,
         ),
@@ -316,7 +316,7 @@ void repositoryTests(RepositoryTestHandler handler) {
       var unfilteredSearchResult = await repository!.searchToList(
         criteria,
         thirdPrincipal,
-        SearchPolicy(filterByTenant: false, permission: 'search_recipes'),
+        searchPolicy: SearchPolicy(filterByTenant: false, permission: 'search_recipes'),
       );
 
       expect(filteredSearchResult.length, 0);
@@ -331,7 +331,7 @@ void repositoryTests(RepositoryTestHandler handler) {
       // all records of the same tenant will be returned
       var filteredSearchResult = await repository!.getAllToList(
         thirdPrincipal,
-        SearchPolicy(
+        searchPolicy: SearchPolicy(
           permission: 'non-existent',
           filterByTenant: false,
         ),
@@ -339,7 +339,7 @@ void repositoryTests(RepositoryTestHandler handler) {
 
       var unfilteredSearchResult = await repository!.getAllToList(
         thirdPrincipal,
-        SearchPolicy(filterByTenant: false, permission: 'search_recipes'),
+        searchPolicy: SearchPolicy(filterByTenant: false, permission: 'search_recipes'),
       );
 
       expect(filteredSearchResult.length, 0);

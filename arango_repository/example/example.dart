@@ -72,7 +72,7 @@ void main(List<String> args) async {
   searchResult = await repository.searchToList(
     criteria,
     principal,
-    SearchPolicy(permission: 'search_all_recipes'),
+    searchPolicy: SearchPolicy(permission: 'search_all_recipes'),
   );
   for (var item in searchResult) {
     print(item.toString());
