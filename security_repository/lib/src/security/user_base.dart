@@ -8,9 +8,9 @@ class UserBase<TUserCache extends UserCacheBase> {
     required this.username,
     required this.tenantKey,
     required this.friendlyName,
-    // this.passwordHash = '',
-    // this.passwordSalt = '',
     required this.roles,
+    required this.isLocked,
+    required this.numberOfFailedAttempts,
     this.cache,
   });
 
@@ -20,11 +20,9 @@ class UserBase<TUserCache extends UserCacheBase> {
 
   final String friendlyName;
 
-  // final String passwordHash;
-
-  // final String passwordSalt;
-
   final List<String> roles;
+  final bool isLocked;
+  final int numberOfFailedAttempts;
 
   final TUserCache? cache;
 }

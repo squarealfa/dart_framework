@@ -3,8 +3,7 @@ import 'package:nosql_repository/nosql_repository.dart';
 import 'package:security_repository/security_repository.dart';
 import 'package:mongo_repository/mongo_repository.dart';
 
-abstract class MongoUserRepository<TUser extends UserBase<TUserCache>,
-    TUserCache extends UserCacheBase> extends UserRepositoryBase<TUser> {
+class MongoUserRepository extends UserRepositoryBase {
   final Db db;
   final EntityDb entityDb;
   Future<DbCollection> get usersCollection async => await entityDb.collection;
@@ -15,9 +14,9 @@ abstract class MongoUserRepository<TUser extends UserBase<TUserCache>,
   }) : entityDb = EntityDb(db, 'users', secure: secure);
 
   @override
-  Future<TUser> updateUserCache(TUser user) async {
+  Future<UserPermissionSet> getUserPermissionSet(String userKey) async {
     final kh = MongoKeyHandler();
-    final id = kh.keyToId(user.key);
+    final id = kh.keyToId(userKey);
     var query = [
       {
         '\$match': {'_id': id},
@@ -55,33 +54,16 @@ abstract class MongoUserRepository<TUser extends UserBase<TUserCache>,
         (str[0]['permissions'] as List).map((p) => p.toString()).toList();
     var isAdministrator = str[0]['isAdministrator'] as bool;
 
-    var newCache = createUserCache(
-        isAdministrator: isAdministrator,
-        permissions: permissions,
-        updateTimestamp: DateTime.now());
+    final permissionSet = UserPermissionSet(
+      permissions: permissions,
+      isAdministrator: isAdministrator,
+    );
 
-    if (newCache == user.cache) return user;
-
-    user = copyUserWith(user, cache: newCache);
-
-    var userMap = userToMap(user);
-    await collection.replaceOne({'_id': id}, userMap);
-
-    return user;
+    return permissionSet;
   }
 
-  TUserCache createUserCache({
-    required bool isAdministrator,
-    required List<String> permissions,
-    required DateTime updateTimestamp,
-  });
-
-  TUser copyUserWith(TUser user, {required TUserCache cache});
-  Map<String, dynamic> userToMap(TUser user);
-  TUser userFromMap(Map<String, dynamic> map);
-
   @override
-  Future<TUser> getFromUsername(String username) async {
+  Future<Map<String, dynamic>> getFromUsername(String username) async {
     final collection = await usersCollection;
     final userMap = await collection.findOne({'emailAddress', username});
 
@@ -89,12 +71,11 @@ abstract class MongoUserRepository<TUser extends UserBase<TUserCache>,
       throw NotFound();
     }
 
-    final user = userFromMap(userMap);
-    return user;
+    return userMap;
   }
 
   @override
-  Future<TUser> getFromKey(String key) async {
+  Future<Map<String, dynamic>> getFromKey(String key) async {
     final kh = MongoKeyHandler();
     final id = kh.keyToId(key);
 
@@ -104,8 +85,29 @@ abstract class MongoUserRepository<TUser extends UserBase<TUserCache>,
     if (userMap == null) {
       throw NotFound();
     }
+    return userMap;
+  }
 
-    final user = userFromMap(userMap);
-    return user;
+  @override
+  Future<Map<String, dynamic>> updateUser(
+      String key, Map<String, dynamic> userMap) async {
+    final kh = MongoKeyHandler();
+    final id = kh.keyToId(key);
+
+    final collection = await usersCollection;
+    final wr = await collection.replaceOne({'_id': id}, userMap);
+    if (wr.hasWriteErrors) {
+      throw _writeErrorToException(wr);
+    }
+    final result = await collection.find(where.eq('_id', id)).single;
+    return result;
+  }
+
+  DbException _writeErrorToException(WriteResult wr) {
+    return DbException(
+      message: wr.errmsg,
+      code: wr.code.toString(),
+      number: wr.codeName,
+    );
   }
 }

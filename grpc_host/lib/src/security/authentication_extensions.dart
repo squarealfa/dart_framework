@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:grpc/grpc.dart';
 import 'package:grpc_host/grpc_host.dart';
 import 'package:security_repository/security_repository.dart';
+import 'package:squarealfa_entity_adapter/squarealfa_entity_adapter.dart';
 import 'package:squarealfa_security/squarealfa_security.dart';
 
 import 'principal.dart';
@@ -13,15 +14,14 @@ part 'service_call_extra.dart';
 extension AuthenticationExtensions on ServiceCall {
   static final Expando _storage = Expando();
 
-  Future<Principal> _createPrincipal<TUser extends UserBase>(
-    JwtPayload payload,
-    UserRepositoryBase<TUser> userRepository,
+  Future<Principal> _createPrincipal<TUser extends UserBase<TUserCache>,
+      TUserCache extends UserCacheBase>(
+    String subject,
+    UserRepositoryBase userRepository,
+    MapMapper<TUser> mapMapper,
   ) async {
-    if (payload.expires.difference(DateTime.now()).isNegative) {
-      throw 'Expired token';
-    }
-    final subject = payload.subject;
-    final user = await userRepository.getFromUsername(subject);
+    final userMap = await userRepository.getFromUsername(subject);
+    final user = mapMapper.fromMap(userMap);
     final principal = user.toPrincipal();
     return principal;
   }
@@ -37,9 +37,11 @@ extension AuthenticationExtensions on ServiceCall {
     return ret as _ServiceCallExtra;
   }
 
-  Future authenticate<TUser extends UserBase>(
+  Future authenticate<TUser extends UserBase<TUserCache>,
+      TUserCache extends UserCacheBase>(
     TokenServicesParameters tokenServicesParameters,
-    UserRepositoryBase<TUser> userRepository,
+    UserRepositoryBase userRepository,
+    MapMapper<TUser> mapMapper,
   ) async {
     Principal? local_principal;
     try {
@@ -51,9 +53,13 @@ extension AuthenticationExtensions on ServiceCall {
       }
       var payload = tokenServicesParameters.tokenHandler.load(token);
       _extra.jwtPayload = payload;
+      if (payload.expires.difference(DateTime.now()).isNegative) {
+        throw 'Expired token';
+      }
       local_principal = await _createPrincipal(
-        payload,
+        payload.subject,
         userRepository,
+        mapMapper,
       );
     } catch (e) {
       throw GrpcError.unauthenticated();

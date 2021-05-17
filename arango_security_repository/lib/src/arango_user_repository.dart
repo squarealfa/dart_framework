@@ -2,14 +2,13 @@ import 'package:arango_driver/arango_driver.dart';
 import 'package:nosql_repository/nosql_repository.dart';
 import 'package:security_repository/security_repository.dart';
 
-abstract class ArangoUserRepositoryBase<TUser extends UserBase<TUserCache>,
-    TUserCache extends UserCacheBase> extends UserRepositoryBase<TUser> {
+class ArangoUserRepository extends UserRepositoryBase {
   final ArangoDBClient _dbClient;
 
-  ArangoUserRepositoryBase(ArangoDBClient dbClient) : _dbClient = dbClient;
+  ArangoUserRepository(ArangoDBClient dbClient) : _dbClient = dbClient;
 
   @override
-  Future<TUser> updateUserCache(TUser user) async {
+  Future<UserPermissionSet> getUserPermissionSet(String userKey) async {
     var query = '''
         let uroles =  document('users', @user_key).roles == null ? [] : document('users', @user_key).roles
 
@@ -34,7 +33,7 @@ abstract class ArangoUserRepositoryBase<TUser extends UserBase<TUserCache>,
     var lst = (await _dbClient
         .newQuery()
         .addLine(query)
-        .addBindVar('user_key', user.username)
+        .addBindVar('user_key', userKey)
         .runAndReturnFutureList());
 
     var result = lst.first;
@@ -44,51 +43,13 @@ abstract class ArangoUserRepositoryBase<TUser extends UserBase<TUserCache>,
         (result['permissions'] as List?)?.map((i) => i as String).toList() ??
             [];
 
-    var newCache = createUserCache(
-        isAdministrator: isAdministrator,
-        permissions: permissions,
-        updateTimestamp: DateTime.now());
-
-    if (newCache != user.cache) {
-      return user;
-    }
-
-    user = copyUserWith(user, cache: newCache);
-
-    var userMap = userToMap(user);
-    await _dbClient.replaceDocument('users', user.key, userMap);
-
-    return user;
-  }
-
-  TUserCache createUserCache({
-    required bool isAdministrator,
-    required List<String> permissions,
-    required DateTime updateTimestamp,
-  });
-  TUser copyUserWith(TUser user, {required TUserCache cache});
-
-  Map<String, dynamic> userToMap(TUser user);
-  TUser userFromMap(Map<String, dynamic> map);
-
-  @override
-  Future<TUser> getFromUsername(String username) async {
-    var userList = await _dbClient.newQuery().addLine('''
-            for c in users
-            filter c.emailAddress == @emailAddress
-            limit 1
-            return c
-          ''').addBindVar('emailAddress', username).runAndReturnFutureList();
-    if (userList.isEmpty) {
-      throw NotFound();
-    }
-    final userMap = userList.first;
-    final user = userFromMap(userMap);
-    return user;
+    final ret = UserPermissionSet(
+        isAdministrator: isAdministrator, permissions: permissions);
+    return ret;
   }
 
   @override
-  Future<TUser> getFromKey(String key) async {
+  Future<Map<String, dynamic>> getFromKey(String key) async {
     var userList = await _dbClient.newQuery().addLine('''
             for c in users
             filter u._key == @key
@@ -99,9 +60,37 @@ abstract class ArangoUserRepositoryBase<TUser extends UserBase<TUserCache>,
       throw NotFound();
     }
     final userMap = userList.first;
+    return userMap;
+  }
 
-    //var user = userMap.toUser();
-    final user = userFromMap(userMap);
-    return user;
+  @override
+  Future<Map<String, dynamic>> getFromUsername(String username) async {
+    var userList = await _dbClient.newQuery().addLine('''
+            for c in users
+            filter c.username == @username
+            limit 1
+            return c
+          ''').addBindVar('username', username).runAndReturnFutureList();
+    if (userList.isEmpty) {
+      throw NotFound();
+    }
+    final userMap = userList.first;
+    return userMap;
+  }
+
+  @override
+  Future<Map<String, dynamic>> updateUser(
+      String key, Map<String, dynamic> userMap) async {
+    final opResult = await _dbClient.replaceDocument('users', key, userMap);
+    final result = opResult.result;
+    if (result.error) {
+      throw DbException(
+        code: result.code.toString(),
+        message: result.errorMessage,
+        number: result.errorNum.toString(),
+      );
+    }
+
+    return opResult.map;
   }
 }

@@ -1,13 +1,17 @@
 import 'package:grpc/grpc.dart';
 import 'package:grpc_host/grpc_host.dart';
 import 'package:security_repository/security_repository.dart';
+import 'package:squarealfa_entity_adapter/squarealfa_entity_adapter.dart';
 import 'package:squarealfa_security/squarealfa_security.dart';
 
-class BasicUserTokenServices<TUser extends BasicUserBase>
-    extends UserTokenServices<TUser> {
+abstract class BasicUserTokenServices<TUser extends BasicUserBase<TUserCache>,
+        TUserCache extends UserCacheBase>
+    extends UserTokenServicesBase<TUser, TUserCache> {
   BasicUserTokenServices(
-      TokenServicesParameters<TUser> parameters, ServiceCall call)
-      : super(parameters, call);
+    TokenServicesParameters<TUser, TUserCache> parameters,
+    ServiceCall call,
+    MapMapper<TUser> mapMapper,
+  ) : super(parameters, call, mapMapper);
 
   Future<bool> isUserAuthenticated(TUser user, String password) async {
     var hash = await Password.getSaltedPasswordHash(
