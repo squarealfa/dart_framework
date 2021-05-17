@@ -1,16 +1,9 @@
-import 'package:map_mapper_annotations/map_mapper_annotations.dart';
-import 'package:squarealfa_entity_annotations/squarealfa_entity_annotations.dart';
-
-part 'user_cache.g.dart';
-
-@mapMap
-@copyWith
-class UserCache {
+abstract class UserCacheBase {
   final DateTime updateTimestamp;
   final List<String> permissions;
   final bool isAdministrator;
 
-  UserCache({
+  UserCacheBase({
     required this.updateTimestamp,
     required this.permissions,
     required this.isAdministrator,
@@ -18,7 +11,7 @@ class UserCache {
 
   @override
   bool operator ==(Object other) {
-    if (other is! UserCache) return false;
+    if (other is! UserCacheBase) return false;
     final otherCache = other;
     if (otherCache.isAdministrator != isAdministrator) {
       return false;

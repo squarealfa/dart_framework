@@ -3,10 +3,11 @@ import 'package:grpc_host/grpc_host.dart';
 import 'package:security_repository/security_repository.dart';
 import 'package:squarealfa_security/squarealfa_security.dart';
 
-abstract class SecuredServicesHost extends ServicesHost {
+abstract class SecuredServicesHost<TUser extends UserBase>
+    extends ServicesHost {
   SecuredServicesHost(HostParameters parameters) : super(parameters);
 
-  UserRepository get userRepository;
+  UserRepositoryBase<TUser> get userRepository;
   late final TokenSettings tokenSettings;
   late final JsonWebTokenHandler tokenHandler;
   late final TokenServicesParameters tokenServicesParameters;

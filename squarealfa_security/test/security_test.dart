@@ -9,7 +9,7 @@ void main() {
   group('Token generation', () {
     var claims = JwtPayload(
         name: 'John Doe',
-        email: 'user@domain.com',
+        username: 'user@domain.com',
         subject: '5f35bd0489d72e2cd430f78d',
         issuer: 'Our Server',
         audience: 'Our Server',

@@ -13,9 +13,9 @@ part 'service_call_extra.dart';
 extension AuthenticationExtensions on ServiceCall {
   static final Expando _storage = Expando();
 
-  Future<Principal> _createPrincipal(
+  Future<Principal> _createPrincipal<TUser extends UserBase>(
     JwtPayload payload,
-    UserRepository userRepository,
+    UserRepositoryBase<TUser> userRepository,
   ) async {
     if (payload.expires.difference(DateTime.now()).isNegative) {
       throw 'Expired token';
@@ -37,9 +37,9 @@ extension AuthenticationExtensions on ServiceCall {
     return ret as _ServiceCallExtra;
   }
 
-  Future authenticate(
+  Future authenticate<TUser extends UserBase>(
     TokenServicesParameters tokenServicesParameters,
-    UserRepository userRepository,
+    UserRepositoryBase<TUser> userRepository,
   ) async {
     Principal? local_principal;
     try {

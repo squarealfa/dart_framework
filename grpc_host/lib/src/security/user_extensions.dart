@@ -2,13 +2,13 @@ import 'package:grpc_host/grpc_host.dart';
 import 'package:security_repository/security_repository.dart';
 import 'package:squarealfa_security/squarealfa_security.dart';
 
-extension UserExtensions on User {
+extension UserExtensions on UserBase {
   Principal toPrincipal() {
     final principal = Principal(
       userKey: key,
-      tenantKey: meta.tenantKey,
+      tenantKey: tenantKey,
       name: friendlyName,
-      emailAddress: emailAddress,
+      username: username,
       permissions: cache?.permissions ?? [],
       isAdministrator: cache?.isAdministrator ?? false,
       isAuthenticated: true,
@@ -22,7 +22,7 @@ extension UserExtensions on User {
   }) {
     final payload = JwtPayload(
       name: friendlyName,
-      email: emailAddress,
+      username: username,
       subject: key,
       issuer: 'MentorAlfa Server',
       audience: 'MentorAlfa Server',

@@ -4,8 +4,8 @@ import 'package:nosql_repository/nosql_repository.dart';
 import 'package:security_repository/security_repository.dart';
 import 'package:squarealfa_security/squarealfa_security.dart';
 
-class UserTokenServices {
-  final TokenServicesParameters parameters;
+abstract class UserTokenServices<TUser extends UserBase> {
+  final TokenServicesParameters<TUser> parameters;
   final ServiceCall call;
 
   UserTokenServices(
@@ -13,22 +13,20 @@ class UserTokenServices {
     this.call,
   );
 
-  UserRepository get _userRepository => parameters.userRepository;
+  UserRepositoryBase<TUser> get _userRepository => parameters.userRepository;
   JsonWebTokenHandler get _tokenHandler => parameters.tokenHandler;
 
-  Future<UserToken> create(String username, String password) async {
-    User user;
+  Future<UserToken> create(String username,
+      Future<bool> Function(TUser user) isUserAuthenticated) async {
+    TUser user;
     try {
       user = await _userRepository.getFromUsername(username);
     } on NotFound {
       throw GrpcError.notFound('User is not found');
     }
 
-    var hash = await Password.getSaltedPasswordHash(
-      user.passwordSalt,
-      password,
-    );
-    if (hash != user.passwordHash) {
+    final isAuthenticted = await isUserAuthenticated(user);
+    if (!isAuthenticted) {
       throw GrpcError.unauthenticated('username or password is invalid');
     }
 
@@ -48,9 +46,9 @@ class UserTokenServices {
       throw Unauthenticated();
     }
 
-    User user;
+    TUser user;
     try {
-      user = await _userRepository.getFromUsername(call.principal.emailAddress);
+      user = await _userRepository.getFromUsername(call.principal.username);
     } on NotFound {
       throw GrpcError.notFound('User is not found');
     }
@@ -64,7 +62,7 @@ class UserTokenServices {
     return token;
   }
 
-  UserToken _generateToken(JwtPayload payload, User user) {
+  UserToken _generateToken(JwtPayload payload, TUser user) {
     final token = _tokenHandler.generate(payload);
     final permissions = user.cache?.permissions ?? [];
     final isAdministrator = user.cache?.isAdministrator ?? false;

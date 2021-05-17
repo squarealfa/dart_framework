@@ -5,7 +5,7 @@ class Principal implements DbPrincipal {
     userKey: '',
     tenantKey: '',
     name: '',
-    emailAddress: '',
+    username: '',
     permissions: [],
     isAdministrator: false,
   );
@@ -15,7 +15,7 @@ class Principal implements DbPrincipal {
   @override
   final String tenantKey;
   final String name;
-  final String emailAddress;
+  final String username;
   final List<String> permissions;
   final bool isAdministrator;
   final bool isAuthenticated;
@@ -24,7 +24,7 @@ class Principal implements DbPrincipal {
     required this.userKey,
     required this.tenantKey,
     required this.name,
-    required this.emailAddress,
+    required this.username,
     required this.permissions,
     required this.isAdministrator,
     this.isAuthenticated = false,

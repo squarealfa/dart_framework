@@ -78,13 +78,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.1.12"
-  build_test:
-    dependency: transitive
-    description:
-      name: build_test
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0"
   build_verify:
     dependency: "direct dev"
     description:
@@ -162,13 +155,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.1"
-  csslib:
-    dependency: transitive
-    description:
-      name: csslib
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.17.0"
   dart_style:
     dependency: transitive
     description:
@@ -176,13 +162,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
-  decimal:
-    dependency: transitive
-    description:
-      name: decimal
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0+1"
   file:
     dependency: transitive
     description:
@@ -211,13 +190,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
-  html:
-    dependency: transitive
-    description:
-      name: html
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.15.0"
   http_multi_server:
     dependency: transitive
     description:
@@ -260,20 +232,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
-  map_mapper_annotations:
-    dependency: "direct main"
-    description:
-      path: "/home/ruicraveiro/sources/dart_framework/map_mapper/map_mapper_annotations"
-      relative: false
-    source: path
-    version: "1.2.1"
-  map_mapper_generator:
-    dependency: "direct dev"
-    description:
-      path: "/home/ruicraveiro/sources/dart_framework/map_mapper/map_mapper_generator"
-      relative: false
-    source: path
-    version: "1.2.1"
   matcher:
     dependency: transitive
     description:
@@ -344,20 +302,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
-  quiver:
-    dependency: transitive
-    description:
-      name: quiver
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.0.1"
-  rational:
-    dependency: transitive
-    description:
-      name: rational
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0"
   shelf:
     dependency: transitive
     description:
@@ -386,13 +330,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
-  source_gen:
-    dependency: transitive
-    description:
-      name: source_gen
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0"
   source_map_stack_trace:
     dependency: transitive
     description:
@@ -414,27 +351,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.1"
-  squarealfa_entity_annotations:
-    dependency: "direct main"
-    description:
-      path: "/home/ruicraveiro/sources/dart_framework/entity/entity_annotations"
-      relative: false
-    source: path
-    version: "1.1.2"
-  squarealfa_entity_generator:
-    dependency: "direct dev"
-    description:
-      path: "/home/ruicraveiro/sources/dart_framework/entity/entity_generator"
-      relative: false
-    source: path
-    version: "1.1.2"
-  squarealfa_generators_common:
-    dependency: transitive
-    description:
-      path: "../generators_common"
-      relative: true
-    source: path
-    version: "1.0.1"
   stack_trace:
     dependency: transitive
     description:
@@ -498,13 +414,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
-  tuple:
-    dependency: transitive
-    description:
-      name: tuple
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0"
   typed_data:
     dependency: transitive
     description:

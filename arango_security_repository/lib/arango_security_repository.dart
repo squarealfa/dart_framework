@@ -1,1 +1,1 @@
-export 'src/arango_user_repository.dart';
+export 'src/arango_user_repository_base.dart';

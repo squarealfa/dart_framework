@@ -1,7 +1,7 @@
 /// Represents the payload content of a JWT token.
 class JwtPayload {
   final String subject;
-  final String email;
+  final String username;
   final String name;
   final String issuer;
   final String audience;
@@ -15,7 +15,7 @@ class JwtPayload {
 
   const JwtPayload({
     required this.subject,
-    required this.email,
+    required this.username,
     required this.name,
     required this.issuer,
     required this.audience,
@@ -27,7 +27,7 @@ class JwtPayload {
   factory JwtPayload.fromMap(Map<String, dynamic> map) {
     var name = '';
     var subject = '';
-    var email = '';
+    var username = '';
     var issuer = '';
     var audience = '';
     var nbf = DateTime.now();
@@ -42,8 +42,8 @@ class JwtPayload {
         case 'sub':
           subject = entry.value;
           break;
-        case 'email':
-          email = entry.value;
+        case 'username':
+          username = entry.value;
           break;
         case 'iss':
           issuer = entry.value;
@@ -66,7 +66,7 @@ class JwtPayload {
     var payload = JwtPayload(
       name: name,
       subject: subject,
-      email: email,
+      username: username,
       issuer: issuer,
       audience: audience,
       notBefore: nbf,
@@ -78,7 +78,7 @@ class JwtPayload {
 
   JwtPayload CopyWith({
     String? subject,
-    String? email,
+    String? username,
     String? name,
     String? issuer,
     String? audience,
@@ -91,7 +91,7 @@ class JwtPayload {
   }) {
     var ret = JwtPayload(
       subject: subject ?? this.subject,
-      email: email ?? this.email,
+      username: username ?? this.username,
       name: name ?? this.name,
       issuer: issuer ?? this.issuer,
       audience: audience ?? this.audience,
@@ -109,7 +109,7 @@ class JwtPayload {
     var map = <String, dynamic>{};
     _addClaimIfNotNull(map, 'name', name);
     _addClaimIfNotNull(map, 'sub', subject);
-    _addClaimIfNotNull(map, 'email', email);
+    _addClaimIfNotNull(map, 'username', username);
     _addClaimIfNotNull(map, 'iss', issuer);
     _addClaimIfNotNull(map, 'aud', audience);
     _addClaimIfNotNull(map, 'nbf', nbf);

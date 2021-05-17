@@ -2,13 +2,14 @@ import 'package:arango_driver/arango_driver.dart';
 import 'package:nosql_repository/nosql_repository.dart';
 import 'package:security_repository/security_repository.dart';
 
-class ArangoUserRepository extends UserRepository {
+abstract class ArangoUserRepositoryBase<TUser extends UserBase<TUserCache>,
+    TUserCache extends UserCacheBase> extends UserRepositoryBase<TUser> {
   final ArangoDBClient _dbClient;
 
-  ArangoUserRepository(ArangoDBClient dbClient) : _dbClient = dbClient;
+  ArangoUserRepositoryBase(ArangoDBClient dbClient) : _dbClient = dbClient;
 
   @override
-  Future<User> updateUserCache(User user) async {
+  Future<TUser> updateUserCache(TUser user) async {
     var query = '''
         let uroles =  document('users', @user_key).roles == null ? [] : document('users', @user_key).roles
 
@@ -33,7 +34,7 @@ class ArangoUserRepository extends UserRepository {
     var lst = (await _dbClient
         .newQuery()
         .addLine(query)
-        .addBindVar('user_key', user.emailAddress)
+        .addBindVar('user_key', user.username)
         .runAndReturnFutureList());
 
     var result = lst.first;
@@ -43,23 +44,35 @@ class ArangoUserRepository extends UserRepository {
         (result['permissions'] as List?)?.map((i) => i as String).toList() ??
             [];
 
-    var newCache = UserCache(
+    var newCache = createUserCache(
         isAdministrator: isAdministrator,
         permissions: permissions,
         updateTimestamp: DateTime.now());
 
-    if (newCache == user.cache) return user;
+    if (newCache != user.cache) {
+      return user;
+    }
 
-    user = user.copyWith(cache: newCache);
+    user = copyUserWith(user, cache: newCache);
 
-    var userMap = user.toMap();
+    var userMap = userToMap(user);
     await _dbClient.replaceDocument('users', user.key, userMap);
 
     return user;
   }
 
+  TUserCache createUserCache({
+    required bool isAdministrator,
+    required List<String> permissions,
+    required DateTime updateTimestamp,
+  });
+  TUser copyUserWith(TUser user, {required TUserCache cache});
+
+  Map<String, dynamic> userToMap(TUser user);
+  TUser userFromMap(Map<String, dynamic> map);
+
   @override
-  Future<User> getFromUsername(String username) async {
+  Future<TUser> getFromUsername(String username) async {
     var userList = await _dbClient.newQuery().addLine('''
             for c in users
             filter c.emailAddress == @emailAddress
@@ -69,14 +82,13 @@ class ArangoUserRepository extends UserRepository {
     if (userList.isEmpty) {
       throw NotFound();
     }
-    var userMap = userList.first;
-
-    var user = userMap.toUser();
+    final userMap = userList.first;
+    final user = userFromMap(userMap);
     return user;
   }
 
   @override
-  Future<User> getFromKey(String key) async {
+  Future<TUser> getFromKey(String key) async {
     var userList = await _dbClient.newQuery().addLine('''
             for c in users
             filter u._key == @key
@@ -86,9 +98,10 @@ class ArangoUserRepository extends UserRepository {
     if (userList.isEmpty) {
       throw NotFound();
     }
-    var userMap = userList.first;
+    final userMap = userList.first;
 
-    var user = userMap.toUser();
+    //var user = userMap.toUser();
+    final user = userFromMap(userMap);
     return user;
   }
 }
