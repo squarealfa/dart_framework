@@ -4,8 +4,10 @@ import 'package:security_repository/security_repository.dart';
 
 class ArangoUserRepository extends UserRepositoryBase {
   final ArangoDBClient _dbClient;
+  final String collectionName;
 
-  ArangoUserRepository(ArangoDBClient dbClient) : _dbClient = dbClient;
+  ArangoUserRepository(ArangoDBClient dbClient, this.collectionName)
+      : _dbClient = dbClient;
 
   @override
   Future<UserPermissionSet> getUserPermissionSet(String userKey) async {
