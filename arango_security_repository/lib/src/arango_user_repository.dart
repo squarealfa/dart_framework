@@ -4,15 +4,20 @@ import 'package:security_repository/security_repository.dart';
 
 class ArangoUserRepository extends UserRepositoryBase {
   final ArangoDBClient _dbClient;
-  final String collectionName;
+  final String usersCollectionName;
+  final String roleAssignmentsEdgeName;
 
-  ArangoUserRepository(ArangoDBClient dbClient, this.collectionName)
-      : _dbClient = dbClient;
+  ArangoUserRepository(
+    ArangoDBClient dbClient, {
+    this.usersCollectionName = 'users',
+    this.roleAssignmentsEdgeName = 'role_assignments',
+  }) : _dbClient = dbClient;
 
   @override
   Future<UserPermissionSet> getUserPermissionSet(String userKey) async {
     var query = '''
-        let uroles =  document('users', @user_key).roles == null ? [] : document('users', @user_key).roles
+        let uroles =  document(@usersCollection, @user_key).roles == null ? [] : 
+          document(@usersCollection, @user_key).roles
 
         let lroles = (for role in roles
             for urole in uroles
@@ -20,7 +25,7 @@ class ArangoUserRepository extends UserRepositoryBase {
         return role)
 
         let allroles = flatten([(for role in lroles
-            for v, e, p in 1..100 outbound role role_assignments
+            for v, e, p in 1..100 outbound role @roleAssignmentsEdge
             return v), lroles])
 
         let permissions = unique(flatten(for role in allroles return role.permissions))
@@ -35,7 +40,9 @@ class ArangoUserRepository extends UserRepositoryBase {
     var lst = (await _dbClient
         .newQuery()
         .addLine(query)
-        .addBindVar('user_key', userKey)
+        .addBindVar('usersCollection', usersCollectionName)
+        .addBindVar('roleAssignmentsEdge', roleAssignmentsEdgeName)
+        .addBindVar('user_key', '$usersCollectionName/$userKey')
         .runAndReturnFutureList());
 
     var result = lst.first;

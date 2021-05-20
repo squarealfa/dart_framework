@@ -9,6 +9,7 @@ class UserBase<TUserCache extends UserCacheBase> {
     required this.tenantKey,
     required this.friendlyName,
     required this.roles,
+    required this.isAdministrator,
     required this.isLocked,
     required this.numberOfFailedAttempts,
     this.cache,
@@ -21,6 +22,7 @@ class UserBase<TUserCache extends UserCacheBase> {
   final String friendlyName;
 
   final List<String> roles;
+  final bool isAdministrator;
   final bool isLocked;
   final int numberOfFailedAttempts;
 

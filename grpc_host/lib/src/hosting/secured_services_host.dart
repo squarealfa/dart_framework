@@ -13,13 +13,13 @@ abstract class SecuredServicesHost<TUser extends UserBase<TUserCache>,
 
   late final TokenSettings tokenSettings;
   late final JsonWebTokenHandler tokenHandler;
-  late final TokenServicesParameters tokenServicesParameters;
+  late final TokenServicesParameters<TUser, TUserCache> tokenServicesParameters;
 
   @override
   Future init() async {
     tokenSettings = hostSettings.tokenSettings;
     tokenHandler = JsonWebTokenHandler(tokenSettings.key);
-    tokenServicesParameters = TokenServicesParameters(
+    tokenServicesParameters = TokenServicesParameters<TUser, TUserCache>(
       userRepository: userRepository,
       tokenHandler: tokenHandler,
       tokenIssuer: tokenSettings.issuer,
@@ -30,6 +30,8 @@ abstract class SecuredServicesHost<TUser extends UserBase<TUserCache>,
   @override
   Future registerContainedDependencies() async {
     await super.registerContainedDependencies();
+    Container().registerInstance<TokenServicesParameters<TUser, TUserCache>>(
+        tokenServicesParameters);
   }
 
   @override
