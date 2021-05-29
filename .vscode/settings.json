@@ -4,6 +4,7 @@
         "arangodb",
         "nosql",
         "retrn",
-        "squarealfa"
+        "squarealfa",
+        "validatable"
     ]
 }
