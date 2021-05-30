@@ -49,13 +49,14 @@ class ValidatorGenerator extends GeneratorForAnnotation<Validatable> {
 
     for (var fieldDescriptor in fieldDescriptors) {
       var errorLine = '''
-          if ((error = validate${fieldDescriptor.pascalName}(entity.${fieldDescriptor.name})) != null) {
+          if ((error = validate${fieldDescriptor.pascalName}(entity.${fieldDescriptor.name}, entity: entity)) != null) {
             errors.add(error!);
           }
       ''';
       errorCallBuffer.writeln(errorLine);
 
-      var validationMethodCode = _createValidationMethod(fieldDescriptor);
+      var validationMethodCode =
+          _createValidationMethod(fieldDescriptor, className);
       validationMethodBuffer.writeln(validationMethodCode);
     }
 
@@ -112,7 +113,10 @@ class ValidatorGenerator extends GeneratorForAnnotation<Validatable> {
     return ret;
   }
 
-  static String _createValidationMethod(FieldDescriptor fieldDescriptor) {
+  static String _createValidationMethod(
+    FieldDescriptor fieldDescriptor,
+    String className,
+  ) {
     final validators = <PropertyValidator>[
       RequiredValidator(),
       StringLengthValidator(),
@@ -138,7 +142,7 @@ class ValidatorGenerator extends GeneratorForAnnotation<Validatable> {
 
     var ret = '''
 
-      ValidationError? validate${fieldDescriptor.pascalName}(${fieldDescriptor.fieldElementType.getDisplayString(withNullability: true)} value)
+      ValidationError? validate${fieldDescriptor.pascalName}(${fieldDescriptor.fieldElementType.getDisplayString(withNullability: true)} value, {$className? entity})
       {
         $propValidation
 

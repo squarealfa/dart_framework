@@ -61,7 +61,7 @@ class RecipeValidator implements Validator {
   static final RecipeValidator _singleton = RecipeValidator.create();
   factory RecipeValidator() => _singleton;
 
-  ValidationError? validateTitle(String value) {
+  ValidationError? validateTitle(String value, {Recipe? entity}) {
     if (value.isEmpty) {
       return RequiredValidationError('title');
     }
@@ -69,7 +69,7 @@ class RecipeValidator implements Validator {
     return null;
   }
 
-  ValidationError? validateDescription(String? value) {
+  ValidationError? validateDescription(String? value, {Recipe? entity}) {
     if (value?.isEmpty ?? true) {
       return RequiredValidationError('description');
     }
@@ -82,11 +82,12 @@ class RecipeValidator implements Validator {
     var errors = <ValidationError>[];
 
     ValidationError? error;
-    if ((error = validateTitle(entity.title)) != null) {
+    if ((error = validateTitle(entity.title, entity: entity)) != null) {
       errors.add(error!);
     }
 
-    if ((error = validateDescription(entity.description)) != null) {
+    if ((error = validateDescription(entity.description, entity: entity)) !=
+        null) {
       errors.add(error!);
     }
 

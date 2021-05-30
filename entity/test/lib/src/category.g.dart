@@ -12,7 +12,7 @@ class CategoryValidator implements Validator {
   static final CategoryValidator _singleton = CategoryValidator.create();
   factory CategoryValidator() => _singleton;
 
-  ValidationError? validateTitle(String value) {
+  ValidationError? validateTitle(String value, {Category? entity}) {
     if (value.isEmpty) {
       return RequiredValidationError('title');
     }
@@ -25,7 +25,7 @@ class CategoryValidator implements Validator {
     var errors = <ValidationError>[];
 
     ValidationError? error;
-    if ((error = validateTitle(entity.title)) != null) {
+    if ((error = validateTitle(entity.title, entity: entity)) != null) {
       errors.add(error!);
     }
 

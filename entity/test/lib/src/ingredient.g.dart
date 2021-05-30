@@ -12,7 +12,7 @@ class IngredientValidator implements Validator {
   static final IngredientValidator _singleton = IngredientValidator.create();
   factory IngredientValidator() => _singleton;
 
-  ValidationError? validateDescription(String value) {
+  ValidationError? validateDescription(String value, {Ingredient? entity}) {
     if (value.length < 10) {
       return StringLengthValidationError('description');
     }
@@ -20,7 +20,7 @@ class IngredientValidator implements Validator {
     return null;
   }
 
-  ValidationError? validateNotes(String? value) {
+  ValidationError? validateNotes(String? value, {Ingredient? entity}) {
     if (value != null && value.length > 10) {
       return StringLengthValidationError('notes');
     }
@@ -28,7 +28,7 @@ class IngredientValidator implements Validator {
     return null;
   }
 
-  ValidationError? validateTag(String? value) {
+  ValidationError? validateTag(String? value, {Ingredient? entity}) {
     if (value != null && value.length < 2) {
       return StringLengthValidationError('tag');
     }
@@ -36,7 +36,7 @@ class IngredientValidator implements Validator {
     return null;
   }
 
-  ValidationError? validateQuantity(double value) {
+  ValidationError? validateQuantity(double value, {Ingredient? entity}) {
     if (value < 10.0) {
       return RangeValidationError('quantity');
     }
@@ -48,7 +48,7 @@ class IngredientValidator implements Validator {
     return null;
   }
 
-  ValidationError? validatePrecision(Decimal value) {
+  ValidationError? validatePrecision(Decimal value, {Ingredient? entity}) {
     if (value < Decimal.fromInt(10)) {
       return RangeValidationError('precision');
     }
@@ -56,7 +56,7 @@ class IngredientValidator implements Validator {
     return null;
   }
 
-  ValidationError? validateIntQuantity(int value) {
+  ValidationError? validateIntQuantity(int value, {Ingredient? entity}) {
     if (value < 10) {
       return RangeValidationError('intQuantity');
     }
@@ -68,7 +68,7 @@ class IngredientValidator implements Validator {
     return null;
   }
 
-  ValidationError? validateNintQuantity(int? value) {
+  ValidationError? validateNintQuantity(int? value, {Ingredient? entity}) {
     if (value != null && value < 10) {
       return RangeValidationError('nintQuantity');
     }
@@ -80,7 +80,7 @@ class IngredientValidator implements Validator {
     return null;
   }
 
-  ValidationError? validateRInt(int? value) {
+  ValidationError? validateRInt(int? value, {Ingredient? entity}) {
     if (value == null) {
       return RequiredValidationError('rInt');
     }
@@ -101,35 +101,38 @@ class IngredientValidator implements Validator {
     var errors = <ValidationError>[];
 
     ValidationError? error;
-    if ((error = validateDescription(entity.description)) != null) {
+    if ((error = validateDescription(entity.description, entity: entity)) !=
+        null) {
       errors.add(error!);
     }
 
-    if ((error = validateNotes(entity.notes)) != null) {
+    if ((error = validateNotes(entity.notes, entity: entity)) != null) {
       errors.add(error!);
     }
 
-    if ((error = validateTag(entity.tag)) != null) {
+    if ((error = validateTag(entity.tag, entity: entity)) != null) {
       errors.add(error!);
     }
 
-    if ((error = validateQuantity(entity.quantity)) != null) {
+    if ((error = validateQuantity(entity.quantity, entity: entity)) != null) {
       errors.add(error!);
     }
 
-    if ((error = validatePrecision(entity.precision)) != null) {
+    if ((error = validatePrecision(entity.precision, entity: entity)) != null) {
       errors.add(error!);
     }
 
-    if ((error = validateIntQuantity(entity.intQuantity)) != null) {
+    if ((error = validateIntQuantity(entity.intQuantity, entity: entity)) !=
+        null) {
       errors.add(error!);
     }
 
-    if ((error = validateNintQuantity(entity.nintQuantity)) != null) {
+    if ((error = validateNintQuantity(entity.nintQuantity, entity: entity)) !=
+        null) {
       errors.add(error!);
     }
 
-    if ((error = validateRInt(entity.rInt)) != null) {
+    if ((error = validateRInt(entity.rInt, entity: entity)) != null) {
       errors.add(error!);
     }
 
