@@ -16,13 +16,13 @@ dependencies:
   squarealfa_entity_adapter: #^1.0.0
     path: ../entity_adapter
   map_mapper_generator: #^1.2.0
-    path: /home/ruicraveiro/sources/dart_framework/map_mapper/map_mapper_generator
+    path: ../../map_mapper/map_mapper_generator
   proto_generator: #^1.2.0
-    path: /home/ruicraveiro/sources/dart_framework/proto_mapper/proto_generator
+    path: ../../proto_mapper/proto_generator
   defaults_provider_generator: #^1.1.0
-    path: /home/ruicraveiro/sources/dart_framework/defaults_provider/defaults_provider_generator
+    path: ../../defaults_provider/defaults_provider_generator
   squarealfa_entity_generator: #^1.1.0
-    path: /home/ruicraveiro/sources/dart_framework/entity/entity_generator
+    path: ../../entity/entity_generator
   analyzer: ^1.2.0
   build: ^2.0.0
 

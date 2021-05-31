@@ -200,8 +200,8 @@ packages:
   defaults_provider_generator:
     dependency: transitive
     description:
-      path: "/home/ruicraveiro/sources/dart_framework/defaults_provider/defaults_provider_generator"
-      relative: false
+      path: "../../defaults_provider/defaults_provider_generator"
+      relative: true
     source: path
     version: "1.1.2"
   file:
@@ -312,15 +312,15 @@ packages:
   map_mapper_annotations:
     dependency: transitive
     description:
-      path: "/home/ruicraveiro/sources/dart_framework/map_mapper/map_mapper_annotations"
-      relative: false
+      path: "../../map_mapper/map_mapper_annotations"
+      relative: true
     source: path
     version: "1.2.1"
   map_mapper_generator:
     dependency: transitive
     description:
-      path: "/home/ruicraveiro/sources/dart_framework/map_mapper/map_mapper_generator"
-      relative: false
+      path: "../../map_mapper/map_mapper_generator"
+      relative: true
     source: path
     version: "1.2.1"
   matcher:
@@ -389,8 +389,8 @@ packages:
   proto_generator:
     dependency: transitive
     description:
-      path: "/home/ruicraveiro/sources/dart_framework/proto_mapper/proto_generator"
-      relative: false
+      path: "../../proto_mapper/proto_generator"
+      relative: true
     source: path
     version: "1.2.1"
   protobuf:
@@ -508,8 +508,8 @@ packages:
   squarealfa_entity_generator:
     dependency: transitive
     description:
-      path: "/home/ruicraveiro/sources/dart_framework/entity/entity_generator"
-      relative: false
+      path: "../../entity/entity_generator"
+      relative: true
     source: path
     version: "1.1.2"
   squarealfa_generators_common:

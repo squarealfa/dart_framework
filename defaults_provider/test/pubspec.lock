@@ -410,8 +410,8 @@ packages:
   squarealfa_generators_common:
     dependency: transitive
     description:
-      path: "/home/ruicraveiro/sources/dart_framework/generators_common"
-      relative: false
+      path: "../../generators_common"
+      relative: true
     source: path
     version: "1.0.1"
   stack_trace:

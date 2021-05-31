@@ -7,7 +7,7 @@ environment:
 
 dependencies:
   nosql_repository:
-    path: /home/ruicraveiro/sources/dart_framework/nosql_repository
+    path: ../nosql_repository
   security_repository:
     path: ../security_repository
   mongo_repository:

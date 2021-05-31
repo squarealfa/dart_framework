@@ -284,8 +284,8 @@ packages:
   map_mapper_annotations:
     dependency: transitive
     description:
-      path: "/home/ruicraveiro/sources/dart_framework/map_mapper/map_mapper_annotations"
-      relative: false
+      path: "../map_mapper_annotations"
+      relative: true
     source: path
     version: "1.2.1"
   map_mapper_generator:

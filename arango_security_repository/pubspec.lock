@@ -18,8 +18,8 @@ packages:
   arango_driver:
     dependency: "direct main"
     description:
-      path: "/home/ruicraveiro/sources/dart_framework/arango_driver"
-      relative: false
+      path: "../arango_driver"
+      relative: true
     source: path
     version: "1.1.1"
   args:
@@ -92,13 +92,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
-  decimal:
-    dependency: transitive
-    description:
-      name: decimal
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0+1"
   file:
     dependency: transitive
     description:
@@ -155,13 +148,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
-  map_mapper_annotations:
-    dependency: transitive
-    description:
-      path: "/home/ruicraveiro/sources/dart_framework/map_mapper/map_mapper_annotations"
-      relative: false
-    source: path
-    version: "1.2.1"
   matcher:
     dependency: transitive
     description:
@@ -193,8 +179,8 @@ packages:
   nosql_repository:
     dependency: "direct main"
     description:
-      path: "/home/ruicraveiro/sources/dart_framework/nosql_repository"
-      relative: false
+      path: "../nosql_repository"
+      relative: true
     source: path
     version: "1.1.1"
   package_config:
@@ -232,13 +218,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
-  rational:
-    dependency: transitive
-    description:
-      name: rational
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0"
   security_repository:
     dependency: "direct main"
     description:
@@ -295,13 +274,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.1"
-  squarealfa_entity_annotations:
-    dependency: transitive
-    description:
-      path: "/home/ruicraveiro/sources/dart_framework/entity/entity_annotations"
-      relative: false
-    source: path
-    version: "1.1.2"
   squarealfa_security:
     dependency: transitive
     description:

@@ -13,13 +13,13 @@ publish_to: none
 
 dependencies:
   defaults_provider_annotations:
-    path: /home/ruicraveiro/sources/dart_framework/defaults_provider/defaults_provider_annotations
+    path: ../../defaults_provider/defaults_provider_annotations
   map_mapper_annotations:
-    path: /home/ruicraveiro/sources/dart_framework/map_mapper/map_mapper_annotations
+    path: ../../map_mapper/map_mapper_annotations
   proto_annotations:
     path: ../../proto_mapper/proto_annotations
   squarealfa_entity_annotations:
-    path: /home/ruicraveiro/sources/dart_framework/entity/entity_annotations
+    path: ../../entity/entity_annotations
   grpc: ^3.0.0
 
 dev_dependencies:

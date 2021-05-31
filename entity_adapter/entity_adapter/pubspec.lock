@@ -46,8 +46,8 @@ packages:
   defaults_provider_annotations:
     dependency: "direct main"
     description:
-      path: "/home/ruicraveiro/sources/dart_framework/defaults_provider/defaults_provider_annotations"
-      relative: false
+      path: "../../defaults_provider/defaults_provider_annotations"
+      relative: true
     source: path
     version: "1.1.1"
   fixnum:
@@ -95,8 +95,8 @@ packages:
   map_mapper_annotations:
     dependency: "direct main"
     description:
-      path: "/home/ruicraveiro/sources/dart_framework/map_mapper/map_mapper_annotations"
-      relative: false
+      path: "../../map_mapper/map_mapper_annotations"
+      relative: true
     source: path
     version: "1.2.1"
   meta:
@@ -151,8 +151,8 @@ packages:
   squarealfa_entity_annotations:
     dependency: "direct main"
     description:
-      path: "/home/ruicraveiro/sources/dart_framework/entity/entity_annotations"
-      relative: false
+      path: "../../entity/entity_annotations"
+      relative: true
     source: path
     version: "1.1.2"
   string_scanner:

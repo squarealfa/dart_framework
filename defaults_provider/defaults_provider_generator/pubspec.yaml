@@ -15,7 +15,7 @@ dependencies:
   defaults_provider_annotations: #^1.1.0
     path: ../defaults_provider_annotations
   squarealfa_generators_common: #^1.0.0
-    path: /home/ruicraveiro/sources/dart_framework/generators_common
+    path: ../../generators_common
   analyzer: ^1.3.0
   build: ^2.0.0
 

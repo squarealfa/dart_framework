@@ -11,7 +11,7 @@ publish_to: none
 
 dependencies:
   map_mapper_annotations: #^1.2.0
-    path: /home/ruicraveiro/sources/dart_framework/map_mapper/map_mapper_annotations
+    path: ../../map_mapper/map_mapper_annotations
 
   source_gen: ^1.0.0
   decimal: ^1.0.0
