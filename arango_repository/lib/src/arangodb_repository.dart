@@ -66,7 +66,12 @@ class ArangoDbRepository<TEntity> extends Repository<TEntity> {
     );
 
     var key = _handleDataResult(resultMap);
-    map = (await db.getDocumentByKey(collectionName, key)).document;
+    map = (await db.getDocumentByKey(
+      collectionName,
+      key,
+      transaction: trx,
+    ))
+        .document;
     return map;
   }
 
@@ -103,7 +108,12 @@ class ArangoDbRepository<TEntity> extends Repository<TEntity> {
       transaction: trx,
     );
     key = _handleDataResult(resultMap);
-    map = (await db.getDocumentByKey(collectionName, key)).document;
+    map = (await db.getDocumentByKey(
+      collectionName,
+      key,
+      transaction: trx,
+    ))
+        .document;
 
     return map;
   }

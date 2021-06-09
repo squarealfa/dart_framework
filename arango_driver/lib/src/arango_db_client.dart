@@ -72,7 +72,7 @@ class ArangoDBClient {
 
     for (final part in parts) {
       final subParts = part.split('=');
-      if (part.length != 2) {
+      if (subParts.length != 2) {
         continue;
       }
       final name = subParts[0];
@@ -733,7 +733,7 @@ class ArangoDBClient {
       );
 
   static TransactionResponse _toTransactionResponse(Map<String, dynamic> map) {
-    final transaction = _getTransaction(map['result'] ?? []);
+    final transaction = _getTransaction(map['result'] ?? {});
     final ret = TransactionResponse(
       result: _toResult(map),
       transaction: transaction,
