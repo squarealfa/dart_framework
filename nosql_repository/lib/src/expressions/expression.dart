@@ -68,3 +68,12 @@ abstract class Expression {
     return Not(expression);
   }
 }
+
+extension ExpressionExtension on Expression {
+  Expression or(Expression other) {
+    return Expression.or(this, other);
+  }
+  Expression and(Expression other) {
+    return Expression.and(this, other);
+  }
+}
