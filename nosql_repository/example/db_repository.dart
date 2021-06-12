@@ -30,7 +30,7 @@ class DbRepository<T> extends Repository<T> {
   @override
   Future<Map<String, dynamic>> create(
       Map<String, dynamic> map, DbPrincipal principal,
-      {CreatePolicy? createPolicy, Transaction? transaction}) async {
+      {CreatePolicy? createPolicy, RepositoryTransaction? transaction}) async {
     print(
         '''This method would create the map in the database, in the $collectionName collection.
            It would fail if the [permission] parameter is set and the user principal does not
@@ -55,14 +55,14 @@ class DbRepository<T> extends Repository<T> {
     String key,
     DbPrincipal principal, {
     DeletePolicy? deletePolicy,
-    Transaction? transaction,
+    RepositoryTransaction? transaction,
   }) async {
     _storedMaps.remove(key);
   }
 
   @override
   Future<Map<String, dynamic>> get(String key, DbPrincipal principal,
-      {SearchPolicy? searchPolicy, Transaction? transaction}) async {
+      {SearchPolicy? searchPolicy, RepositoryTransaction? transaction}) async {
     return Future.value(_storedMaps[key]);
   }
 
@@ -70,7 +70,7 @@ class DbRepository<T> extends Repository<T> {
   Future<Stream<Map<String, dynamic>>> getAllToStream(
     DbPrincipal principal, {
     SearchPolicy? searchPolicy,
-    Transaction? transaction,
+    RepositoryTransaction? transaction,
   }) async {
     return _getAllToStream(principal, searchPolicy);
   }
@@ -89,7 +89,7 @@ class DbRepository<T> extends Repository<T> {
     Map<String, dynamic> map,
     DbPrincipal principal, {
     UpdatePolicy? updatePolicy,
-    Transaction? transaction,
+    RepositoryTransaction? transaction,
   }) {
     _storedMaps[map['_key']] = map;
     return Future.value(map);
@@ -100,7 +100,7 @@ class DbRepository<T> extends Repository<T> {
     SearchCriteria criteria,
     DbPrincipal principal, {
     SearchPolicy? searchPolicy,
-    Transaction? transaction,
+    RepositoryTransaction? transaction,
   }) {
     throw UnimplementedError();
   }
@@ -110,7 +110,7 @@ class DbRepository<T> extends Repository<T> {
     SearchCriteria criteria,
     DbPrincipal principal, {
     SearchPolicy? searchPolicy,
-    Transaction? transaction,
+    RepositoryTransaction? transaction,
   }) async {
     throw UnimplementedError();
   }
@@ -120,23 +120,24 @@ class DbRepository<T> extends Repository<T> {
     SearchCriteria criteria,
     DbPrincipal principal, {
     SearchPolicy? searchPolicy,
-    Transaction? transaction,
+    RepositoryTransaction? transaction,
   }) {
     throw UnimplementedError();
   }
 
   @override
-  Future abortTransaction(Transaction transaction) {
+  Future abortTransaction(RepositoryTransaction transaction) {
     throw UnimplementedError();
   }
 
   @override
-  Future<Transaction> beginTransaction(TransactionOptions options) {
+  Future<RepositoryTransaction> beginTransaction(
+      RepositoryTransactionOptions options) {
     throw UnimplementedError();
   }
 
   @override
-  Future commitTransaction(Transaction transaction) {
+  Future commitTransaction(RepositoryTransaction transaction) {
     throw UnimplementedError();
   }
 }

@@ -3,13 +3,13 @@ import 'dart:async';
 import 'package:arango_driver/arango_driver.dart' hide Transaction;
 import 'package:arango_driver/arango_driver.dart' as driver show Transaction;
 import 'package:nosql_repository/nosql_repository.dart'
-    hide Transaction, TransactionOptions;
-import 'package:nosql_repository/nosql_repository.dart' as repo
-    show Transaction, TransactionOptions;
+    hide RepositoryTransaction, RepositoryTransactionOptions;
+import 'package:nosql_repository/nosql_repository.dart'
+    show RepositoryTransaction, RepositoryTransactionOptions;
 import 'package:squarealfa_security/squarealfa_security.dart';
 import 'package:tuple/tuple.dart';
 
-import 'arangodb_transaction.dart';
+import 'arangodb_repository_transaction.dart';
 import 'expression_rendering/context.dart';
 import 'expression_rendering/expression_extension.dart';
 
@@ -40,7 +40,7 @@ class ArangoDbRepository<TEntity> extends Repository<TEntity> {
     Map<String, dynamic> map,
     DbPrincipal principal, {
     CreatePolicy? createPolicy,
-    repo.Transaction? transaction,
+    RepositoryTransaction? transaction,
   }) async {
     if (map.containsKey('_key') && (map['_key'] ?? '') == '') {
       map.remove('_key');
@@ -80,7 +80,7 @@ class ArangoDbRepository<TEntity> extends Repository<TEntity> {
     Map<String, dynamic> map,
     DbPrincipal principal, {
     UpdatePolicy? updatePolicy,
-    repo.Transaction? transaction,
+    RepositoryTransaction? transaction,
   }) async {
     var key = map['_key'];
 
@@ -123,7 +123,7 @@ class ArangoDbRepository<TEntity> extends Repository<TEntity> {
     String key,
     DbPrincipal principal, {
     DeletePolicy? deletePolicy,
-    repo.Transaction? transaction,
+    RepositoryTransaction? transaction,
   }) async {
     var map = await _get(key, principal);
 
@@ -144,7 +144,7 @@ class ArangoDbRepository<TEntity> extends Repository<TEntity> {
     String key,
     DbPrincipal principal, {
     SearchPolicy? searchPolicy,
-    repo.Transaction? transaction,
+    RepositoryTransaction? transaction,
   }) async {
     final map = await _get(
       key,
@@ -163,7 +163,7 @@ class ArangoDbRepository<TEntity> extends Repository<TEntity> {
   Future<Stream<Map<String, dynamic>>> getAllToStream(
     DbPrincipal principal, {
     SearchPolicy? searchPolicy,
-    repo.Transaction? transaction,
+    RepositoryTransaction? transaction,
   }) async {
     searchPolicy ??= this.searchPolicy;
     var ret = _runQuery(
@@ -182,7 +182,7 @@ class ArangoDbRepository<TEntity> extends Repository<TEntity> {
     SearchCriteria criteria,
     DbPrincipal principal, {
     SearchPolicy? searchPolicy,
-    repo.Transaction? transaction,
+    RepositoryTransaction? transaction,
   }) async {
     searchPolicy ??= this.searchPolicy;
     var filters = _createFilters(criteria);
@@ -206,7 +206,7 @@ class ArangoDbRepository<TEntity> extends Repository<TEntity> {
     SearchCriteria criteria,
     DbPrincipal principal, {
     SearchPolicy? searchPolicy,
-    repo.Transaction? transaction,
+    RepositoryTransaction? transaction,
   }) async {
     searchPolicy ??= this.searchPolicy;
 
@@ -229,7 +229,7 @@ class ArangoDbRepository<TEntity> extends Repository<TEntity> {
     SearchCriteria criteria,
     DbPrincipal principal, {
     SearchPolicy? searchPolicy,
-    repo.Transaction? transaction,
+    RepositoryTransaction? transaction,
   }) async {
     searchPolicy ??= this.searchPolicy;
 
@@ -258,8 +258,8 @@ class ArangoDbRepository<TEntity> extends Repository<TEntity> {
   }
 
   @override
-  Future<repo.Transaction> beginTransaction(
-    repo.TransactionOptions options,
+  Future<ArangoDbRepositoryTransaction> beginTransaction(
+    RepositoryTransactionOptions options,
   ) async {
     final readCollections =
         _repositoryCollectionNames(options.readRepositories);
@@ -277,14 +277,14 @@ class ArangoDbRepository<TEntity> extends Repository<TEntity> {
     final response = await db.beginTransaction(trxOptions);
     _handleResultError(response.result);
 
-    final repoTrx = ArangoDbTransaction(response.transaction);
+    final repoTrx = ArangoDbRepositoryTransaction(response.transaction);
 
     return repoTrx;
   }
 
   @override
-  Future abortTransaction(repo.Transaction transaction) async {
-    if (transaction is! ArangoDbTransaction) {
+  Future abortTransaction(RepositoryTransaction transaction) async {
+    if (transaction is! ArangoDbRepositoryTransaction) {
       throw UnsupportedError(
           'Can only abort transactions created from an ArangoDbRepository');
     }
@@ -292,8 +292,8 @@ class ArangoDbRepository<TEntity> extends Repository<TEntity> {
   }
 
   @override
-  Future commitTransaction(repo.Transaction transaction) async {
-    if (transaction is! ArangoDbTransaction) {
+  Future commitTransaction(RepositoryTransaction transaction) async {
+    if (transaction is! ArangoDbRepositoryTransaction) {
       throw UnsupportedError(
           'Can only abort transactions created from an ArangoDbRepository');
     }
@@ -306,7 +306,7 @@ class ArangoDbRepository<TEntity> extends Repository<TEntity> {
     SearchPolicy searchPolicy,
     Map<String, dynamic> parameters,
     String collectionAlias, {
-    repo.Transaction? transaction,
+    RepositoryTransaction? transaction,
   }) {
     final fquery = query.isNotEmpty
         ? query
@@ -408,7 +408,7 @@ class ArangoDbRepository<TEntity> extends Repository<TEntity> {
   Future<Map<String, dynamic>> _get(
     String key,
     DbPrincipal principal, {
-    repo.Transaction? transaction,
+    RepositoryTransaction? transaction,
   }) async {
     final trx = _getDriverTransaction(transaction);
     final response = (await db.getDocumentByKey(
@@ -485,7 +485,7 @@ class ArangoDbRepository<TEntity> extends Repository<TEntity> {
     Map<String, dynamic> parameters,
     DbPrincipal principal,
     SearchPolicy searchPolicy, {
-    repo.Transaction? transaction,
+    RepositoryTransaction? transaction,
   }) {
     final queryBuffer = StringBuffer();
 
@@ -565,7 +565,7 @@ class ArangoDbRepository<TEntity> extends Repository<TEntity> {
     Map<String, dynamic> parameters,
     DbPrincipal principal,
     SearchPolicy searchPolicy, {
-    repo.Transaction? transaction,
+    RepositoryTransaction? transaction,
   }) async {
     var countQuery = '''FOR entity in entities 
            $query
@@ -607,8 +607,11 @@ class ArangoDbRepository<TEntity> extends Repository<TEntity> {
     return names;
   }
 
-  driver.Transaction? _getDriverTransaction(repo.Transaction? transaction) {
-    if (transaction == null || transaction is! ArangoDbTransaction) return null;
+  driver.Transaction? _getDriverTransaction(
+      RepositoryTransaction? transaction) {
+    if (transaction == null || transaction is! ArangoDbRepositoryTransaction) {
+      return null;
+    }
     return transaction.transaction;
   }
 }

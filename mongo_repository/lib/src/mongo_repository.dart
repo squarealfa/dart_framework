@@ -39,7 +39,7 @@ class MongoRepository<TEntity> extends Repository<TEntity> {
     Map<String, dynamic> map,
     DbPrincipal principal, {
     CreatePolicy? createPolicy,
-    Transaction? transaction,
+    RepositoryTransaction? transaction,
   }) async {
     if (map['_id'] == null) {
       map['_id'] = ObjectId();
@@ -73,7 +73,7 @@ class MongoRepository<TEntity> extends Repository<TEntity> {
     Map<String, dynamic> map,
     DbPrincipal principal, {
     UpdatePolicy? updatePolicy,
-    Transaction? transaction,
+    RepositoryTransaction? transaction,
   }) async {
     var id = map['_id'] as ObjectId;
 
@@ -113,7 +113,7 @@ class MongoRepository<TEntity> extends Repository<TEntity> {
     String id,
     DbPrincipal principal, {
     DeletePolicy? deletePolicy,
-    Transaction? transaction,
+    RepositoryTransaction? transaction,
   }) async {
     var map = await _getFromId(id, principal);
 
@@ -136,7 +136,7 @@ class MongoRepository<TEntity> extends Repository<TEntity> {
     String id,
     DbPrincipal principal, {
     SearchPolicy? searchPolicy,
-    Transaction? transaction,
+    RepositoryTransaction? transaction,
   }) async {
     final map = await _getFromId(id, principal);
     searchPolicy ??= this.searchPolicy;
@@ -151,7 +151,7 @@ class MongoRepository<TEntity> extends Repository<TEntity> {
   Future<Stream<Map<String, dynamic>>> getAllToStream(
     DbPrincipal principal, {
     SearchPolicy? searchPolicy,
-    Transaction? transaction,
+    RepositoryTransaction? transaction,
   }) async {
     searchPolicy ??= this.searchPolicy;
 
@@ -168,7 +168,7 @@ class MongoRepository<TEntity> extends Repository<TEntity> {
     SearchCriteria criteria,
     DbPrincipal principal, {
     SearchPolicy? searchPolicy,
-    Transaction? transaction,
+    RepositoryTransaction? transaction,
   }) async {
     searchPolicy ??= this.searchPolicy;
 
@@ -234,7 +234,7 @@ class MongoRepository<TEntity> extends Repository<TEntity> {
     SearchCriteria criteria,
     DbPrincipal principal, {
     SearchPolicy? searchPolicy,
-    Transaction? transaction,
+    RepositoryTransaction? transaction,
   }) async {
     searchPolicy ??= this.searchPolicy;
 
@@ -262,7 +262,7 @@ class MongoRepository<TEntity> extends Repository<TEntity> {
     SearchCriteria criteria,
     DbPrincipal principal, {
     SearchPolicy? searchPolicy,
-    Transaction? transaction,
+    RepositoryTransaction? transaction,
   }) async {
     final cnt = await count(criteria, principal, searchPolicy: searchPolicy);
     final page =
@@ -425,17 +425,18 @@ class MongoRepository<TEntity> extends Repository<TEntity> {
   }
 
   @override
-  Future abortTransaction(Transaction transaction) {
+  Future abortTransaction(RepositoryTransaction transaction) {
     throw UnimplementedError();
   }
 
   @override
-  Future<Transaction> beginTransaction(TransactionOptions options) {
+  Future<RepositoryTransaction> beginTransaction(
+      RepositoryTransactionOptions options) {
     throw UnimplementedError();
   }
 
   @override
-  Future commitTransaction(Transaction transaction) {
+  Future commitTransaction(RepositoryTransaction transaction) {
     throw UnimplementedError();
   }
 }

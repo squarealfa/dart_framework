@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:nosql_repository/nosql_repository.dart';
-import 'package:nosql_repository/src/transaction_options.dart';
+import 'package:nosql_repository/src/repository_transaction_options.dart';
 
 /// Defines data access methods to a specific
 /// database collection.
@@ -49,7 +49,7 @@ abstract class Repository<TEntity> {
     Map<String, dynamic> map,
     DbPrincipal principal, {
     CreatePolicy? createPolicy,
-    Transaction? transaction,
+    RepositoryTransaction? transaction,
   });
 
   /// Deletes the entity from the collection identified by the [key] parameter.
@@ -68,7 +68,7 @@ abstract class Repository<TEntity> {
     String key,
     DbPrincipal principal, {
     DeletePolicy? deletePolicy,
-    Transaction? transaction,
+    RepositoryTransaction? transaction,
   });
 
   /// Update an entity in the collection contained in the [map] parameter.
@@ -87,7 +87,7 @@ abstract class Repository<TEntity> {
     Map<String, dynamic> map,
     DbPrincipal principal, {
     UpdatePolicy? updatePolicy,
-    Transaction? transaction,
+    RepositoryTransaction? transaction,
   });
 
   /// Retrieves an entity from the collection identified by the [key] parameter.
@@ -106,7 +106,7 @@ abstract class Repository<TEntity> {
     String key,
     DbPrincipal principal, {
     SearchPolicy? searchPolicy,
-    Transaction? transaction,
+    RepositoryTransaction? transaction,
   });
 
   /// Gets all the entities from the collection identified by the [key]
@@ -127,13 +127,13 @@ abstract class Repository<TEntity> {
   Future<Stream<Map<String, dynamic>>> getAllToStream(
     DbPrincipal principal, {
     SearchPolicy? searchPolicy,
-    Transaction? transaction,
+    RepositoryTransaction? transaction,
   });
 
   Future<List<Map<String, dynamic>>> getAllToList(
     DbPrincipal principal, {
     SearchPolicy? searchPolicy,
-    Transaction? transaction,
+    RepositoryTransaction? transaction,
   }) async {
     final stream = await getAllToStream(
       principal,
@@ -167,7 +167,7 @@ abstract class Repository<TEntity> {
     SearchCriteria criteria,
     DbPrincipal principal, {
     SearchPolicy? searchPolicy,
-    Transaction? transaction,
+    RepositoryTransaction? transaction,
   });
 
   /// Searches entities according to [criteria] and returns the
@@ -192,7 +192,7 @@ abstract class Repository<TEntity> {
     SearchCriteria criteria,
     DbPrincipal principal, {
     SearchPolicy? searchPolicy,
-    Transaction? transaction,
+    RepositoryTransaction? transaction,
   });
 
   /// Searches entities according to [criteria],
@@ -217,14 +217,14 @@ abstract class Repository<TEntity> {
     SearchCriteria criteria,
     DbPrincipal principal, {
     SearchPolicy? searchPolicy,
-    Transaction? transaction,
+    RepositoryTransaction? transaction,
   });
 
   Future<List<Map<String, dynamic>>> searchToList(
     SearchCriteria criteria,
     DbPrincipal principal, {
     SearchPolicy? searchPolicy,
-    Transaction? transaction,
+    RepositoryTransaction? transaction,
   }) async =>
       (await searchToStream(
         criteria,
@@ -234,7 +234,8 @@ abstract class Repository<TEntity> {
       ))
           .toList();
 
-  Future<Transaction> beginTransaction(TransactionOptions options);
-  Future commitTransaction(Transaction transaction);
-  Future abortTransaction(Transaction transaction);
+  Future<RepositoryTransaction> beginTransaction(
+      RepositoryTransactionOptions options);
+  Future commitTransaction(RepositoryTransaction transaction);
+  Future abortTransaction(RepositoryTransaction transaction);
 }

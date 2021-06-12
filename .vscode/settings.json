@@ -2,6 +2,10 @@
     "cSpell.words": [
         "arango",
         "arangodb",
+        "errmsg",
+        "fname",
+        "fquery",
+        "grpc",
         "nosql",
         "retrn",
         "squarealfa",

@@ -46,8 +46,8 @@ abstract class UserTokenServicesBase<TUser extends UserBase<TUserCache>,
       throw GrpcError.notFound('User is not found');
     }
 
-    final isAuthenticted = await isUserAuthenticated(user);
-    if (!isAuthenticted) {
+    final isAuthenticated = await isUserAuthenticated(user);
+    if (!isAuthenticated) {
       await _handleFailedAuthentication(user);
       throw GrpcError.unauthenticated('username or password is invalid');
     }
@@ -88,9 +88,11 @@ abstract class UserTokenServicesBase<TUser extends UserBase<TUserCache>,
   UserToken _generateToken(JwtPayload payload, TUser user) {
     final token = _tokenHandler.generate(payload);
     final permissions = user.cache?.permissions ?? [];
-    final isAdministrator = user.cache?.isAdministrator ?? false;
+    final isAdministrator =
+        (user.cache?.isAdministrator ?? false) || user.isAdministrator;
 
-    var ret = UserToken(
+    var ret = UserToken<TUser, TUserCache>(
+      user: user,
       isAdministrator: isAdministrator,
       token: token,
       permissions: permissions,
