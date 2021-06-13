@@ -7,11 +7,13 @@ class TokenServicesParameters<TUser extends UserBase<TUserCache>,
   final JsonWebTokenHandler tokenHandler;
   final String tokenIssuer;
   final String tokenAudience;
+  final Duration tokenTimeToLive;
 
   TokenServicesParameters({
     required this.userRepository,
     required this.tokenHandler,
     required this.tokenIssuer,
     required this.tokenAudience,
+    required this.tokenTimeToLive,
   });
 }

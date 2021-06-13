@@ -40,7 +40,7 @@ abstract class UserTokenServicesBase<TUser extends UserBase<TUserCache>,
     try {
       user = await _getUserFromUsername(username);
       if (user.isLocked) {
-        throw GrpcError.unauthenticated('user is locked');
+        throw GrpcError.permissionDenied('user is locked');
       }
     } on NotFound {
       throw GrpcError.notFound('User is not found');
@@ -57,7 +57,9 @@ abstract class UserTokenServicesBase<TUser extends UserBase<TUserCache>,
     var payload = user.toJwtPayload(
       issuer: parameters.tokenIssuer,
       audience: parameters.tokenAudience,
+      timeToLive: parameters.tokenTimeToLive,
     );
+
     final token = _generateToken(payload, user);
     return token;
   }
@@ -96,6 +98,7 @@ abstract class UserTokenServicesBase<TUser extends UserBase<TUserCache>,
       isAdministrator: isAdministrator,
       token: token,
       permissions: permissions,
+      expires: payload.expires,
     );
     return ret;
   }
@@ -114,11 +117,11 @@ abstract class UserTokenServicesBase<TUser extends UserBase<TUserCache>,
       updateTimestamp: DateTime.now(),
     );
 
-    if (newCache != user.cache) {
+    if (newCache != user.cache && user.numberOfFailedAttempts == 0) {
       return user;
     }
 
-    user = copyUserWith(user, cache: newCache);
+    user = copyUserWith(user, cache: newCache, numberOfFailedAttempts: 0);
 
     var userMap = mapMapper.toMap(user);
     userMap = await _userRepository.updateUser(user.key, userMap);

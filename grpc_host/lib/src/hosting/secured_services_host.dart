@@ -24,6 +24,7 @@ abstract class SecuredServicesHost<TUser extends UserBase<TUserCache>,
       tokenHandler: tokenHandler,
       tokenIssuer: tokenSettings.issuer,
       tokenAudience: tokenSettings.audience,
+      tokenTimeToLive: Duration(seconds: tokenSettings.secondsToLive),
     );
   }
 

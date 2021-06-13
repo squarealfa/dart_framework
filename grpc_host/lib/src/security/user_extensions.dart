@@ -19,15 +19,16 @@ extension UserExtensions on UserBase {
   JwtPayload toJwtPayload({
     required String issuer,
     required String audience,
+    required Duration timeToLive,
   }) {
     final payload = JwtPayload(
       name: friendlyName,
       username: username,
       subject: key,
-      issuer: 'MentorAlfa Server',
-      audience: 'MentorAlfa Server',
-      notBefore: DateTime.now(),
-      expires: DateTime.now().add(Duration(days: 365)),
+      issuer: issuer,
+      audience: audience,
+      notBefore: DateTime.now().toUtc(),
+      expires: DateTime.now().toUtc().add(timeToLive),
     );
     return payload;
   }

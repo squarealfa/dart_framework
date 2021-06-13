@@ -8,11 +8,13 @@ class UserToken<TUser extends UserBase<TUserCache>,
   final String token;
   final bool isAdministrator;
   final List<String> permissions;
+  final DateTime expires;
 
   UserToken({
     required this.user,
     required this.token,
     required this.isAdministrator,
     required this.permissions,
+    required this.expires,
   });
 }
