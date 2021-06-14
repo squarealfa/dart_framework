@@ -97,7 +97,13 @@ class ProtoMapperGenerator extends GeneratorForAnnotation<MapProto> {
         $className fromJson(String json) =>
           _\$${className}FromProto($prefix$className.fromJson(json));
         String toJson($className entity) => _\$${className}ToProto(entity).writeToJson();
-        
+
+        String toBase64Proto($className entity) =>
+          base64Encode(utf8.encode(entity.toProto().writeToJson()));
+
+        $className fromBase64Proto(String base64Proto) =>
+            $prefix$className.fromJson(utf8.decode(base64Decode(base64Proto)))
+                .to$className();
       }
       
             
