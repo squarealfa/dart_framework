@@ -4,6 +4,8 @@ library arango_driver;
 
 export 'src/arango_client_query.dart';
 export 'src/arango_db_client.dart';
+export 'src/collection_type.dart';
+export 'src/index_type.dart';
 export 'src/query.dart';
 export 'src/query_with_client.dart';
 export 'src/results/collection_info.dart';
@@ -14,6 +16,8 @@ export 'src/results/database_user.dart';
 export 'src/results/db_info_response.dart';
 export 'src/results/id_response.dart';
 export 'src/results/identifier.dart';
+export 'src/results/index_info.dart';
+export 'src/results/index_response.dart';
 export 'src/results/operation_result.dart';
 export 'src/results/result.dart';
 export 'src/results/result_response.dart';

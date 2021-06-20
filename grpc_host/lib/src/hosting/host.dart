@@ -18,7 +18,10 @@ abstract class Host {
     var errorReceivePort = ReceivePort();
     var hostParameters = HostParameters(receivePort.sendPort, hostSettings);
     var isolates = <Isolate>[];
-    for (var i = 0; i < hostSettings.numberIsolates; i++) {
+    final numberIsolates =
+        hostSettings.isolatesMultiplier * Platform.numberOfProcessors +
+            hostSettings.extraIsolates;
+    for (var i = 0; i < numberIsolates; i++) {
       var isolate = await Isolate.spawn(entryPoint, hostParameters,
           errorsAreFatal: false);
       isolate.addErrorListener(errorReceivePort.sendPort);

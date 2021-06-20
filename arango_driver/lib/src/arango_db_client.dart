@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:arango_driver/arango_driver.dart';
 import 'package:arango_driver/src/results/document_response.dart';
 import 'package:arango_driver/src/results/key_options.dart';
 import 'package:arango_driver/src/results/create_database_info.dart';
@@ -193,11 +194,53 @@ class ArangoDBClient {
 
   /// Creates a collection
   /// See https://www.arangodb.com/docs/3.4/http/collection-creating.html for details.
-  Future<CollectionPropertiesResponse> createCollection(
-      {required String name}) async {
-    final answer =
-        await _httpPost(['_db', db, '_api', 'collection'], {'name': name});
+  Future<CollectionPropertiesResponse> createCollection({
+    required String name,
+    bool waitForSync = false,
+    CollectionType collectionType = CollectionType.document,
+  }) async {
+    final answer = await _httpPost([
+      '_db',
+      db,
+      '_api',
+      'collection'
+    ], {
+      'name': name,
+      'waitForSync': waitForSync,
+      'type': _typeFromCollectionType(collectionType),
+    });
     final ret = _toCollectionPropertiesResult(answer);
+    return ret;
+  }
+
+  /// Creates a collection
+  /// See https://www.arangodb.com/docs/devel/http/indexes-working-with.html for details.
+  Future<IndexResponse> createPersistentIndex({
+    required String collectionName,
+    required String indexName,
+    required List<String> fields,
+    bool unique = false,
+    bool deduplicate = false,
+    bool sparse = false,
+    bool inBackground = false,
+  }) async {
+    final answer = await _httpPost([
+      '_db',
+      db,
+      '_api',
+      'index'
+    ], {
+      'name': indexName,
+      'type': 'persistent',
+      'fields': fields,
+      'unique': unique,
+      'deduplicate': deduplicate,
+      'sparse': sparse,
+      'inBackground': inBackground,
+    }, queryParameters: {
+      'collection': collectionName,
+    });
+    final ret = _toIndexResponse(answer);
     return ret;
   }
 
@@ -803,6 +846,23 @@ class ArangoDBClient {
     );
   }
 
+  static IndexResponse _toIndexResponse(Map<String, dynamic> map) {
+    return IndexResponse(
+      result: _toResult(map),
+      indexInfo: IndexInfo(
+        id: map['id'],
+        name: map['name'],
+        isNewlyCreated: map['isNewlyCreated'],
+        fields: List<String>.from(map['fields']),
+        type: _indexTypeFromString(map['type']),
+        unique: map['unique'],
+        deduplicate: map['deduplicate'],
+        sparse: map['sparse'],
+        selectivityEstimate: map['selectivityEstimate'],
+      ),
+    );
+  }
+
   static Identifier _toIdentifier(Map<String, dynamic>? map) => Identifier(
         id: (map ??= {})['_id'] ?? '',
         key: map['_key'] ?? '',
@@ -817,7 +877,8 @@ class ArangoDBClient {
         oldRev: map['_oldRev'] ?? '',
       );
 
-  Map<String, dynamic> _getTransactionOptionsData(TransactionOptions options) {
+  static Map<String, dynamic> _getTransactionOptionsData(
+      TransactionOptions options) {
     final collections = {};
     if (options.readCollections.isNotEmpty) {
       collections['read'] = options.readCollections;
@@ -844,7 +905,7 @@ class ArangoDBClient {
     return data;
   }
 
-  Map<String, dynamic> _addTransactionHeader(
+  static Map<String, dynamic> _addTransactionHeader(
     Transaction? transaction, {
     Map<String, dynamic> headers = const <String, dynamic>{},
   }) {
@@ -853,5 +914,31 @@ class ArangoDBClient {
     }
     final ret = {...headers, 'x-arango-trx-id': transaction.id};
     return ret;
+  }
+
+  static int _typeFromCollectionType(CollectionType collectionType) {
+    switch (collectionType) {
+      case CollectionType.document:
+        return 2;
+      case CollectionType.edge:
+        return 3;
+      default:
+        throw UnimplementedError();
+    }
+  }
+
+  static IndexType _indexTypeFromString(String type) {
+    switch (type) {
+      case 'persistent':
+        return IndexType.persistent;
+      case 'geo':
+        return IndexType.geo;
+      case 'fulltext':
+        return IndexType.fulltext;
+      case 'ttl':
+        return IndexType.ttl;
+      default:
+        throw UnimplementedError();
+    }
   }
 }

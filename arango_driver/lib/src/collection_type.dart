@@ -1,0 +1,4 @@
+enum CollectionType {
+  document,
+  edge,
+}
