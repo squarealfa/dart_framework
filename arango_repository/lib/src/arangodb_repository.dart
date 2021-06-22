@@ -87,6 +87,8 @@ class ArangoDbRepository<TEntity> extends Repository<TEntity> {
     var existing = await _get(
       key,
       principal,
+      filterByTenant: updatePolicy?.filterByTenant ?? true,
+      transaction: transaction,
     );
 
     updatePolicy ??= this.updatePolicy;
@@ -408,6 +410,7 @@ class ArangoDbRepository<TEntity> extends Repository<TEntity> {
   Future<Map<String, dynamic>> _get(
     String key,
     DbPrincipal principal, {
+    bool filterByTenant = true,
     RepositoryTransaction? transaction,
   }) async {
     final trx = _getDriverTransaction(transaction);
@@ -427,7 +430,7 @@ class ArangoDbRepository<TEntity> extends Repository<TEntity> {
 
     final map = response.document;
 
-    if (!_isValidateTenant(principal, map)) {
+    if (filterByTenant && !_isValidateTenant(principal, map)) {
       throw Unauthorized();
     }
 
