@@ -28,7 +28,7 @@ extension UserExtensions on UserBase {
       issuer: issuer,
       audience: audience,
       notBefore: DateTime.now().toUtc(),
-      expires: DateTime.now().toUtc().add(timeToLive),
+      expires: DateTime.now().add(timeToLive).toUtc(),
     );
     return payload;
   }

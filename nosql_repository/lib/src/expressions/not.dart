@@ -5,5 +5,5 @@ import 'expression.dart';
 class Not extends Expression {
   final Expression expression;
 
-  Not(this.expression);
+  const Not(this.expression);
 }

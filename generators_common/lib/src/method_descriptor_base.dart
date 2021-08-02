@@ -29,6 +29,7 @@ class MethodDescriptorBase {
           : null;
 
   DartType get parameterType => methodElement.parameters.first.type;
+  String get parameterName => methodElement.parameters.first.displayName;
   DartType? get parameterListParameterType =>
       parameterType.isDartCoreList && parameterType is ParameterizedType
           ? (parameterType as ParameterizedType).typeArguments.first

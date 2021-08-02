@@ -6,5 +6,5 @@ class Or extends Expression {
   final Expression left;
   final Expression right;
 
-  Or(this.left, this.right);
+  const Or(this.left, this.right);
 }

@@ -5,5 +5,5 @@ import 'operand.dart';
 class FieldPath extends Operand {
   final String fieldPath;
 
-  FieldPath(this.fieldPath);
+  const FieldPath(this.fieldPath);
 }

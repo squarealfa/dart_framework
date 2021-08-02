@@ -8,12 +8,10 @@ import 'package:squarealfa_security/squarealfa_security.dart';
 abstract class UserTokenServicesBase<TUser extends UserBase<TUserCache>,
     TUserCache extends UserCacheBase> {
   final TokenServicesParameters<TUser, TUserCache> parameters;
-  final ServiceCall call;
   final MapMapper<TUser> mapMapper;
 
   UserTokenServicesBase(
     this.parameters,
-    this.call,
     this.mapMapper,
   );
 
@@ -64,15 +62,12 @@ abstract class UserTokenServicesBase<TUser extends UserBase<TUserCache>,
     return token;
   }
 
-  Future<UserToken> renew() async {
-    final payload = call.jwtPayload;
-    if (payload == null) {
-      throw Unauthenticated();
-    }
+  Future<UserToken> renew(String tokenJwt) async {
+    final payload = parameters.tokenHandler.load(tokenJwt);
 
     TUser user;
     try {
-      user = await _getUserFromUsername(call.principal.username);
+      user = await _getUserFromUsername(payload.username);
     } on NotFound {
       throw GrpcError.notFound('User is not found');
     }
@@ -81,10 +76,10 @@ abstract class UserTokenServicesBase<TUser extends UserBase<TUserCache>,
 
     final newPayload = payload.CopyWith(
       notBefore: DateTime.now(),
-      expires: DateTime.now().add(Duration(seconds: 300)),
+      expires: DateTime.now().add(parameters.tokenTimeToLive).toUtc(),
     );
-    final token = _generateToken(newPayload, user);
-    return token;
+    final newToken = _generateToken(newPayload, user);
+    return newToken;
   }
 
   UserToken _generateToken(JwtPayload payload, TUser user) {
@@ -117,7 +112,10 @@ abstract class UserTokenServicesBase<TUser extends UserBase<TUserCache>,
       updateTimestamp: DateTime.now(),
     );
 
-    if (newCache != user.cache && user.numberOfFailedAttempts == 0) {
+    final userCache = user.cache;
+    if (userCache != null &&
+        areEqual(userCache, newCache) &&
+        user.numberOfFailedAttempts == 0) {
       return user;
     }
 
@@ -146,5 +144,23 @@ abstract class UserTokenServicesBase<TUser extends UserBase<TUserCache>,
     userMap = await _userRepository.updateUser(user.key, userMap);
     user = mapMapper.fromMap(userMap);
     return user;
+  }
+
+  bool areEqual(TUserCache cache, TUserCache otherCache) {
+    if (otherCache.isAdministrator != cache.isAdministrator) {
+      return false;
+    }
+
+    if (otherCache.permissions.length != cache.permissions.length) {
+      return false;
+    }
+
+    for (var permission in cache.permissions) {
+      if (!otherCache.permissions.any((p) => p == permission)) return false;
+    }
+    for (var permission in otherCache.permissions) {
+      if (!cache.permissions.any((p) => p == permission)) return false;
+    }
+    return true;
   }
 }

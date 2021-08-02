@@ -8,7 +8,7 @@ class ReturnField {
   /// returned field.
   final String path;
 
-  ReturnField(
+  const ReturnField(
     this.path, [
     this.alias,
   ]);

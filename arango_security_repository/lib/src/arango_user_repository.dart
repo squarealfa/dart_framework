@@ -10,7 +10,8 @@ class ArangoUserRepository extends UserRepositoryBase {
   @override
   Future<UserPermissionSet> getUserPermissionSet(String userKey) async {
     var query = '''
-        let uroles =  document(users, @user_key).roles == null ? [] : 
+        let user = document(users, @user_key)
+        let uroles =  user.roles == null ? [] : 
           document(users, @user_key).roles
 
         let lroles = (for role in roles
@@ -23,7 +24,7 @@ class ArangoUserRepository extends UserRepositoryBase {
             return v), lroles])
 
         let permissions = unique(flatten(for role in allroles return role.permissions))
-        let isAdministrator = first(for role in allroles filter role.isAdministrator == true limit 1 return role) != null
+        let isAdministrator = (first(for role in allroles filter role.isAdministrator == true limit 1 return role) != null ) || user.isAdministrator
 
         return {
             permissions,
@@ -52,10 +53,10 @@ class ArangoUserRepository extends UserRepositoryBase {
   @override
   Future<Map<String, dynamic>> getFromKey(String key) async {
     var userList = await _dbClient.newQuery().addLine('''
-            for c in users
+            for u in users
             filter u._key == @key
             limit 1
-            return c
+            return u
           ''').addBindVar('key', key).runAndReturnFutureList();
     if (userList.isEmpty) {
       throw NotFound();

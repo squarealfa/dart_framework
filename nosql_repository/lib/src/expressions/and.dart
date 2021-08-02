@@ -6,5 +6,5 @@ class And extends Expression {
   final Expression left;
   final Expression right;
 
-  And(this.left, this.right);
+  const And(this.left, this.right);
 }

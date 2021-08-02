@@ -8,5 +8,5 @@ class OrderBy {
   /// when true, sort is descending.
   final bool isDescending;
 
-  OrderBy(this.path, {this.isDescending = false});
+  const OrderBy(this.path, {this.isDescending = false});
 }

@@ -5,5 +5,5 @@ import 'operand.dart';
 class Input extends Operand {
   final dynamic value;
 
-  Input(this.value);
+  const Input(this.value);
 }

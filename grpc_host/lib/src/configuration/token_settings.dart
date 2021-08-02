@@ -17,7 +17,7 @@ class TokenSettings {
     final key = yaml['key'];
     final issuer = yaml['issuer'];
     final audience = yaml['audience'];
-    final secondsToLive = int.tryParse(yaml['secondsToLive'] ?? '') ?? 3600;
+    final secondsToLive = yaml['secondsToLive'] ?? 3600;
     final ret = TokenSettings(
       key: key,
       issuer: issuer,

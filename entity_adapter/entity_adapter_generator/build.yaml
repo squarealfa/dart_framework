@@ -40,6 +40,13 @@ builders:
     build_to: cache
     applies_builders: ["source_gen|combining_builder"]
 
+  proto_services_client_generator:
+    import: "package:proto_generator/proto_generator.dart"
+    builder_factories: ["protoServicesClientBuilder"]
+    build_extensions: {".dart": ["entity_proto_services_client.g.part"]}
+    auto_apply: dependents
+    build_to: cache
+    applies_builders: ["source_gen|combining_builder"]
 
   defaults_provider_generator:
     import: "package:defaults_provider_generator/defaults_provider_generator.dart"

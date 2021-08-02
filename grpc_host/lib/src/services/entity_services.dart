@@ -41,7 +41,7 @@ class EntityServices<TEntity> {
   Future<Stream<Map<String, dynamic>>> findToStream([
     SearchCriteria criteria = const SearchCriteria(),
   ]) async {
-    var result = await repository.searchToStream(criteria, principal);
+    final result = await repository.searchToStream(criteria, principal);
     return result;
   }
 
@@ -49,7 +49,7 @@ class EntityServices<TEntity> {
     SearchCriteria criteria = const SearchCriteria(),
   ]) async {
     final mapStream = await findToStream(criteria);
-    var entityStream = mapStream.map((m) => mapMapper.fromMap(m));
+    final entityStream = mapStream.map((m) => mapMapper.fromMap(m));
 
     return entityStream;
   }
@@ -57,8 +57,21 @@ class EntityServices<TEntity> {
   Future<List<TEntity>> findToEntityList([
     SearchCriteria criteria = const SearchCriteria(),
   ]) async {
-    var stream = await findToStream(criteria);
-    var list = stream.map((m) => mapMapper.fromMap(m)).toList();
+    final stream = await findToStream(criteria);
+    final list = stream.map((m) => mapMapper.fromMap(m)).toList();
     return list;
+  }
+
+  Future<PagedSearchResult<TEntity>> findToEntityPage(
+      SearchCriteria criteria) async {
+    final searchResult = await repository.searchWithCount(criteria, principal);
+    var page =
+        await searchResult.page.map((m) => mapMapper.fromMap(m)).toList();
+
+    final ret = PagedSearchResult(
+      count: searchResult.count,
+      page: page,
+    );
+    return ret;
   }
 }

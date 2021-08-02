@@ -7,5 +7,5 @@ abstract class BinaryExpression extends Expression {
   final Operand left;
   final Operand right;
 
-  BinaryExpression(this.left, this.right);
+  const BinaryExpression(this.left, this.right);
 }

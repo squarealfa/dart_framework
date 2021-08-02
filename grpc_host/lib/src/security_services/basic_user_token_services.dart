@@ -11,7 +11,7 @@ abstract class BasicUserTokenServices<TUser extends BasicUserBase<TUserCache>,
     TokenServicesParameters<TUser, TUserCache> parameters,
     ServiceCall call,
     MapMapper<TUser> mapMapper,
-  ) : super(parameters, call, mapMapper);
+  ) : super(parameters, mapMapper);
 
   Future<bool> isUserAuthenticated(TUser user, String password) async {
     var hash = await Password.getSaltedPasswordHash(

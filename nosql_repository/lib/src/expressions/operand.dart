@@ -3,7 +3,7 @@ import 'expressions.dart';
 /// Defines an operand that can be used in
 /// an [Expression]
 abstract class Operand {
-  Operand();
+  const Operand();
 
   /// Creates an operand that represents a [FieldPath].
   factory Operand.field(String path) {

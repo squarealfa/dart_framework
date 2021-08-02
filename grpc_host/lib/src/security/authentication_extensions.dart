@@ -20,7 +20,7 @@ extension AuthenticationExtensions on ServiceCall {
     UserRepositoryBase userRepository,
     MapMapper<TUser> mapMapper,
   ) async {
-    final userMap = await userRepository.getFromUsername(subject);
+    final userMap = await userRepository.getFromKey(subject);
     final user = mapMapper.fromMap(userMap);
     final principal = user.toPrincipal();
     return principal;

@@ -5,7 +5,7 @@ import 'expressions.dart';
 /// Filtering expressions can be composed and aggregated
 /// to perform a more complex expression.
 abstract class Expression {
-  Expression();
+  const Expression();
 
   /// Creates an expression that filters a field for a value.
   factory Expression.equal(String fieldPath, dynamic value) {
@@ -73,6 +73,7 @@ extension ExpressionExtension on Expression {
   Expression or(Expression other) {
     return Expression.or(this, other);
   }
+
   Expression and(Expression other) {
     return Expression.and(this, other);
   }

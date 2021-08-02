@@ -9,5 +9,5 @@ class SearchResult {
   // total count of entities that fit the criteria.
   final int count;
 
-  SearchResult(this.page, this.count);
+  const SearchResult(this.page, this.count);
 }

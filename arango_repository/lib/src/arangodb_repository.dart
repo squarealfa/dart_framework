@@ -152,6 +152,7 @@ class ArangoDbRepository<TEntity> extends Repository<TEntity> {
       key,
       principal,
       transaction: transaction,
+      filterByTenant: searchPolicy?.filterByTenant ?? true,
     );
     searchPolicy ??= this.searchPolicy;
 
@@ -570,9 +571,12 @@ class ArangoDbRepository<TEntity> extends Repository<TEntity> {
     SearchPolicy searchPolicy, {
     RepositoryTransaction? transaction,
   }) async {
-    var countQuery = '''FOR entity in entities 
+    var countQuery = '''
+        return { 'cnt' : LENGTH(
+           FOR entity in entities 
            $query
-           return { 'cnt' : LENGTH(entities) }
+           return 1
+           ) }
          ''';
     var count = (await _runQuery(
       countQuery,
