@@ -18,6 +18,7 @@ class BuilderGenerator extends GeneratorForAnnotation<BuildBuilder> {
     ConstantReader reader,
     BuildStep buildStep,
   ) {
+    final annotation = _hydrateAnnotation(reader);
     var classElement = element.asClassElement();
     if (classElement.kind.name == 'ENUM') return '';
     _className = classElement.name;
@@ -29,22 +30,24 @@ class BuilderGenerator extends GeneratorForAnnotation<BuildBuilder> {
     if (fieldDescriptors.isEmpty) return '';
 
     var renderBuffer = StringBuffer();
-    //renderBuffer.writeln(_renderCopyWithExtension(fieldDescriptors));
 
-    renderBuffer.writeln(_renderBuilder(fieldDescriptors));
+    renderBuffer.writeln(_renderBuilder(annotation, fieldDescriptors));
 
     return renderBuffer.toString();
   }
 
   String _renderBuilder(
+    BuildBuilder builder,
     Iterable<FieldDescriptor> fieldDescriptors,
   ) {
-    var className = _className;
+    final className = _className;
+    final builderClassName =
+        '${className}Builder${builder.createBuilderBaseClass ? 'Base' : ''}';
 
-    var fieldBuffer = StringBuffer();
-    var assignmentBuffer = StringBuffer();
-    var constructorBuffer = StringBuffer();
-    var entityConstructorBuffer = StringBuffer();
+    final fieldBuffer = StringBuffer();
+    final assignmentBuffer = StringBuffer();
+    final constructorBuffer = StringBuffer();
+    final entityConstructorBuffer = StringBuffer();
 
     for (var fieldDescriptor in fieldDescriptors) {
       var gen = FieldCodeGenerator.fromFieldDescriptor(fieldDescriptor);
@@ -55,17 +58,27 @@ class BuilderGenerator extends GeneratorForAnnotation<BuildBuilder> {
       entityConstructorBuffer.writeln(gen.entityConstructorMap);
     }
 
+    final extensionClass = builder.createBuilderBaseClass
+        ? '''
+          extension ${className}BuilderExtension on $className {
+        $className rebuild() {
+          final builder = ${className}Builder.from$className(this);
+          final entity = builder.build();
+          return entity;
+        }
+      }
+    '''
+        : '';
+
     var ret = '''
 
-      class ${className}Builder implements Builder<$className> {
+      class $builderClassName implements Builder<$className> {
         $fieldBuffer
 
-        ${className}Builder({ $constructorBuffer });
+        $builderClassName({ $constructorBuffer });
 
-        factory ${className}Builder.from$className($className entity) {
-          return ${className}Builder($assignmentBuffer);
-        }
-        
+        $builderClassName.from$className($className entity) 
+          : this($assignmentBuffer);        
         
         @override
         $className build() {
@@ -77,6 +90,8 @@ class BuilderGenerator extends GeneratorForAnnotation<BuildBuilder> {
         }
 
       }
+
+      $extensionClass
 
     ''';
     return ret;
@@ -91,4 +106,12 @@ Iterable<FieldDescriptor> _getFieldDescriptors(ClassElement classElement) {
             fieldElement,
           ));
   return fieldDescriptors;
+}
+
+BuildBuilder _hydrateAnnotation(ConstantReader reader) {
+  var validatable = BuildBuilder(
+    createBuilderBaseClass:
+        reader.read('createBuilderBaseClass').literalValue as bool? ?? false,
+  );
+  return validatable;
 }

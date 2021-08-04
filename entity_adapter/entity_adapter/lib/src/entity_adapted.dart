@@ -47,6 +47,7 @@ class EntityAdapted
     this.packageName = '',
     this.createDefaultsProviderBaseClass = false,
     this.createValidatableBaseClass = false,
+    this.createBuilderBaseClass = false,
   });
 
   @override
@@ -66,4 +67,7 @@ class EntityAdapted
 
   @override
   final bool createValidatableBaseClass;
+
+  @override
+  final bool createBuilderBaseClass;
 }

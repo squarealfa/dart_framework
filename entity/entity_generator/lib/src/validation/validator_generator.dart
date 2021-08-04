@@ -19,8 +19,8 @@ class ValidatorGenerator extends GeneratorForAnnotation<Validatable> {
     ConstantReader reader,
     BuildStep buildStep,
   ) {
-    var validatable = _hydrateAnnotation(reader);
-    var createBaseClass = validatable.createValidatableBaseClass;
+    final validatable = _hydrateAnnotation(reader);
+    final createBaseClass = validatable.createValidatableBaseClass;
 
     try {
       return generateValidator(element, createBaseClass);
