@@ -28,4 +28,11 @@ class EntityFieldCodeGenerator extends FieldCodeGenerator {
   (map[\'$mapName\'] != null
       ? ${fieldDescriptor.fieldElementTypeName}MapMapper().fromMap(map[\'$mapName\'], \$kh)
       : null)''';
+
+  @override
+  String get fieldNamesClassGetter =>
+      '''\$${fieldDescriptor.fieldElementTypeName}FieldNames get $fieldName =>
+             \$${fieldDescriptor.fieldElementTypeName}FieldNames(
+               keyHandler: keyHandler,
+               fieldName: prefix + _$fieldName,); ''';
 }

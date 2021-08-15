@@ -31,6 +31,7 @@ class MapMapGenerator extends GeneratorForAnnotation<MapMap> {
     var toMapFieldBuffer = StringBuffer();
     var fromMapFieldBuffer = StringBuffer();
     var constructorFieldBuffer = StringBuffer();
+    var fieldNamesBuffer = StringBuffer();
 
     var fieldDescriptors = _getFieldDescriptors(_classElement!, annotation);
     var defaultsProviderClassName =
@@ -53,6 +54,9 @@ class MapMapGenerator extends GeneratorForAnnotation<MapMap> {
         var fromMapMap = fieldCodeGenerator.fromMapMap;
         fromMapFieldBuffer.writeln(fromMapMap);
       }
+
+      fieldNamesBuffer.writeln(fieldCodeGenerator.fieldNamesClassFieldName);
+      fieldNamesBuffer.writeln(fieldCodeGenerator.fieldNamesClassGetter);
     }
 
     var ret = renderMapper(
@@ -60,6 +64,7 @@ class MapMapGenerator extends GeneratorForAnnotation<MapMap> {
       toMapFieldBuffer,
       fromMapFieldBuffer,
       constructorFieldBuffer,
+      fieldNamesBuffer,
       declareKh,
     );
 
@@ -71,6 +76,7 @@ class MapMapGenerator extends GeneratorForAnnotation<MapMap> {
     StringBuffer toMapFieldBuffer,
     StringBuffer fromMapFieldBuffer,
     StringBuffer constructorFieldBuffer,
+    StringBuffer fieldNamesBuffer,
     bool declareKh,
   ) {
     final className = _className;
@@ -127,8 +133,26 @@ class MapMapGenerator extends GeneratorForAnnotation<MapMap> {
       extension Map${className}Extension on Map<String, dynamic> {
         $className to$className([KeyHandler? keyHandler]) => ${className}MapMapper().fromMap(this, keyHandler);
       }
-
   
+
+      class \$${className}FieldNames {
+        final KeyHandler keyHandler;
+        final String fieldName;
+        final String prefix;
+
+        \$${className}FieldNames({
+          KeyHandler? keyHandler,
+          this.fieldName = '',
+        })  : prefix = fieldName.isEmpty ? '' : fieldName + '.',
+              keyHandler = keyHandler ?? KeyHandler.fromDefault();
+
+
+        $fieldNamesBuffer
+
+        @override
+        String toString() => fieldName;
+      }
+
   ''';
   }
 

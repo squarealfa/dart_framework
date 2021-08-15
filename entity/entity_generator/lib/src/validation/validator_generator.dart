@@ -46,6 +46,7 @@ class ValidatorGenerator extends GeneratorForAnnotation<Validatable> {
 
     var errorCallBuffer = StringBuffer();
     var validationMethodBuffer = StringBuffer();
+    final nullValidationMethodBuffer = StringBuffer();
 
     for (var fieldDescriptor in fieldDescriptors) {
       var errorLine = '''
@@ -58,6 +59,12 @@ class ValidatorGenerator extends GeneratorForAnnotation<Validatable> {
       var validationMethodCode =
           _createValidationMethod(fieldDescriptor, className);
       validationMethodBuffer.writeln(validationMethodCode);
+
+      final nullValidationMethodCode =
+          _createNullValidationMethod(fieldDescriptor, className);
+      if (nullValidationMethodCode.isNotEmpty) {
+        nullValidationMethodBuffer.writeln(nullValidationMethodCode);
+      }
     }
 
     var validatorClassName =
@@ -91,6 +98,8 @@ class ValidatorGenerator extends GeneratorForAnnotation<Validatable> {
         $singletonAndFactory  
         
         $validationMethodBuffer
+
+        $nullValidationMethodBuffer
       
         @override
         ErrorList validate(covariant $className entity) {
@@ -111,6 +120,24 @@ class ValidatorGenerator extends GeneratorForAnnotation<Validatable> {
     
     ''';
     return ret;
+  }
+
+  static String _createNullValidationMethod(
+      FieldDescriptor fieldDescriptor, String className) {
+    if (fieldDescriptor.isNullable) {
+      return '';
+    }
+    final nullValidationMethodCode = '''
+            ValidationError? \$validate${fieldDescriptor.pascalName}(${fieldDescriptor.fieldElementTypeName}? value, {$className? entity})
+    {
+      if (value == null) {
+        return RequiredValidationError('${fieldDescriptor.name}');
+      }
+      return validate${fieldDescriptor.pascalName}(value, entity: entity);
+    }
+    
+    ''';
+    return nullValidationMethodCode;
   }
 
   static String _createValidationMethod(

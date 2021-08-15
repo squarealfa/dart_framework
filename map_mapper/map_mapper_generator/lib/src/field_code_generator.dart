@@ -36,6 +36,12 @@ abstract class FieldCodeGenerator {
   String get fromMapMap =>
       '''..$fieldName = ${fieldDescriptor.isNullable ? fromNullableMapExpression : fromMapExpression('map[\'$mapName\']')} ''';
 
+  String get fieldNamesClassFieldName =>
+      'static const _$fieldName = \'$fieldName\';';
+
+  String get fieldNamesClassGetter =>
+      'String get $fieldName => prefix + _$fieldName;';
+
   String get toMapExpression => 'instance.$fieldName';
 
   String get toNullableMapExpression => toMapExpression;

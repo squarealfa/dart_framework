@@ -16,4 +16,8 @@ class KeyFieldCodeGenerator extends FieldCodeGenerator {
   @override
   String fromMapExpression(String sourceExpression) =>
       '\$kh.keyFromMap(map, \'$fieldName\')';
+
+  @override
+  String get fieldNamesClassGetter =>
+      '''String get $fieldName => prefix + keyHandler.fieldNameToMapKey(_$fieldName);''';
 }

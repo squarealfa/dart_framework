@@ -47,13 +47,24 @@ class BuilderGenerator extends GeneratorForAnnotation<BuildBuilder> {
     final fieldBuffer = StringBuffer();
     final assignmentBuffer = StringBuffer();
     final constructorBuffer = StringBuffer();
+    final constructorStatementBuffer = StringBuffer();
     final entityConstructorBuffer = StringBuffer();
+    var usesDefaultsProvider = false;
 
     for (var fieldDescriptor in fieldDescriptors) {
-      var gen = FieldCodeGenerator.fromFieldDescriptor(fieldDescriptor);
+      var gen = FieldCodeGenerator.fromFieldDescriptor(
+        fieldDescriptor,
+        builder,
+      );
+
+      usesDefaultsProvider = usesDefaultsProvider || gen.usesDefaultsProvided;
 
       fieldBuffer.writeln(gen.fieldDeclaration);
       constructorBuffer.writeln(gen.constructorDeclaration);
+      final constructorStatement = gen.constructorStatement;
+      if (constructorStatement.isNotEmpty) {
+        constructorStatementBuffer.writeln(constructorStatement);
+      }
       assignmentBuffer.writeln(gen.toBuilderMap);
       entityConstructorBuffer.writeln(gen.entityConstructorMap);
     }
@@ -70,12 +81,25 @@ class BuilderGenerator extends GeneratorForAnnotation<BuildBuilder> {
     '''
         : '';
 
+    final defaultsProvider = usesDefaultsProvider
+        ? 'final _defaultsProvider = ${className}DefaultsProvider();'
+        : '';
+
+    final constructorStatement = constructorStatementBuffer.isEmpty
+        ? ';'
+        : '''{
+          $constructorStatementBuffer
+        }''';
+
     var ret = '''
 
       class $builderClassName implements Builder<$className> {
+
+        $defaultsProvider
+
         $fieldBuffer
 
-        $builderClassName({ $constructorBuffer });
+        $builderClassName({ $constructorBuffer }) $constructorStatement
 
         $builderClassName.from$className($className entity) 
           : this($assignmentBuffer);        
@@ -110,8 +134,7 @@ Iterable<FieldDescriptor> _getFieldDescriptors(ClassElement classElement) {
 
 BuildBuilder _hydrateAnnotation(ConstantReader reader) {
   var validatable = BuildBuilder(
-    createBuilderBaseClass:
-        reader.read('createBuilderBaseClass').literalValue as bool? ?? false,
-  );
+      createBuilderBaseClass: reader.read('createBuilderBaseClass').boolValue,
+      useDefaultsProvider: reader.read('useDefaultsProvider').boolValue);
   return validatable;
 }

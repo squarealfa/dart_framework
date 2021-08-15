@@ -16,4 +16,6 @@ abstract class KeyHandler {
     Map<String, dynamic> map, [
     String fieldName = '',
   ]);
+
+  String fieldNameToMapKey(String fieldName);
 }

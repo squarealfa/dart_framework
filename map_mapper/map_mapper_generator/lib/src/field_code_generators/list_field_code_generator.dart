@@ -22,6 +22,19 @@ class ListFieldCodeGenerator extends FieldCodeGenerator {
   }
 
   @override
+  String get fieldNamesClassGetter =>
+      fieldDescriptor.parameterTypeHasMapMapAnnotation &&
+              !fieldDescriptor.parameterTypeIsEnum
+          ? ''' 
+        \$${fieldDescriptor.parameterTypeName}FieldNames get $fieldName =>
+             \$${fieldDescriptor.parameterTypeName}FieldNames(
+               keyHandler: keyHandler,
+               fieldName: prefix + _$fieldName,
+              );
+        '''
+          : super.fieldNamesClassGetter;
+
+  @override
   String get toMapExpression => _toMapExpression(false);
 
   @override

@@ -63,10 +63,29 @@ class EntityServices<TEntity> {
   }
 
   Future<PagedSearchResult<TEntity>> findToEntityPage(
-      SearchCriteria criteria) async {
+    SearchCriteria criteria, {
+    TEntity Function(Map<String, dynamic> map)? mapper,
+  }) async {
     final searchResult = await repository.searchWithCount(criteria, principal);
-    var page =
-        await searchResult.page.map((m) => mapMapper.fromMap(m)).toList();
+    mapper ??= mapMapper.fromMap;
+    var page = await searchResult.page.map((m) => mapper!(m)).toList();
+
+    final ret = PagedSearchResult(
+      count: searchResult.count,
+      page: page,
+    );
+    return ret;
+  }
+
+  Future<PagedSearchResult<TPageItem>> findPage<TPageItem>(
+    SearchCriteria criteria, {
+    required TPageItem Function(Map<String, dynamic> map) mapper,
+  }) async {
+    final searchResult = await repository.searchWithCount(criteria, principal);
+    var page = await searchResult.page.map((m) {
+      final entity = mapper(m);
+      return entity;
+    }).toList();
 
     final ret = PagedSearchResult(
       count: searchResult.count,
