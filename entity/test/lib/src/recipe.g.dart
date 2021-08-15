@@ -7,20 +7,24 @@ part of 'recipe.dart';
 // **************************************************************************
 
 class RecipeBuilder implements Builder<Recipe> {
-  String title;
+  String? $title;
+  String get title => $title!;
+  set title(String value) => $title = value;
+
   String? description;
 
   RecipeBuilder({
-    required this.title,
+    String? title,
     this.description,
-  });
-
-  factory RecipeBuilder.fromRecipe(Recipe entity) {
-    return RecipeBuilder(
-      title: entity.title,
-      description: entity.description,
-    );
+  }) {
+    $title = title;
   }
+
+  RecipeBuilder.fromRecipe(Recipe entity)
+      : this(
+          title: entity.title,
+          description: entity.description,
+        );
 
   @override
   Recipe build() {
@@ -75,6 +79,13 @@ class RecipeValidator implements Validator {
     }
 
     return null;
+  }
+
+  ValidationError? $validateTitle(String? value, {Recipe? entity}) {
+    if (value == null) {
+      return RequiredValidationError('title');
+    }
+    return validateTitle(value, entity: entity);
   }
 
   @override

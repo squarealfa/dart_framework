@@ -20,6 +20,13 @@ class CategoryValidator implements Validator {
     return null;
   }
 
+  ValidationError? $validateTitle(String? value, {Category? entity}) {
+    if (value == null) {
+      return RequiredValidationError('title');
+    }
+    return validateTitle(value, entity: entity);
+  }
+
   @override
   ErrorList validate(covariant Category entity) {
     var errors = <ValidationError>[];

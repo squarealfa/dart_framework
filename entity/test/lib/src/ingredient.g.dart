@@ -14,7 +14,12 @@ class IngredientValidator implements Validator {
 
   ValidationError? validateDescription(String value, {Ingredient? entity}) {
     if (value.length < 10) {
-      return StringLengthValidationError('description');
+      return StringLengthValidationError(
+        'description',
+        length: value.length,
+        minLength: 10,
+        maxLength: null,
+      );
     }
 
     return null;
@@ -22,7 +27,12 @@ class IngredientValidator implements Validator {
 
   ValidationError? validateNotes(String? value, {Ingredient? entity}) {
     if (value != null && value.length > 10) {
-      return StringLengthValidationError('notes');
+      return StringLengthValidationError(
+        'notes',
+        length: value.length,
+        minLength: null,
+        maxLength: 10,
+      );
     }
 
     return null;
@@ -30,7 +40,12 @@ class IngredientValidator implements Validator {
 
   ValidationError? validateTag(String? value, {Ingredient? entity}) {
     if (value != null && value.length < 2) {
-      return StringLengthValidationError('tag');
+      return StringLengthValidationError(
+        'tag',
+        length: value.length,
+        minLength: 2,
+        maxLength: null,
+      );
     }
 
     return null;
@@ -94,6 +109,34 @@ class IngredientValidator implements Validator {
     }
 
     return null;
+  }
+
+  ValidationError? $validateDescription(String? value, {Ingredient? entity}) {
+    if (value == null) {
+      return RequiredValidationError('description');
+    }
+    return validateDescription(value, entity: entity);
+  }
+
+  ValidationError? $validateQuantity(double? value, {Ingredient? entity}) {
+    if (value == null) {
+      return RequiredValidationError('quantity');
+    }
+    return validateQuantity(value, entity: entity);
+  }
+
+  ValidationError? $validatePrecision(Decimal? value, {Ingredient? entity}) {
+    if (value == null) {
+      return RequiredValidationError('precision');
+    }
+    return validatePrecision(value, entity: entity);
+  }
+
+  ValidationError? $validateIntQuantity(int? value, {Ingredient? entity}) {
+    if (value == null) {
+      return RequiredValidationError('intQuantity');
+    }
+    return validateIntQuantity(value, entity: entity);
   }
 
   @override

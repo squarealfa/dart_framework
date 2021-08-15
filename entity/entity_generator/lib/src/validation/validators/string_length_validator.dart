@@ -45,14 +45,22 @@ class StringLengthValidator extends PropertyValidator {
     if (annotation.minLength != null) {
       buffer.writeln('''
           if ($nullEscape value.length < ${annotation.minLength}) {
-            return StringLengthValidationError(\'${fieldDescriptor.name}\');
+            return StringLengthValidationError(\'${fieldDescriptor.name}\', 
+              length: value.length, 
+              minLength: ${annotation.minLength ?? 'null'},
+              maxLength: ${annotation.maxLength ?? 'null'},
+            );
           }
       ''');
     }
     if (annotation.maxLength != null) {
       buffer.writeln('''
           if ($nullEscape value.length > ${annotation.maxLength}) {
-            return StringLengthValidationError(\'${fieldDescriptor.name}\');
+            return StringLengthValidationError(\'${fieldDescriptor.name}\', 
+              length: value.length,
+              minLength: ${annotation.minLength ?? 'null'},
+              maxLength: ${annotation.maxLength ?? 'null'},
+            );
           }
       ''');
     }
