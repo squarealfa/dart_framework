@@ -32,12 +32,18 @@ class FieldDescriptorBase {
           ? (fieldElementType as ParameterizedType).typeArguments.first
           : null;
 
+  DartType? get setParameterType =>
+      fieldElementType.isDartCoreSet && fieldElementType is ParameterizedType
+          ? (fieldElementType as ParameterizedType).typeArguments.first
+          : null;
+
   /// Returns the list element type when the field is a list and
   /// returns the field element when otherwise
-  DartType get itemType => listParameterType ?? fieldElementType;
+  DartType get itemType =>
+      listParameterType ?? setParameterType ?? fieldElementType;
 
   /// Returns true when the field is a list
-  bool get isRepeated => listParameterType != null;
+  bool get isRepeated => listParameterType != null || setParameterType != null;
 
   /// Returns true when the field is an enum
   bool get typeIsEnum => fieldElement.type.element!.kind.name == 'ENUM';
