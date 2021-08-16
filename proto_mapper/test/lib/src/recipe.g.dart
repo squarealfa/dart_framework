@@ -7,10 +7,7 @@ part of 'recipe.dart';
 // **************************************************************************
 
 class RecipeProtoMapper implements ProtoMapper<Recipe, GRecipe> {
-  static final RecipeProtoMapper _singleton = RecipeProtoMapper._();
-
-  RecipeProtoMapper._();
-  factory RecipeProtoMapper() => _singleton;
+  const RecipeProtoMapper();
 
   @override
   Recipe fromProto(GRecipe proto) => _$RecipeFromProto(proto);
@@ -20,6 +17,12 @@ class RecipeProtoMapper implements ProtoMapper<Recipe, GRecipe> {
 
   Recipe fromJson(String json) => _$RecipeFromProto(GRecipe.fromJson(json));
   String toJson(Recipe entity) => _$RecipeToProto(entity).writeToJson();
+
+  String toBase64Proto(Recipe entity) =>
+      base64Encode(utf8.encode(entity.toProto().writeToJson()));
+
+  Recipe fromBase64Proto(String base64Proto) =>
+      GRecipe.fromJson(utf8.decode(base64Decode(base64Proto))).toRecipe();
 }
 
 GRecipe _$RecipeToProto(Recipe instance) {
@@ -31,9 +34,9 @@ GRecipe _$RecipeToProto(Recipe instance) {
   }
   proto.descriptionHasValue = instance.description != null;
 
-  proto.category = CategoryProtoMapper().toProto(instance.category);
-  proto.ingredients.addAll(
-      instance.ingredients.map((e) => IngredientProtoMapper().toProto(e)));
+  proto.category = const CategoryProtoMapper().toProto(instance.category);
+  proto.ingredients.addAll(instance.ingredients
+      .map((e) => const IngredientProtoMapper().toProto(e)));
 
   proto.publishDate = Int64(instance.publishDate.millisecondsSinceEpoch);
   if (instance.expiryDate != null) {
@@ -75,9 +78,9 @@ Recipe _$RecipeFromProto(GRecipe instance) => Recipe(
       title: instance.title,
       description:
           (instance.descriptionHasValue ? (instance.description) : null),
-      category: CategoryProtoMapper().fromProto(instance.category),
+      category: const CategoryProtoMapper().fromProto(instance.category),
       ingredients: instance.ingredients
-          .map((e) => IngredientProtoMapper().fromProto(e))
+          .map((e) => const IngredientProtoMapper().fromProto(e))
           .toList(),
       publishDate:
           DateTime.fromMillisecondsSinceEpoch(instance.publishDate.toInt()),

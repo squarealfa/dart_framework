@@ -7,10 +7,7 @@ part of 'ingredient.dart';
 // **************************************************************************
 
 class IngredientMapMapper extends MapMapper<Ingredient> {
-  static final IngredientMapMapper _singleton = IngredientMapMapper._();
-
-  IngredientMapMapper._();
-  factory IngredientMapMapper() => _singleton;
+  const IngredientMapMapper();
 
   @override
   Ingredient fromMap(
@@ -39,13 +36,33 @@ class IngredientMapMapper extends MapMapper<Ingredient> {
 
 extension IngredientMapExtension on Ingredient {
   Map<String, dynamic> toMap([KeyHandler? keyHandler]) =>
-      IngredientMapMapper().toMap(this, keyHandler);
+      const IngredientMapMapper().toMap(this, keyHandler);
   static Ingredient fromMap(Map<String, dynamic> map,
           [KeyHandler? keyHandler]) =>
-      IngredientMapMapper().fromMap(map, keyHandler);
+      const IngredientMapMapper().fromMap(map, keyHandler);
 }
 
 extension MapIngredientExtension on Map<String, dynamic> {
   Ingredient toIngredient([KeyHandler? keyHandler]) =>
-      IngredientMapMapper().fromMap(this, keyHandler);
+      const IngredientMapMapper().fromMap(this, keyHandler);
+}
+
+class $IngredientFieldNames {
+  final KeyHandler keyHandler;
+  final String fieldName;
+  final String prefix;
+
+  $IngredientFieldNames({
+    KeyHandler? keyHandler,
+    this.fieldName = '',
+  })  : prefix = fieldName.isEmpty ? '' : fieldName + '.',
+        keyHandler = keyHandler ?? KeyHandler.fromDefault();
+
+  static const _description = 'description';
+  String get description => prefix + _description;
+  static const _quantity = 'quantity';
+  String get quantity => prefix + _quantity;
+
+  @override
+  String toString() => fieldName;
 }

@@ -9,13 +9,17 @@ part of 'recipe_services_base.dart';
 typedef RecipeServiceFactory = RecipeServiceBase Function(ServiceCall call);
 
 class GRecipeService extends GRecipeServiceBase {
-  final RecipeServiceFactory factory;
+  final RecipeServiceFactory $serviceFactory;
+  final void Function(ServiceCall call) $authenticator;
 
-  GRecipeService(this.factory);
+  GRecipeService(
+    this.$serviceFactory,
+    this.$authenticator,
+  );
 
-  RecipeServiceBase createService(ServiceCall call) {
-    final ret = factory(call);
-    return ret;
+  @override
+  void $onMetadata(ServiceCall call) {
+    $authenticator(call);
   }
 
   @override
@@ -23,7 +27,7 @@ class GRecipeService extends GRecipeServiceBase {
     ServiceCall call,
     GRecipe request,
   ) async {
-    final service = createService(call);
+    final service = $serviceFactory(call);
 
     final entity = request.toRecipe();
     final result = await service.create(entity);
@@ -36,7 +40,7 @@ class GRecipeService extends GRecipeServiceBase {
     ServiceCall call,
     GRecipe request,
   ) async {
-    final service = createService(call);
+    final service = $serviceFactory(call);
 
     final entity = request.toRecipe();
     final result = await service.update(entity);
@@ -49,7 +53,7 @@ class GRecipeService extends GRecipeServiceBase {
     ServiceCall call,
     GKey request,
   ) async {
-    final service = createService(call);
+    final service = $serviceFactory(call);
 
     final entity = request.toKey();
     final result = await service.delete(entity);
@@ -62,7 +66,7 @@ class GRecipeService extends GRecipeServiceBase {
     ServiceCall call,
     GKey request,
   ) async {
-    final service = createService(call);
+    final service = $serviceFactory(call);
 
     final entity = request.toKey();
     final result = await service.get(entity);
@@ -75,7 +79,7 @@ class GRecipeService extends GRecipeServiceBase {
     ServiceCall call,
     GEmpty request,
   ) async {
-    final service = createService(call);
+    final service = $serviceFactory(call);
 
     final entity = request.toEmpty();
     final result = await service.search(entity);
@@ -89,11 +93,64 @@ class GRecipeService extends GRecipeServiceBase {
     ServiceCall call,
     GCalcParameters request,
   ) async {
-    final service = createService(call);
+    final service = $serviceFactory(call);
 
     final entity = request.toCalcParameters();
-    final result = await service.doCalculation(entity);
+    final result = service.doCalculation(entity);
     final protoResult = result.toProto();
     return protoResult;
+  }
+}
+
+// **************************************************************************
+// ProtoServicesClientGenerator
+// **************************************************************************
+
+abstract class RecipeServiceClientBase implements RecipeServiceBase {
+  Future<GRecipeServiceClient> getGServiceClient();
+
+  @override
+  Future<Recipe> create(Recipe entity) async {
+    final serviceClient = await getGServiceClient();
+    final _entity = entity.toProto();
+    final _result = (await serviceClient.create(_entity));
+    final result = _result.toRecipe();
+    return result;
+  }
+
+  @override
+  Future<Recipe> update(Recipe entity) async {
+    final serviceClient = await getGServiceClient();
+    final _entity = entity.toProto();
+    final _result = (await serviceClient.update(_entity));
+    final result = _result.toRecipe();
+    return result;
+  }
+
+  @override
+  Future<Empty> delete(Key key) async {
+    final serviceClient = await getGServiceClient();
+    final _key = key.toProto();
+    final _result = (await serviceClient.delete(_key));
+    final result = _result.toEmpty();
+    return result;
+  }
+
+  @override
+  Future<Recipe> get(Key key) async {
+    final serviceClient = await getGServiceClient();
+    final _key = key.toProto();
+    final _result = (await serviceClient.get(_key));
+    final result = _result.toRecipe();
+    return result;
+  }
+
+  @override
+  Future<List<Recipe>> search(Empty empty) async {
+    final serviceClient = await getGServiceClient();
+    final _empty = empty.toProto();
+    final _result = (await serviceClient.search(_empty));
+    final result = _result.items.map((a) => a.toRecipe()).toList();
+    return result;
   }
 }

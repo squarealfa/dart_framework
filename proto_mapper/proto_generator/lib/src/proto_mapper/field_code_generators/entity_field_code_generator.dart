@@ -7,9 +7,9 @@ class EntityFieldCodeGenerator extends FieldCodeGenerator {
 
   @override
   String get toProtoExpression =>
-      '''${fieldDescriptor.fieldElementTypeName}ProtoMapper().toProto($instanceReference)''';
+      ''' const ${fieldDescriptor.fieldElementTypeName}ProtoMapper().toProto($instanceReference)''';
 
   @override
   String get fromProtoNonNullableExpression =>
-      '''${fieldDescriptor.fieldElementTypeName}ProtoMapper().fromProto(instance.$fieldName)''';
+      ''' const ${fieldDescriptor.fieldElementTypeName}ProtoMapper().fromProto(instance.$fieldName)''';
 }

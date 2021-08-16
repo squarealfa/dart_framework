@@ -7,10 +7,7 @@ part of 'key.dart';
 // **************************************************************************
 
 class KeyProtoMapper implements ProtoMapper<Key, GKey> {
-  static final KeyProtoMapper _singleton = KeyProtoMapper._();
-
-  KeyProtoMapper._();
-  factory KeyProtoMapper() => _singleton;
+  const KeyProtoMapper();
 
   @override
   Key fromProto(GKey proto) => _$KeyFromProto(proto);
@@ -20,6 +17,12 @@ class KeyProtoMapper implements ProtoMapper<Key, GKey> {
 
   Key fromJson(String json) => _$KeyFromProto(GKey.fromJson(json));
   String toJson(Key entity) => _$KeyToProto(entity).writeToJson();
+
+  String toBase64Proto(Key entity) =>
+      base64Encode(utf8.encode(entity.toProto().writeToJson()));
+
+  Key fromBase64Proto(String base64Proto) =>
+      GKey.fromJson(utf8.decode(base64Decode(base64Proto))).toKey();
 }
 
 GKey _$KeyToProto(Key instance) {

@@ -56,10 +56,7 @@ extension RecipeCopyWithExtension on Recipe {
 // **************************************************************************
 
 class RecipeValidator implements Validator {
-  RecipeValidator.create();
-
-  static final RecipeValidator _singleton = RecipeValidator.create();
-  factory RecipeValidator() => _singleton;
+  const RecipeValidator();
 
   ValidationError? validateTitle(String value) {
     if (value.isEmpty) {

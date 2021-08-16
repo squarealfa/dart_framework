@@ -7,10 +7,7 @@ part of 'calc_result.dart';
 // **************************************************************************
 
 class CalcResultProtoMapper implements ProtoMapper<CalcResult, GCalcResult> {
-  static final CalcResultProtoMapper _singleton = CalcResultProtoMapper._();
-
-  CalcResultProtoMapper._();
-  factory CalcResultProtoMapper() => _singleton;
+  const CalcResultProtoMapper();
 
   @override
   CalcResult fromProto(GCalcResult proto) => _$CalcResultFromProto(proto);
@@ -21,6 +18,13 @@ class CalcResultProtoMapper implements ProtoMapper<CalcResult, GCalcResult> {
   CalcResult fromJson(String json) =>
       _$CalcResultFromProto(GCalcResult.fromJson(json));
   String toJson(CalcResult entity) => _$CalcResultToProto(entity).writeToJson();
+
+  String toBase64Proto(CalcResult entity) =>
+      base64Encode(utf8.encode(entity.toProto().writeToJson()));
+
+  CalcResult fromBase64Proto(String base64Proto) =>
+      GCalcResult.fromJson(utf8.decode(base64Decode(base64Proto)))
+          .toCalcResult();
 }
 
 GCalcResult _$CalcResultToProto(CalcResult instance) {

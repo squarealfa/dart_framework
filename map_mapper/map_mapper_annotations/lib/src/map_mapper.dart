@@ -3,6 +3,8 @@ import 'package:map_mapper_annotations/map_mapper_annotations.dart';
 /// Converts instances of type [TEntity] to Map<String, dynamic>
 /// and from Map<String, dynamic> to [TEntity]
 abstract class MapMapper<TEntity> {
+  const MapMapper();
+
   /// Converts a Map<String, dynamic> into a new instance of [TEntity]
   TEntity fromMap(Map<String, dynamic> map, [KeyHandler? keyHandler]);
 

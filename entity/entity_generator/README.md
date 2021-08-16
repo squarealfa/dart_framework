@@ -31,10 +31,7 @@ This will generate a ```Validator``` class that will contain a validation method
 ```dart
 /// This is an example of a generated validator class.
 class RecipeValidator implements Validator {
-  RecipeValidator.create();
-
-  static final RecipeValidator _singleton = RecipeValidator.create();
-  factory RecipeValidator() => _singleton;
+  const RecipeValidator();
 
   ValidationError? validateTitle(String value) {
     return null;

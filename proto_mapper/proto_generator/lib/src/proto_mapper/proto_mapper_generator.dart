@@ -83,10 +83,7 @@ class ProtoMapperGenerator extends GeneratorForAnnotation<MapProto> {
     return '''
   
       class ${className}ProtoMapper implements ProtoMapper<$className, $prefix$className> {
-        static final ${className}ProtoMapper _singleton = ${className}ProtoMapper._();
-
-        ${className}ProtoMapper._();
-        factory ${className}ProtoMapper() => _singleton;
+        const ${className}ProtoMapper();
 
         @override
         $className fromProto($prefix$className proto) => _\$${className}FromProto(proto);
@@ -141,6 +138,8 @@ class ProtoMapperGenerator extends GeneratorForAnnotation<MapProto> {
   String renderEnumMapper() {
     return '''
       class ${className}ProtoMapper implements ProtoMapper<$className, $prefix$className> {
+        const ${className}ProtoMapper();
+
         @override
         $className fromProto($prefix$className proto) => 
           $className.values[proto.value];
@@ -149,8 +148,6 @@ class ProtoMapperGenerator extends GeneratorForAnnotation<MapProto> {
         @override
         $prefix$className toProto($className entity) => 
           $prefix$className.valueOf(entity.index)!;
-          
-        static final ${className}ProtoMapper singleton = ${className}ProtoMapper();
       }    
   ''';
   }

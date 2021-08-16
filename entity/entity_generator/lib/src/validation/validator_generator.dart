@@ -70,16 +70,8 @@ class ValidatorGenerator extends GeneratorForAnnotation<Validatable> {
     var validatorClassName =
         createBaseClass ? '${className}ValidatorBase' : '${className}Validator';
 
-    var callToSuperCreate = superClassIsValidatable ? ' : super.create()' : '';
     var construction =
-        '''${className}Validator${createBaseClass ? 'Base' : ''}.create()$callToSuperCreate;''';
-
-    var singletonAndFactory = createBaseClass
-        ? ''
-        : '''
-      static final ${className}Validator _singleton = ${className}Validator.create();
-      factory ${className}Validator() => _singleton;
-      ''';
+        '''const ${className}Validator${createBaseClass ? 'Base' : ''}();''';
 
     var extendsClause = !superClassIsValidatable
         ? ''
@@ -94,8 +86,6 @@ class ValidatorGenerator extends GeneratorForAnnotation<Validatable> {
     class $validatorClassName $extendsClause  implements Validator {
         
         $construction
-        
-        $singletonAndFactory  
         
         $validationMethodBuffer
 

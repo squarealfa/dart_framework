@@ -7,10 +7,7 @@ part of 'ingredient.dart';
 // **************************************************************************
 
 class IngredientMapMapper extends MapMapper<Ingredient> {
-  static final IngredientMapMapper _singleton = IngredientMapMapper._();
-
-  IngredientMapMapper._();
-  factory IngredientMapMapper() => _singleton;
+  const IngredientMapMapper();
 
   @override
   Ingredient fromMap(
@@ -39,15 +36,35 @@ class IngredientMapMapper extends MapMapper<Ingredient> {
 
 extension IngredientMapExtension on Ingredient {
   Map<String, dynamic> toMap([KeyHandler? keyHandler]) =>
-      IngredientMapMapper().toMap(this, keyHandler);
+      const IngredientMapMapper().toMap(this, keyHandler);
   static Ingredient fromMap(Map<String, dynamic> map,
           [KeyHandler? keyHandler]) =>
-      IngredientMapMapper().fromMap(map, keyHandler);
+      const IngredientMapMapper().fromMap(map, keyHandler);
 }
 
 extension MapIngredientExtension on Map<String, dynamic> {
   Ingredient toIngredient([KeyHandler? keyHandler]) =>
-      IngredientMapMapper().fromMap(this, keyHandler);
+      const IngredientMapMapper().fromMap(this, keyHandler);
+}
+
+class $IngredientFieldNames {
+  final KeyHandler keyHandler;
+  final String fieldName;
+  final String prefix;
+
+  $IngredientFieldNames({
+    KeyHandler? keyHandler,
+    this.fieldName = '',
+  })  : prefix = fieldName.isEmpty ? '' : fieldName + '.',
+        keyHandler = keyHandler ?? KeyHandler.fromDefault();
+
+  static const _description = 'description';
+  String get description => prefix + _description;
+  static const _quantity = 'quantity';
+  String get quantity => prefix + _quantity;
+
+  @override
+  String toString() => fieldName;
 }
 
 // **************************************************************************
@@ -55,10 +72,7 @@ extension MapIngredientExtension on Map<String, dynamic> {
 // **************************************************************************
 
 class IngredientProtoMapper implements ProtoMapper<Ingredient, GIngredient> {
-  static final IngredientProtoMapper _singleton = IngredientProtoMapper._();
-
-  IngredientProtoMapper._();
-  factory IngredientProtoMapper() => _singleton;
+  const IngredientProtoMapper();
 
   @override
   Ingredient fromProto(GIngredient proto) => _$IngredientFromProto(proto);
@@ -69,6 +83,13 @@ class IngredientProtoMapper implements ProtoMapper<Ingredient, GIngredient> {
   Ingredient fromJson(String json) =>
       _$IngredientFromProto(GIngredient.fromJson(json));
   String toJson(Ingredient entity) => _$IngredientToProto(entity).writeToJson();
+
+  String toBase64Proto(Ingredient entity) =>
+      base64Encode(utf8.encode(entity.toProto().writeToJson()));
+
+  Ingredient fromBase64Proto(String base64Proto) =>
+      GIngredient.fromJson(utf8.decode(base64Decode(base64Proto)))
+          .toIngredient();
 }
 
 GIngredient _$IngredientToProto(Ingredient instance) {

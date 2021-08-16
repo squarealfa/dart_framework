@@ -7,10 +7,7 @@ part of 'ingredient.dart';
 // **************************************************************************
 
 class IngredientValidator implements Validator {
-  IngredientValidator.create();
-
-  static final IngredientValidator _singleton = IngredientValidator.create();
-  factory IngredientValidator() => _singleton;
+  const IngredientValidator();
 
   ValidationError? validateDescription(String value, {Ingredient? entity}) {
     if (value.length < 10) {

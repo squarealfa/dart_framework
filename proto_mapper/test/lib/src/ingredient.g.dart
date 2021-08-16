@@ -7,10 +7,7 @@ part of 'ingredient.dart';
 // **************************************************************************
 
 class IngredientProtoMapper implements ProtoMapper<Ingredient, GIngredient> {
-  static final IngredientProtoMapper _singleton = IngredientProtoMapper._();
-
-  IngredientProtoMapper._();
-  factory IngredientProtoMapper() => _singleton;
+  const IngredientProtoMapper();
 
   @override
   Ingredient fromProto(GIngredient proto) => _$IngredientFromProto(proto);
@@ -21,6 +18,13 @@ class IngredientProtoMapper implements ProtoMapper<Ingredient, GIngredient> {
   Ingredient fromJson(String json) =>
       _$IngredientFromProto(GIngredient.fromJson(json));
   String toJson(Ingredient entity) => _$IngredientToProto(entity).writeToJson();
+
+  String toBase64Proto(Ingredient entity) =>
+      base64Encode(utf8.encode(entity.toProto().writeToJson()));
+
+  Ingredient fromBase64Proto(String base64Proto) =>
+      GIngredient.fromJson(utf8.decode(base64Decode(base64Proto)))
+          .toIngredient();
 }
 
 GIngredient _$IngredientToProto(Ingredient instance) {
@@ -30,18 +34,19 @@ GIngredient _$IngredientToProto(Ingredient instance) {
   proto.quantity = instance.quantity.toString();
   proto.precision = instance.precision;
   proto.cookingDuration = instance.cookingDuration.inMilliseconds.toDouble();
-  proto.mainComponent = ComponentProtoMapper().toProto(instance.mainComponent);
-  proto.otherComponents.addAll(
-      instance.otherComponents.map((e) => ComponentProtoMapper().toProto(e)));
+  proto.mainComponent =
+      const ComponentProtoMapper().toProto(instance.mainComponent);
+  proto.otherComponents.addAll(instance.otherComponents
+      .map((e) => const ComponentProtoMapper().toProto(e)));
 
   if (instance.alternativeComponent != null) {
     proto.alternativeComponent =
-        ComponentProtoMapper().toProto(instance.alternativeComponent!);
+        const ComponentProtoMapper().toProto(instance.alternativeComponent!);
   }
   proto.alternativeComponentHasValue = instance.alternativeComponent != null;
 
   proto.secondaryComponents.addAll(instance.secondaryComponents
-          ?.map((e) => ComponentProtoMapper().toProto(e)) ??
+          ?.map((e) => const ComponentProtoMapper().toProto(e)) ??
       []);
   proto.secondaryComponentsHasValue = instance.secondaryComponents != null;
 
@@ -53,16 +58,18 @@ Ingredient _$IngredientFromProto(GIngredient instance) => Ingredient(
       quantity: Decimal.parse(instance.quantity),
       precision: instance.precision,
       cookingDuration: Duration(milliseconds: instance.cookingDuration.toInt()),
-      mainComponent: ComponentProtoMapper().fromProto(instance.mainComponent),
+      mainComponent:
+          const ComponentProtoMapper().fromProto(instance.mainComponent),
       otherComponents: instance.otherComponents
-          .map((e) => ComponentProtoMapper().fromProto(e))
+          .map((e) => const ComponentProtoMapper().fromProto(e))
           .toList(),
       alternativeComponent: (instance.alternativeComponentHasValue
-          ? (ComponentProtoMapper().fromProto(instance.alternativeComponent))
+          ? (const ComponentProtoMapper()
+              .fromProto(instance.alternativeComponent))
           : null),
       secondaryComponents: (instance.secondaryComponentsHasValue
           ? (instance.secondaryComponents
-              .map((e) => ComponentProtoMapper().fromProto(e))
+              .map((e) => const ComponentProtoMapper().fromProto(e))
               .toList())
           : null),
     );

@@ -7,10 +7,7 @@ part of 'recipe.dart';
 // **************************************************************************
 
 class RecipeProtoMapper implements ProtoMapper<Recipe, GRecipe> {
-  static final RecipeProtoMapper _singleton = RecipeProtoMapper._();
-
-  RecipeProtoMapper._();
-  factory RecipeProtoMapper() => _singleton;
+  const RecipeProtoMapper();
 
   @override
   Recipe fromProto(GRecipe proto) => _$RecipeFromProto(proto);
@@ -20,6 +17,12 @@ class RecipeProtoMapper implements ProtoMapper<Recipe, GRecipe> {
 
   Recipe fromJson(String json) => _$RecipeFromProto(GRecipe.fromJson(json));
   String toJson(Recipe entity) => _$RecipeToProto(entity).writeToJson();
+
+  String toBase64Proto(Recipe entity) =>
+      base64Encode(utf8.encode(entity.toProto().writeToJson()));
+
+  Recipe fromBase64Proto(String base64Proto) =>
+      GRecipe.fromJson(utf8.decode(base64Decode(base64Proto))).toRecipe();
 }
 
 GRecipe _$RecipeToProto(Recipe instance) {
@@ -27,8 +30,8 @@ GRecipe _$RecipeToProto(Recipe instance) {
 
   proto.key = instance.key;
   proto.ptitle = instance.title;
-  proto.ingredients.addAll(
-      instance.ingredients.map((e) => IngredientProtoMapper().toProto(e)));
+  proto.ingredients.addAll(instance.ingredients
+      .map((e) => const IngredientProtoMapper().toProto(e)));
 
   return proto;
 }
@@ -37,7 +40,7 @@ Recipe _$RecipeFromProto(GRecipe instance) => Recipe(
       key: instance.key,
       title: instance.ptitle,
       ingredients: instance.ingredients
-          .map((e) => IngredientProtoMapper().fromProto(e))
+          .map((e) => const IngredientProtoMapper().fromProto(e))
           .toList(),
     );
 

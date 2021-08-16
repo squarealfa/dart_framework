@@ -7,10 +7,7 @@ part of 'component.dart';
 // **************************************************************************
 
 class ComponentMapMapper extends MapMapper<Component> {
-  static final ComponentMapMapper _singleton = ComponentMapMapper._();
-
-  ComponentMapMapper._();
-  factory ComponentMapMapper() => _singleton;
+  const ComponentMapMapper();
 
   @override
   Component fromMap(
@@ -37,13 +34,31 @@ class ComponentMapMapper extends MapMapper<Component> {
 
 extension ComponentMapExtension on Component {
   Map<String, dynamic> toMap([KeyHandler? keyHandler]) =>
-      ComponentMapMapper().toMap(this, keyHandler);
+      const ComponentMapMapper().toMap(this, keyHandler);
   static Component fromMap(Map<String, dynamic> map,
           [KeyHandler? keyHandler]) =>
-      ComponentMapMapper().fromMap(map, keyHandler);
+      const ComponentMapMapper().fromMap(map, keyHandler);
 }
 
 extension MapComponentExtension on Map<String, dynamic> {
   Component toComponent([KeyHandler? keyHandler]) =>
-      ComponentMapMapper().fromMap(this, keyHandler);
+      const ComponentMapMapper().fromMap(this, keyHandler);
+}
+
+class $ComponentFieldNames {
+  final KeyHandler keyHandler;
+  final String fieldName;
+  final String prefix;
+
+  $ComponentFieldNames({
+    KeyHandler? keyHandler,
+    this.fieldName = '',
+  })  : prefix = fieldName.isEmpty ? '' : fieldName + '.',
+        keyHandler = keyHandler ?? KeyHandler.fromDefault();
+
+  static const _description = 'description';
+  String get description => prefix + _description;
+
+  @override
+  String toString() => fieldName;
 }

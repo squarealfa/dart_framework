@@ -7,10 +7,7 @@ part of 'lists_host.dart';
 // **************************************************************************
 
 class ListsHostProtoMapper implements ProtoMapper<ListsHost, GListsHost> {
-  static final ListsHostProtoMapper _singleton = ListsHostProtoMapper._();
-
-  ListsHostProtoMapper._();
-  factory ListsHostProtoMapper() => _singleton;
+  const ListsHostProtoMapper();
 
   @override
   ListsHost fromProto(GListsHost proto) => _$ListsHostFromProto(proto);
@@ -21,6 +18,12 @@ class ListsHostProtoMapper implements ProtoMapper<ListsHost, GListsHost> {
   ListsHost fromJson(String json) =>
       _$ListsHostFromProto(GListsHost.fromJson(json));
   String toJson(ListsHost entity) => _$ListsHostToProto(entity).writeToJson();
+
+  String toBase64Proto(ListsHost entity) =>
+      base64Encode(utf8.encode(entity.toProto().writeToJson()));
+
+  ListsHost fromBase64Proto(String base64Proto) =>
+      GListsHost.fromJson(utf8.decode(base64Decode(base64Proto))).toListsHost();
 }
 
 GListsHost _$ListsHostToProto(ListsHost instance) {
@@ -66,10 +69,10 @@ GListsHost _$ListsHostToProto(ListsHost instance) {
   proto.nvdoublesHasValue = instance.nvdoubles != null;
 
   proto.vapplianceTypes.addAll(instance.vapplianceTypes
-      .map((e) => ApplianceTypeProtoMapper().toProto(e)));
+      .map((e) => const ApplianceTypeProtoMapper().toProto(e)));
 
   proto.nvapplianceTypes.addAll(instance.nvapplianceTypes
-          ?.map((e) => ApplianceTypeProtoMapper().toProto(e)) ??
+          ?.map((e) => const ApplianceTypeProtoMapper().toProto(e)) ??
       []);
   proto.nvapplianceTypesHasValue = instance.nvapplianceTypes != null;
 
@@ -114,11 +117,11 @@ ListsHost _$ListsHostFromProto(GListsHost instance) => ListsHost(
           ? (instance.nvdoubles.map((e) => e).toList())
           : null),
       vapplianceTypes: instance.vapplianceTypes
-          .map((e) => ApplianceTypeProtoMapper().fromProto(e))
+          .map((e) => const ApplianceTypeProtoMapper().fromProto(e))
           .toList(),
       nvapplianceTypes: (instance.nvapplianceTypesHasValue
           ? (instance.nvapplianceTypes
-              .map((e) => ApplianceTypeProtoMapper().fromProto(e))
+              .map((e) => const ApplianceTypeProtoMapper().fromProto(e))
               .toList())
           : null),
     );

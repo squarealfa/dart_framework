@@ -31,11 +31,8 @@ class EntityAdapterGenerator extends GeneratorForAnnotation<EntityAdapted> {
 
 
 class ${className}Permissions extends EntityPermissions {
-  static final ${className}Permissions _singleton = ${className}Permissions._();
 
-  ${className}Permissions._();
-
-  factory ${className}Permissions() => _singleton;
+  const ${className}Permissions();
 
   @override
   String get create => 'create$className';
@@ -53,13 +50,13 @@ class ${className}Permissions extends EntityPermissions {
 
 class ${className}EntityAdapter implements EntityAdapter<$className> {
   @override
-  final MapMapper<$className> mapMapper = ${className}MapMapper();
+  final MapMapper<$className> mapMapper = const ${className}MapMapper();
 
   @override
-  final Validator validator = ${className}Validator();
+  final Validator validator = const ${className}Validator();
 
   @override
-  final EntityPermissions permissions = ${className}Permissions();
+  final EntityPermissions permissions = const ${className}Permissions();
 }
 
 

@@ -7,10 +7,7 @@ part of 'ingredient.dart';
 // **************************************************************************
 
 class IngredientMapMapper extends MapMapper<Ingredient> {
-  static final IngredientMapMapper _singleton = IngredientMapMapper._();
-
-  IngredientMapMapper._();
-  factory IngredientMapMapper() => _singleton;
+  const IngredientMapMapper();
 
   @override
   Ingredient fromMap(
@@ -26,16 +23,17 @@ class IngredientMapMapper extends MapMapper<Ingredient> {
       precision: map['precision'] as double,
       cookingDuration: Duration(milliseconds: map['cookingDuration']),
       mainComponentKey: $kh.keyFromMap(map, 'mainComponentKey'),
-      mainComponent: ComponentMapMapper().fromMap(map['mainComponent'], $kh),
+      mainComponent:
+          const ComponentMapMapper().fromMap(map['mainComponent'], $kh),
       otherComponents: List<Component>.from(map['otherComponents']
-          .map((e) => ComponentMapMapper().fromMap(e, $kh))),
+          .map((e) => const ComponentMapMapper().fromMap(e, $kh))),
       alternativeComponent: (map['alternativeComponent'] != null
-          ? ComponentMapMapper().fromMap(map['alternativeComponent'], $kh)
+          ? const ComponentMapMapper().fromMap(map['alternativeComponent'], $kh)
           : null),
       secondaryComponents: map['secondaryComponents'] == null
           ? null
           : List<Component>.from(map['secondaryComponents']
-              .map((e) => ComponentMapMapper().fromMap(e, $kh))),
+              .map((e) => const ComponentMapMapper().fromMap(e, $kh))),
     );
   }
 
@@ -54,18 +52,19 @@ class IngredientMapMapper extends MapMapper<Ingredient> {
     map['cookingDuration'] = instance.cookingDuration.inMilliseconds;
     $kh.keyToMap(map, instance.mainComponentKey, 'mainComponentKey');
     map['mainComponent'] =
-        ComponentMapMapper().toMap(instance.mainComponent, $kh);
+        const ComponentMapMapper().toMap(instance.mainComponent, $kh);
     map['otherComponents'] = instance.otherComponents
-        .map((e) => ComponentMapMapper().toMap(e, $kh))
+        .map((e) => const ComponentMapMapper().toMap(e, $kh))
         .toList();
     ;
     map['alternativeComponent'] = (instance.alternativeComponent == null
         ? null
-        : ComponentMapMapper().toMap(instance.alternativeComponent!, $kh));
+        : const ComponentMapMapper()
+            .toMap(instance.alternativeComponent!, $kh));
     map['secondaryComponents'] = instance.secondaryComponents == null
         ? null
         : instance.secondaryComponents!
-            .map((e) => ComponentMapMapper().toMap(e, $kh))
+            .map((e) => const ComponentMapMapper().toMap(e, $kh))
             .toList();
     ;
 
@@ -75,13 +74,63 @@ class IngredientMapMapper extends MapMapper<Ingredient> {
 
 extension IngredientMapExtension on Ingredient {
   Map<String, dynamic> toMap([KeyHandler? keyHandler]) =>
-      IngredientMapMapper().toMap(this, keyHandler);
+      const IngredientMapMapper().toMap(this, keyHandler);
   static Ingredient fromMap(Map<String, dynamic> map,
           [KeyHandler? keyHandler]) =>
-      IngredientMapMapper().fromMap(map, keyHandler);
+      const IngredientMapMapper().fromMap(map, keyHandler);
 }
 
 extension MapIngredientExtension on Map<String, dynamic> {
   Ingredient toIngredient([KeyHandler? keyHandler]) =>
-      IngredientMapMapper().fromMap(this, keyHandler);
+      const IngredientMapMapper().fromMap(this, keyHandler);
+}
+
+class $IngredientFieldNames {
+  final KeyHandler keyHandler;
+  final String fieldName;
+  final String prefix;
+
+  $IngredientFieldNames({
+    KeyHandler? keyHandler,
+    this.fieldName = '',
+  })  : prefix = fieldName.isEmpty ? '' : fieldName + '.',
+        keyHandler = keyHandler ?? KeyHandler.fromDefault();
+
+  static const _key = 'key';
+  String get key => prefix + keyHandler.fieldNameToMapKey(_key);
+  static const _description = 'description';
+  String get description => prefix + _description;
+  static const _quantity = 'quantity';
+  String get quantity => prefix + _quantity;
+  static const _precision = 'precision';
+  String get precision => prefix + _precision;
+  static const _cookingDuration = 'cookingDuration';
+  String get cookingDuration => prefix + _cookingDuration;
+  static const _mainComponentKey = 'mainComponentKey';
+  String get mainComponentKey =>
+      prefix + keyHandler.fieldNameToMapKey(_mainComponentKey);
+  static const _mainComponent = 'mainComponent';
+  $ComponentFieldNames get mainComponent => $ComponentFieldNames(
+        keyHandler: keyHandler,
+        fieldName: prefix + _mainComponent,
+      );
+  static const _otherComponents = 'otherComponents';
+  $ComponentFieldNames get otherComponents => $ComponentFieldNames(
+        keyHandler: keyHandler,
+        fieldName: prefix + _otherComponents,
+      );
+
+  static const _alternativeComponent = 'alternativeComponent';
+  $ComponentFieldNames get alternativeComponent => $ComponentFieldNames(
+        keyHandler: keyHandler,
+        fieldName: prefix + _alternativeComponent,
+      );
+  static const _secondaryComponents = 'secondaryComponents';
+  $ComponentFieldNames get secondaryComponents => $ComponentFieldNames(
+        keyHandler: keyHandler,
+        fieldName: prefix + _secondaryComponents,
+      );
+
+  @override
+  String toString() => fieldName;
 }

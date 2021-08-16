@@ -7,20 +7,26 @@ part of 'recipe.dart';
 // **************************************************************************
 
 class RecipeBuilder implements Builder<Recipe> {
-  String title;
+  final _defaultsProvider = RecipeDefaultsProvider();
+
+  String? $title;
+  String get title => $title ?? _defaultsProvider.title;
+  set title(String value) => $title = value;
+
   String? description;
 
   RecipeBuilder({
-    required this.title,
+    String? title,
     this.description,
-  });
-
-  factory RecipeBuilder.fromRecipe(Recipe entity) {
-    return RecipeBuilder(
-      title: entity.title,
-      description: entity.description,
-    );
+  }) {
+    $title = title;
   }
+
+  RecipeBuilder.fromRecipe(Recipe entity)
+      : this(
+          title: entity.title,
+          description: entity.description,
+        );
 
   @override
   Recipe build() {
@@ -28,7 +34,7 @@ class RecipeBuilder implements Builder<Recipe> {
       title: title,
       description: description,
     );
-    RecipeValidator().validateThrowing(entity);
+    const RecipeValidator().validateThrowing(entity);
     return entity;
   }
 }
@@ -72,11 +78,7 @@ class RecipeDefaultsProvider {
 // **************************************************************************
 
 class RecipePermissions extends EntityPermissions {
-  static final RecipePermissions _singleton = RecipePermissions._();
-
-  RecipePermissions._();
-
-  factory RecipePermissions() => _singleton;
+  const RecipePermissions();
 
   @override
   String get create => 'createRecipe';
@@ -93,13 +95,13 @@ class RecipePermissions extends EntityPermissions {
 
 class RecipeEntityAdapter implements EntityAdapter<Recipe> {
   @override
-  final MapMapper<Recipe> mapMapper = RecipeMapMapper();
+  final MapMapper<Recipe> mapMapper = const RecipeMapMapper();
 
   @override
-  final Validator validator = RecipeValidator();
+  final Validator validator = const RecipeValidator();
 
   @override
-  final EntityPermissions permissions = RecipePermissions();
+  final EntityPermissions permissions = const RecipePermissions();
 }
 
 // **************************************************************************
@@ -107,10 +109,7 @@ class RecipeEntityAdapter implements EntityAdapter<Recipe> {
 // **************************************************************************
 
 class RecipeMapMapper extends MapMapper<Recipe> {
-  static final RecipeMapMapper _singleton = RecipeMapMapper._();
-
-  RecipeMapMapper._();
-  factory RecipeMapMapper() => _singleton;
+  const RecipeMapMapper();
 
   @override
   Recipe fromMap(
@@ -142,14 +141,34 @@ class RecipeMapMapper extends MapMapper<Recipe> {
 
 extension RecipeMapExtension on Recipe {
   Map<String, dynamic> toMap([KeyHandler? keyHandler]) =>
-      RecipeMapMapper().toMap(this, keyHandler);
+      const RecipeMapMapper().toMap(this, keyHandler);
   static Recipe fromMap(Map<String, dynamic> map, [KeyHandler? keyHandler]) =>
-      RecipeMapMapper().fromMap(map, keyHandler);
+      const RecipeMapMapper().fromMap(map, keyHandler);
 }
 
 extension MapRecipeExtension on Map<String, dynamic> {
   Recipe toRecipe([KeyHandler? keyHandler]) =>
-      RecipeMapMapper().fromMap(this, keyHandler);
+      const RecipeMapMapper().fromMap(this, keyHandler);
+}
+
+class $RecipeFieldNames {
+  final KeyHandler keyHandler;
+  final String fieldName;
+  final String prefix;
+
+  $RecipeFieldNames({
+    KeyHandler? keyHandler,
+    this.fieldName = '',
+  })  : prefix = fieldName.isEmpty ? '' : fieldName + '.',
+        keyHandler = keyHandler ?? KeyHandler.fromDefault();
+
+  static const _title = 'title';
+  String get title => prefix + _title;
+  static const _description = 'description';
+  String get description => prefix + _description;
+
+  @override
+  String toString() => fieldName;
 }
 
 // **************************************************************************
@@ -157,10 +176,7 @@ extension MapRecipeExtension on Map<String, dynamic> {
 // **************************************************************************
 
 class RecipeProtoMapper implements ProtoMapper<Recipe, GRecipe> {
-  static final RecipeProtoMapper _singleton = RecipeProtoMapper._();
-
-  RecipeProtoMapper._();
-  factory RecipeProtoMapper() => _singleton;
+  const RecipeProtoMapper();
 
   @override
   Recipe fromProto(GRecipe proto) => _$RecipeFromProto(proto);
@@ -170,6 +186,12 @@ class RecipeProtoMapper implements ProtoMapper<Recipe, GRecipe> {
 
   Recipe fromJson(String json) => _$RecipeFromProto(GRecipe.fromJson(json));
   String toJson(Recipe entity) => _$RecipeToProto(entity).writeToJson();
+
+  String toBase64Proto(Recipe entity) =>
+      base64Encode(utf8.encode(entity.toProto().writeToJson()));
+
+  Recipe fromBase64Proto(String base64Proto) =>
+      GRecipe.fromJson(utf8.decode(base64Decode(base64Proto))).toRecipe();
 }
 
 GRecipe _$RecipeToProto(Recipe instance) {
@@ -208,17 +230,21 @@ extension GRecipeProtoExtension on GRecipe {
 // **************************************************************************
 
 class RecipeValidator implements Validator {
-  RecipeValidator.create();
+  const RecipeValidator();
 
-  static final RecipeValidator _singleton = RecipeValidator.create();
-  factory RecipeValidator() => _singleton;
-
-  ValidationError? validateTitle(String value) {
+  ValidationError? validateTitle(String value, {Recipe? entity}) {
     return null;
   }
 
-  ValidationError? validateDescription(String? value) {
+  ValidationError? validateDescription(String? value, {Recipe? entity}) {
     return null;
+  }
+
+  ValidationError? $validateTitle(String? value, {Recipe? entity}) {
+    if (value == null) {
+      return RequiredValidationError('title');
+    }
+    return validateTitle(value, entity: entity);
   }
 
   @override
@@ -226,11 +252,12 @@ class RecipeValidator implements Validator {
     var errors = <ValidationError>[];
 
     ValidationError? error;
-    if ((error = validateTitle(entity.title)) != null) {
+    if ((error = validateTitle(entity.title, entity: entity)) != null) {
       errors.add(error!);
     }
 
-    if ((error = validateDescription(entity.description)) != null) {
+    if ((error = validateDescription(entity.description, entity: entity)) !=
+        null) {
       errors.add(error!);
     }
 

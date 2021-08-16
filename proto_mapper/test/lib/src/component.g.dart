@@ -7,10 +7,7 @@ part of 'component.dart';
 // **************************************************************************
 
 class ComponentProtoMapper implements ProtoMapper<Component, GComponent> {
-  static final ComponentProtoMapper _singleton = ComponentProtoMapper._();
-
-  ComponentProtoMapper._();
-  factory ComponentProtoMapper() => _singleton;
+  const ComponentProtoMapper();
 
   @override
   Component fromProto(GComponent proto) => _$ComponentFromProto(proto);
@@ -21,6 +18,12 @@ class ComponentProtoMapper implements ProtoMapper<Component, GComponent> {
   Component fromJson(String json) =>
       _$ComponentFromProto(GComponent.fromJson(json));
   String toJson(Component entity) => _$ComponentToProto(entity).writeToJson();
+
+  String toBase64Proto(Component entity) =>
+      base64Encode(utf8.encode(entity.toProto().writeToJson()));
+
+  Component fromBase64Proto(String base64Proto) =>
+      GComponent.fromJson(utf8.decode(base64Decode(base64Proto))).toComponent();
 }
 
 GComponent _$ComponentToProto(Component instance) {

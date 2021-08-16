@@ -8,6 +8,8 @@ part of 'appliance_type.dart';
 
 class ApplianceTypeProtoMapper
     implements ProtoMapper<ApplianceType, GApplianceType> {
+  const ApplianceTypeProtoMapper();
+
   @override
   ApplianceType fromProto(GApplianceType proto) =>
       ApplianceType.values[proto.value];
@@ -15,6 +17,4 @@ class ApplianceTypeProtoMapper
   @override
   GApplianceType toProto(ApplianceType entity) =>
       GApplianceType.valueOf(entity.index)!;
-
-  static final ApplianceTypeProtoMapper singleton = ApplianceTypeProtoMapper();
 }

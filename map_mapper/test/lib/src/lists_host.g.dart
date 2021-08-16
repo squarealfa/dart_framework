@@ -7,10 +7,7 @@ part of 'lists_host.dart';
 // **************************************************************************
 
 class ListsHostMapMapper extends MapMapper<ListsHost> {
-  static final ListsHostMapMapper _singleton = ListsHostMapMapper._();
-
-  ListsHostMapMapper._();
-  factory ListsHostMapMapper() => _singleton;
+  const ListsHostMapMapper();
 
   @override
   ListsHost fromMap(
@@ -41,11 +38,11 @@ class ListsHostMapMapper extends MapMapper<ListsHost> {
       nvdoubles:
           map['nvdoubles'] == null ? null : List<double>.from(map['nvdoubles']),
       vapplianceTypes: List<ApplianceType>.from(map['vapplianceTypes']
-          .map((e) => ApplianceTypeMapMapper().fromMap(e))),
+          .map((e) => const ApplianceTypeMapMapper().fromMap(e))),
       nvapplianceTypes: map['nvapplianceTypes'] == null
           ? null
           : List<ApplianceType>.from(map['nvapplianceTypes']
-              .map((e) => ApplianceTypeMapMapper().fromMap(e))),
+              .map((e) => const ApplianceTypeMapMapper().fromMap(e))),
     );
   }
 
@@ -85,13 +82,13 @@ class ListsHostMapMapper extends MapMapper<ListsHost> {
     map['nvdoubles'] = instance.nvdoubles;
     ;
     map['vapplianceTypes'] = instance.vapplianceTypes
-        .map((e) => ApplianceTypeMapMapper().toMap(e))
+        .map((e) => const ApplianceTypeMapMapper().toMap(e))
         .toList();
     ;
     map['nvapplianceTypes'] = instance.nvapplianceTypes == null
         ? null
         : instance.nvapplianceTypes!
-            .map((e) => ApplianceTypeMapMapper().toMap(e))
+            .map((e) => const ApplianceTypeMapMapper().toMap(e))
             .toList();
     ;
 
@@ -101,13 +98,61 @@ class ListsHostMapMapper extends MapMapper<ListsHost> {
 
 extension ListsHostMapExtension on ListsHost {
   Map<String, dynamic> toMap([KeyHandler? keyHandler]) =>
-      ListsHostMapMapper().toMap(this, keyHandler);
+      const ListsHostMapMapper().toMap(this, keyHandler);
   static ListsHost fromMap(Map<String, dynamic> map,
           [KeyHandler? keyHandler]) =>
-      ListsHostMapMapper().fromMap(map, keyHandler);
+      const ListsHostMapMapper().fromMap(map, keyHandler);
 }
 
 extension MapListsHostExtension on Map<String, dynamic> {
   ListsHost toListsHost([KeyHandler? keyHandler]) =>
-      ListsHostMapMapper().fromMap(this, keyHandler);
+      const ListsHostMapMapper().fromMap(this, keyHandler);
+}
+
+class $ListsHostFieldNames {
+  final KeyHandler keyHandler;
+  final String fieldName;
+  final String prefix;
+
+  $ListsHostFieldNames({
+    KeyHandler? keyHandler,
+    this.fieldName = '',
+  })  : prefix = fieldName.isEmpty ? '' : fieldName + '.',
+        keyHandler = keyHandler ?? KeyHandler.fromDefault();
+
+  static const _vbools = 'vbools';
+  String get vbools => prefix + _vbools;
+  static const _nvbools = 'nvbools';
+  String get nvbools => prefix + _nvbools;
+  static const _vstrings = 'vstrings';
+  String get vstrings => prefix + _vstrings;
+  static const _nvstrings = 'nvstrings';
+  String get nvstrings => prefix + _nvstrings;
+  static const _vdurations = 'vdurations';
+  String get vdurations => prefix + _vdurations;
+  static const _nvdurations = 'nvdurations';
+  String get nvdurations => prefix + _nvdurations;
+  static const _vdatetimes = 'vdatetimes';
+  String get vdatetimes => prefix + _vdatetimes;
+  static const _nvdatetimes = 'nvdatetimes';
+  String get nvdatetimes => prefix + _nvdatetimes;
+  static const _vdecimals = 'vdecimals';
+  String get vdecimals => prefix + _vdecimals;
+  static const _nvdecimals = 'nvdecimals';
+  String get nvdecimals => prefix + _nvdecimals;
+  static const _vints = 'vints';
+  String get vints => prefix + _vints;
+  static const _nvints = 'nvints';
+  String get nvints => prefix + _nvints;
+  static const _vdoubles = 'vdoubles';
+  String get vdoubles => prefix + _vdoubles;
+  static const _nvdoubles = 'nvdoubles';
+  String get nvdoubles => prefix + _nvdoubles;
+  static const _vapplianceTypes = 'vapplianceTypes';
+  String get vapplianceTypes => prefix + _vapplianceTypes;
+  static const _nvapplianceTypes = 'nvapplianceTypes';
+  String get nvapplianceTypes => prefix + _nvapplianceTypes;
+
+  @override
+  String toString() => fieldName;
 }

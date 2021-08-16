@@ -7,10 +7,7 @@ part of 'empty.dart';
 // **************************************************************************
 
 class EmptyValidator implements Validator {
-  EmptyValidator.create();
-
-  static final EmptyValidator _singleton = EmptyValidator.create();
-  factory EmptyValidator() => _singleton;
+  const EmptyValidator();
 
   @override
   ErrorList validate(covariant Empty entity) {

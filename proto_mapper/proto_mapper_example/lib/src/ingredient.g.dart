@@ -7,10 +7,7 @@ part of 'ingredient.dart';
 // **************************************************************************
 
 class IngredientProtoMapper implements ProtoMapper<Ingredient, GIngredient> {
-  static final IngredientProtoMapper _singleton = IngredientProtoMapper._();
-
-  IngredientProtoMapper._();
-  factory IngredientProtoMapper() => _singleton;
+  const IngredientProtoMapper();
 
   @override
   Ingredient fromProto(GIngredient proto) => _$IngredientFromProto(proto);
@@ -21,6 +18,13 @@ class IngredientProtoMapper implements ProtoMapper<Ingredient, GIngredient> {
   Ingredient fromJson(String json) =>
       _$IngredientFromProto(GIngredient.fromJson(json));
   String toJson(Ingredient entity) => _$IngredientToProto(entity).writeToJson();
+
+  String toBase64Proto(Ingredient entity) =>
+      base64Encode(utf8.encode(entity.toProto().writeToJson()));
+
+  Ingredient fromBase64Proto(String base64Proto) =>
+      GIngredient.fromJson(utf8.decode(base64Decode(base64Proto)))
+          .toIngredient();
 }
 
 GIngredient _$IngredientToProto(Ingredient instance) {

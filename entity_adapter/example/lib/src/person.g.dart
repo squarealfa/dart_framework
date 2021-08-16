@@ -7,20 +7,29 @@ part of 'person.dart';
 // **************************************************************************
 
 class PersonBuilder implements Builder<Person> {
-  List<AssetBuilder> assets;
-  String name;
+  final _defaultsProvider = PersonDefaultsProvider();
+
+  List<AssetBuilder>? $assets;
+  List<AssetBuilder> get assets => $assets ?? [];
+  set assets(List<AssetBuilder> value) => $assets = value;
+
+  String? $name;
+  String get name => $name ?? _defaultsProvider.name;
+  set name(String value) => $name = value;
 
   PersonBuilder({
-    required this.assets,
-    required this.name,
-  });
-
-  factory PersonBuilder.fromPerson(Person entity) {
-    return PersonBuilder(
-      assets: entity.assets.map((e) => AssetBuilder.fromAsset(e)).toList(),
-      name: entity.name,
-    );
+    List<AssetBuilder>? assets,
+    String? name,
+  }) {
+    $assets = assets;
+    $name = name;
   }
+
+  PersonBuilder.fromPerson(Person entity)
+      : this(
+          assets: entity.assets.map((e) => AssetBuilder.fromAsset(e)).toList(),
+          name: entity.name,
+        );
 
   @override
   Person build() {
@@ -28,7 +37,7 @@ class PersonBuilder implements Builder<Person> {
       assets: assets.map((e) => e.build()).toList(),
       name: name,
     );
-    PersonValidator().validateThrowing(entity);
+    const PersonValidator().validateThrowing(entity);
     return entity;
   }
 }
@@ -73,11 +82,7 @@ class PersonDefaultsProvider {
 // **************************************************************************
 
 class PersonPermissions extends EntityPermissions {
-  static final PersonPermissions _singleton = PersonPermissions._();
-
-  PersonPermissions._();
-
-  factory PersonPermissions() => _singleton;
+  const PersonPermissions();
 
   @override
   String get create => 'createPerson';
@@ -94,13 +99,13 @@ class PersonPermissions extends EntityPermissions {
 
 class PersonEntityAdapter implements EntityAdapter<Person> {
   @override
-  final MapMapper<Person> mapMapper = PersonMapMapper();
+  final MapMapper<Person> mapMapper = const PersonMapMapper();
 
   @override
-  final Validator validator = PersonValidator();
+  final Validator validator = const PersonValidator();
 
   @override
-  final EntityPermissions permissions = PersonPermissions();
+  final EntityPermissions permissions = const PersonPermissions();
 }
 
 // **************************************************************************
@@ -108,10 +113,7 @@ class PersonEntityAdapter implements EntityAdapter<Person> {
 // **************************************************************************
 
 class PersonMapMapper extends MapMapper<Person> {
-  static final PersonMapMapper _singleton = PersonMapMapper._();
-
-  PersonMapMapper._();
-  factory PersonMapMapper() => _singleton;
+  const PersonMapMapper();
 
   @override
   Person fromMap(
@@ -126,7 +128,7 @@ class PersonMapMapper extends MapMapper<Person> {
           map['assets'],
           () => defaultsProvider.assets,
           (mapValue) => List<Asset>.from(
-              mapValue.map((e) => AssetMapMapper().fromMap(e, $kh)))),
+              mapValue.map((e) => const AssetMapMapper().fromMap(e, $kh)))),
       name: getValueOrDefault(map['name'], () => defaultsProvider.name,
           (mapValue) => mapValue as String),
     );
@@ -140,8 +142,9 @@ class PersonMapMapper extends MapMapper<Person> {
     final $kh = keyHandler ?? KeyHandler.fromDefault();
     final map = <String, dynamic>{};
 
-    map['assets'] =
-        instance.assets.map((e) => AssetMapMapper().toMap(e, $kh)).toList();
+    map['assets'] = instance.assets
+        .map((e) => const AssetMapMapper().toMap(e, $kh))
+        .toList();
     ;
     map['name'] = instance.name;
 
@@ -151,14 +154,38 @@ class PersonMapMapper extends MapMapper<Person> {
 
 extension PersonMapExtension on Person {
   Map<String, dynamic> toMap([KeyHandler? keyHandler]) =>
-      PersonMapMapper().toMap(this, keyHandler);
+      const PersonMapMapper().toMap(this, keyHandler);
   static Person fromMap(Map<String, dynamic> map, [KeyHandler? keyHandler]) =>
-      PersonMapMapper().fromMap(map, keyHandler);
+      const PersonMapMapper().fromMap(map, keyHandler);
 }
 
 extension MapPersonExtension on Map<String, dynamic> {
   Person toPerson([KeyHandler? keyHandler]) =>
-      PersonMapMapper().fromMap(this, keyHandler);
+      const PersonMapMapper().fromMap(this, keyHandler);
+}
+
+class $PersonFieldNames {
+  final KeyHandler keyHandler;
+  final String fieldName;
+  final String prefix;
+
+  $PersonFieldNames({
+    KeyHandler? keyHandler,
+    this.fieldName = '',
+  })  : prefix = fieldName.isEmpty ? '' : fieldName + '.',
+        keyHandler = keyHandler ?? KeyHandler.fromDefault();
+
+  static const _assets = 'assets';
+  $AssetFieldNames get assets => $AssetFieldNames(
+        keyHandler: keyHandler,
+        fieldName: prefix + _assets,
+      );
+
+  static const _name = 'name';
+  String get name => prefix + _name;
+
+  @override
+  String toString() => fieldName;
 }
 
 // **************************************************************************
@@ -166,10 +193,7 @@ extension MapPersonExtension on Map<String, dynamic> {
 // **************************************************************************
 
 class PersonProtoMapper implements ProtoMapper<Person, GPerson> {
-  static final PersonProtoMapper _singleton = PersonProtoMapper._();
-
-  PersonProtoMapper._();
-  factory PersonProtoMapper() => _singleton;
+  const PersonProtoMapper();
 
   @override
   Person fromProto(GPerson proto) => _$PersonFromProto(proto);
@@ -179,13 +203,19 @@ class PersonProtoMapper implements ProtoMapper<Person, GPerson> {
 
   Person fromJson(String json) => _$PersonFromProto(GPerson.fromJson(json));
   String toJson(Person entity) => _$PersonToProto(entity).writeToJson();
+
+  String toBase64Proto(Person entity) =>
+      base64Encode(utf8.encode(entity.toProto().writeToJson()));
+
+  Person fromBase64Proto(String base64Proto) =>
+      GPerson.fromJson(utf8.decode(base64Decode(base64Proto))).toPerson();
 }
 
 GPerson _$PersonToProto(Person instance) {
   var proto = GPerson();
 
   proto.assets
-      .addAll(instance.assets.map((e) => AssetProtoMapper().toProto(e)));
+      .addAll(instance.assets.map((e) => const AssetProtoMapper().toProto(e)));
 
   proto.name = instance.name;
 
@@ -193,8 +223,9 @@ GPerson _$PersonToProto(Person instance) {
 }
 
 Person _$PersonFromProto(GPerson instance) => Person(
-      assets:
-          instance.assets.map((e) => AssetProtoMapper().fromProto(e)).toList(),
+      assets: instance.assets
+          .map((e) => const AssetProtoMapper().fromProto(e))
+          .toList(),
       name: instance.name,
     );
 
@@ -216,12 +247,9 @@ extension GPersonProtoExtension on GPerson {
 // **************************************************************************
 
 class PersonValidator implements Validator {
-  PersonValidator.create();
+  const PersonValidator();
 
-  static final PersonValidator _singleton = PersonValidator.create();
-  factory PersonValidator() => _singleton;
-
-  ValidationError? validateAssets(List<Asset> value) {
+  ValidationError? validateAssets(List<Asset> value, {Person? entity}) {
     var errorLists = value
         .map((entity) {
           var errors = AssetValidator().validate(entity);
@@ -238,8 +266,22 @@ class PersonValidator implements Validator {
     return null;
   }
 
-  ValidationError? validateName(String value) {
+  ValidationError? validateName(String value, {Person? entity}) {
     return null;
+  }
+
+  ValidationError? $validateAssets(List<Asset>? value, {Person? entity}) {
+    if (value == null) {
+      return RequiredValidationError('assets');
+    }
+    return validateAssets(value, entity: entity);
+  }
+
+  ValidationError? $validateName(String? value, {Person? entity}) {
+    if (value == null) {
+      return RequiredValidationError('name');
+    }
+    return validateName(value, entity: entity);
   }
 
   @override
@@ -247,11 +289,11 @@ class PersonValidator implements Validator {
     var errors = <ValidationError>[];
 
     ValidationError? error;
-    if ((error = validateAssets(entity.assets)) != null) {
+    if ((error = validateAssets(entity.assets, entity: entity)) != null) {
       errors.add(error!);
     }
 
-    if ((error = validateName(entity.name)) != null) {
+    if ((error = validateName(entity.name, entity: entity)) != null) {
       errors.add(error!);
     }
 

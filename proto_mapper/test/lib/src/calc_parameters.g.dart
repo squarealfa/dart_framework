@@ -8,11 +8,7 @@ part of 'calc_parameters.dart';
 
 class CalcParametersProtoMapper
     implements ProtoMapper<CalcParameters, GCalcParameters> {
-  static final CalcParametersProtoMapper _singleton =
-      CalcParametersProtoMapper._();
-
-  CalcParametersProtoMapper._();
-  factory CalcParametersProtoMapper() => _singleton;
+  const CalcParametersProtoMapper();
 
   @override
   CalcParameters fromProto(GCalcParameters proto) =>
@@ -26,6 +22,13 @@ class CalcParametersProtoMapper
       _$CalcParametersFromProto(GCalcParameters.fromJson(json));
   String toJson(CalcParameters entity) =>
       _$CalcParametersToProto(entity).writeToJson();
+
+  String toBase64Proto(CalcParameters entity) =>
+      base64Encode(utf8.encode(entity.toProto().writeToJson()));
+
+  CalcParameters fromBase64Proto(String base64Proto) =>
+      GCalcParameters.fromJson(utf8.decode(base64Decode(base64Proto)))
+          .toCalcParameters();
 }
 
 GCalcParameters _$CalcParametersToProto(CalcParameters instance) {

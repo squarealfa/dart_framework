@@ -11,10 +11,16 @@ import 'ingredient.proto';
 
 
 
+
 message GRecipe
 {
   string key = 1;
   string ptitle = 2;
   repeated GIngredient ingredients = 3;
 
+}   
+
+message GListOfRecipe
+{
+  repeated GRecipe items = 1;
 }

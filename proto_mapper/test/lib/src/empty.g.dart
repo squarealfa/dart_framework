@@ -7,10 +7,7 @@ part of 'empty.dart';
 // **************************************************************************
 
 class EmptyProtoMapper implements ProtoMapper<Empty, GEmpty> {
-  static final EmptyProtoMapper _singleton = EmptyProtoMapper._();
-
-  EmptyProtoMapper._();
-  factory EmptyProtoMapper() => _singleton;
+  const EmptyProtoMapper();
 
   @override
   Empty fromProto(GEmpty proto) => _$EmptyFromProto(proto);
@@ -20,6 +17,12 @@ class EmptyProtoMapper implements ProtoMapper<Empty, GEmpty> {
 
   Empty fromJson(String json) => _$EmptyFromProto(GEmpty.fromJson(json));
   String toJson(Empty entity) => _$EmptyToProto(entity).writeToJson();
+
+  String toBase64Proto(Empty entity) =>
+      base64Encode(utf8.encode(entity.toProto().writeToJson()));
+
+  Empty fromBase64Proto(String base64Proto) =>
+      GEmpty.fromJson(utf8.decode(base64Decode(base64Proto))).toEmpty();
 }
 
 GEmpty _$EmptyToProto(Empty instance) {

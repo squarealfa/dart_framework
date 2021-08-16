@@ -91,10 +91,7 @@ class MapMapGenerator extends GeneratorForAnnotation<MapMap> {
     return '''
 
       class ${className}MapMapper extends MapMapper<$className> {
-        static final ${className}MapMapper _singleton = ${className}MapMapper._();
-
-        ${className}MapMapper._();
-        factory ${className}MapMapper() => _singleton;
+        const ${className}MapMapper();
 
 
         @override
@@ -126,12 +123,12 @@ class MapMapGenerator extends GeneratorForAnnotation<MapMap> {
 
 
       extension ${className}MapExtension on $className {
-        Map<String, dynamic> toMap([KeyHandler? keyHandler]) => ${className}MapMapper().toMap(this, keyHandler);
-        static $className fromMap(Map<String, dynamic> map, [KeyHandler? keyHandler]) => ${className}MapMapper().fromMap(map, keyHandler);
+        Map<String, dynamic> toMap([KeyHandler? keyHandler]) => const ${className}MapMapper().toMap(this, keyHandler);
+        static $className fromMap(Map<String, dynamic> map, [KeyHandler? keyHandler]) => const ${className}MapMapper().fromMap(map, keyHandler);
       }
       
       extension Map${className}Extension on Map<String, dynamic> {
-        $className to$className([KeyHandler? keyHandler]) => ${className}MapMapper().fromMap(this, keyHandler);
+        $className to$className([KeyHandler? keyHandler]) => const ${className}MapMapper().fromMap(this, keyHandler);
       }
   
 
@@ -161,10 +158,9 @@ class MapMapGenerator extends GeneratorForAnnotation<MapMap> {
     return '''
     class ${className}MapMapper
     {
+      const ${className}MapMapper();
       $className fromMap(dynamic e) => $className.values[e];
       dynamic toMap($className e) => e.index;
-      
-      static final ${className}MapMapper singleton = ${className}MapMapper();
     }
     ''';
   }

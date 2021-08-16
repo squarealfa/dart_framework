@@ -7,10 +7,7 @@ part of 'category.dart';
 // **************************************************************************
 
 class CategoryValidator implements Validator {
-  CategoryValidator.create();
-
-  static final CategoryValidator _singleton = CategoryValidator.create();
-  factory CategoryValidator() => _singleton;
+  const CategoryValidator();
 
   ValidationError? validateTitle(String value, {Category? entity}) {
     if (value.isEmpty) {

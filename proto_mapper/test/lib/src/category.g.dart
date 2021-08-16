@@ -7,10 +7,7 @@ part of 'category.dart';
 // **************************************************************************
 
 class CategoryProtoMapper implements ProtoMapper<Category, GCategory> {
-  static final CategoryProtoMapper _singleton = CategoryProtoMapper._();
-
-  CategoryProtoMapper._();
-  factory CategoryProtoMapper() => _singleton;
+  const CategoryProtoMapper();
 
   @override
   Category fromProto(GCategory proto) => _$CategoryFromProto(proto);
@@ -21,24 +18,31 @@ class CategoryProtoMapper implements ProtoMapper<Category, GCategory> {
   Category fromJson(String json) =>
       _$CategoryFromProto(GCategory.fromJson(json));
   String toJson(Category entity) => _$CategoryToProto(entity).writeToJson();
+
+  String toBase64Proto(Category entity) =>
+      base64Encode(utf8.encode(entity.toProto().writeToJson()));
+
+  Category fromBase64Proto(String base64Proto) =>
+      GCategory.fromJson(utf8.decode(base64Decode(base64Proto))).toCategory();
 }
 
 GCategory _$CategoryToProto(Category instance) {
   var proto = GCategory();
 
   proto.title = instance.title;
-  proto.mainComponent = ComponentProtoMapper().toProto(instance.mainComponent);
+  proto.mainComponent =
+      const ComponentProtoMapper().toProto(instance.mainComponent);
   if (instance.alternativeComponent != null) {
     proto.alternativeComponent =
-        ComponentProtoMapper().toProto(instance.alternativeComponent!);
+        const ComponentProtoMapper().toProto(instance.alternativeComponent!);
   }
   proto.alternativeComponentHasValue = instance.alternativeComponent != null;
 
-  proto.otherComponents.addAll(
-      instance.otherComponents.map((e) => ComponentProtoMapper().toProto(e)));
+  proto.otherComponents.addAll(instance.otherComponents
+      .map((e) => const ComponentProtoMapper().toProto(e)));
 
   proto.secondaryComponents.addAll(instance.secondaryComponents
-          ?.map((e) => ComponentProtoMapper().toProto(e)) ??
+          ?.map((e) => const ComponentProtoMapper().toProto(e)) ??
       []);
   proto.secondaryComponentsHasValue = instance.secondaryComponents != null;
 
@@ -47,16 +51,18 @@ GCategory _$CategoryToProto(Category instance) {
 
 Category _$CategoryFromProto(GCategory instance) => Category(
       title: instance.title,
-      mainComponent: ComponentProtoMapper().fromProto(instance.mainComponent),
+      mainComponent:
+          const ComponentProtoMapper().fromProto(instance.mainComponent),
       alternativeComponent: (instance.alternativeComponentHasValue
-          ? (ComponentProtoMapper().fromProto(instance.alternativeComponent))
+          ? (const ComponentProtoMapper()
+              .fromProto(instance.alternativeComponent))
           : null),
       otherComponents: instance.otherComponents
-          .map((e) => ComponentProtoMapper().fromProto(e))
+          .map((e) => const ComponentProtoMapper().fromProto(e))
           .toList(),
       secondaryComponents: (instance.secondaryComponentsHasValue
           ? (instance.secondaryComponents
-              .map((e) => ComponentProtoMapper().fromProto(e))
+              .map((e) => const ComponentProtoMapper().fromProto(e))
               .toList())
           : null),
     );

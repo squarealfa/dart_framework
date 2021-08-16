@@ -7,20 +7,29 @@ part of 'asset.dart';
 // **************************************************************************
 
 class AssetBuilder implements Builder<Asset> {
-  String description;
-  Decimal value;
+  final _defaultsProvider = AssetDefaultsProvider();
+
+  String? $description;
+  String get description => $description ?? _defaultsProvider.description;
+  set description(String value) => $description = value;
+
+  Decimal? $value;
+  Decimal get value => $value ?? _defaultsProvider.value;
+  set value(Decimal value) => $value = value;
 
   AssetBuilder({
-    required this.description,
-    required this.value,
-  });
-
-  factory AssetBuilder.fromAsset(Asset entity) {
-    return AssetBuilder(
-      description: entity.description,
-      value: entity.value,
-    );
+    String? description,
+    Decimal? value,
+  }) {
+    $description = description;
+    $value = value;
   }
+
+  AssetBuilder.fromAsset(Asset entity)
+      : this(
+          description: entity.description,
+          value: entity.value,
+        );
 
   @override
   Asset build() {
@@ -28,7 +37,7 @@ class AssetBuilder implements Builder<Asset> {
       description: description,
       value: value,
     );
-    AssetValidator().validateThrowing(entity);
+    const AssetValidator().validateThrowing(entity);
     return entity;
   }
 }
@@ -73,10 +82,7 @@ class AssetDefaultsProvider {
 // **************************************************************************
 
 class AssetMapMapper extends MapMapper<Asset> {
-  static final AssetMapMapper _singleton = AssetMapMapper._();
-
-  AssetMapMapper._();
-  factory AssetMapMapper() => _singleton;
+  const AssetMapMapper();
 
   @override
   Asset fromMap(
@@ -109,14 +115,34 @@ class AssetMapMapper extends MapMapper<Asset> {
 
 extension AssetMapExtension on Asset {
   Map<String, dynamic> toMap([KeyHandler? keyHandler]) =>
-      AssetMapMapper().toMap(this, keyHandler);
+      const AssetMapMapper().toMap(this, keyHandler);
   static Asset fromMap(Map<String, dynamic> map, [KeyHandler? keyHandler]) =>
-      AssetMapMapper().fromMap(map, keyHandler);
+      const AssetMapMapper().fromMap(map, keyHandler);
 }
 
 extension MapAssetExtension on Map<String, dynamic> {
   Asset toAsset([KeyHandler? keyHandler]) =>
-      AssetMapMapper().fromMap(this, keyHandler);
+      const AssetMapMapper().fromMap(this, keyHandler);
+}
+
+class $AssetFieldNames {
+  final KeyHandler keyHandler;
+  final String fieldName;
+  final String prefix;
+
+  $AssetFieldNames({
+    KeyHandler? keyHandler,
+    this.fieldName = '',
+  })  : prefix = fieldName.isEmpty ? '' : fieldName + '.',
+        keyHandler = keyHandler ?? KeyHandler.fromDefault();
+
+  static const _description = 'description';
+  String get description => prefix + _description;
+  static const _value = 'value';
+  String get value => prefix + _value;
+
+  @override
+  String toString() => fieldName;
 }
 
 // **************************************************************************
@@ -124,10 +150,7 @@ extension MapAssetExtension on Map<String, dynamic> {
 // **************************************************************************
 
 class AssetProtoMapper implements ProtoMapper<Asset, GAsset> {
-  static final AssetProtoMapper _singleton = AssetProtoMapper._();
-
-  AssetProtoMapper._();
-  factory AssetProtoMapper() => _singleton;
+  const AssetProtoMapper();
 
   @override
   Asset fromProto(GAsset proto) => _$AssetFromProto(proto);
@@ -137,6 +160,12 @@ class AssetProtoMapper implements ProtoMapper<Asset, GAsset> {
 
   Asset fromJson(String json) => _$AssetFromProto(GAsset.fromJson(json));
   String toJson(Asset entity) => _$AssetToProto(entity).writeToJson();
+
+  String toBase64Proto(Asset entity) =>
+      base64Encode(utf8.encode(entity.toProto().writeToJson()));
+
+  Asset fromBase64Proto(String base64Proto) =>
+      GAsset.fromJson(utf8.decode(base64Decode(base64Proto))).toAsset();
 }
 
 GAsset _$AssetToProto(Asset instance) {
@@ -170,17 +199,28 @@ extension GAssetProtoExtension on GAsset {
 // **************************************************************************
 
 class AssetValidator implements Validator {
-  AssetValidator.create();
+  const AssetValidator();
 
-  static final AssetValidator _singleton = AssetValidator.create();
-  factory AssetValidator() => _singleton;
-
-  ValidationError? validateDescription(String value) {
+  ValidationError? validateDescription(String value, {Asset? entity}) {
     return null;
   }
 
-  ValidationError? validateValue(Decimal value) {
+  ValidationError? validateValue(Decimal value, {Asset? entity}) {
     return null;
+  }
+
+  ValidationError? $validateDescription(String? value, {Asset? entity}) {
+    if (value == null) {
+      return RequiredValidationError('description');
+    }
+    return validateDescription(value, entity: entity);
+  }
+
+  ValidationError? $validateValue(Decimal? value, {Asset? entity}) {
+    if (value == null) {
+      return RequiredValidationError('value');
+    }
+    return validateValue(value, entity: entity);
   }
 
   @override
@@ -188,11 +228,12 @@ class AssetValidator implements Validator {
     var errors = <ValidationError>[];
 
     ValidationError? error;
-    if ((error = validateDescription(entity.description)) != null) {
+    if ((error = validateDescription(entity.description, entity: entity)) !=
+        null) {
       errors.add(error!);
     }
 
-    if ((error = validateValue(entity.value)) != null) {
+    if ((error = validateValue(entity.value, entity: entity)) != null) {
       errors.add(error!);
     }
 

@@ -109,7 +109,7 @@ class BuilderGenerator extends GeneratorForAnnotation<BuildBuilder> {
           var entity = $className(
             $entityConstructorBuffer
           );
-          ${className}Validator().validateThrowing(entity);
+          const ${className}Validator().validateThrowing(entity);
           return entity;
         }
 

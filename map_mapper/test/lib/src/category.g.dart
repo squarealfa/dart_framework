@@ -7,10 +7,7 @@ part of 'category.dart';
 // **************************************************************************
 
 class CategoryMapMapper extends MapMapper<Category> {
-  static final CategoryMapMapper _singleton = CategoryMapMapper._();
-
-  CategoryMapMapper._();
-  factory CategoryMapMapper() => _singleton;
+  const CategoryMapMapper();
 
   @override
   Category fromMap(
@@ -23,16 +20,17 @@ class CategoryMapMapper extends MapMapper<Category> {
       id: $kh.keyFromMap(map, 'id'),
       title: map['title'] as String,
       mainComponentId: $kh.keyFromMap(map, 'mainComponentId'),
-      mainComponent: ComponentMapMapper().fromMap(map['mainComponent'], $kh),
+      mainComponent:
+          const ComponentMapMapper().fromMap(map['mainComponent'], $kh),
       alternativeComponent: (map['alternativeComponent'] != null
-          ? ComponentMapMapper().fromMap(map['alternativeComponent'], $kh)
+          ? const ComponentMapMapper().fromMap(map['alternativeComponent'], $kh)
           : null),
       otherComponents: List<Component>.from(map['otherComponents']
-          .map((e) => ComponentMapMapper().fromMap(e, $kh))),
+          .map((e) => const ComponentMapMapper().fromMap(e, $kh))),
       secondaryComponents: map['secondaryComponents'] == null
           ? null
           : List<Component>.from(map['secondaryComponents']
-              .map((e) => ComponentMapMapper().fromMap(e, $kh))),
+              .map((e) => const ComponentMapMapper().fromMap(e, $kh))),
     );
   }
 
@@ -48,18 +46,19 @@ class CategoryMapMapper extends MapMapper<Category> {
     map['title'] = instance.title;
     $kh.keyToMap(map, instance.mainComponentId, 'mainComponentId');
     map['mainComponent'] =
-        ComponentMapMapper().toMap(instance.mainComponent, $kh);
+        const ComponentMapMapper().toMap(instance.mainComponent, $kh);
     map['alternativeComponent'] = (instance.alternativeComponent == null
         ? null
-        : ComponentMapMapper().toMap(instance.alternativeComponent!, $kh));
+        : const ComponentMapMapper()
+            .toMap(instance.alternativeComponent!, $kh));
     map['otherComponents'] = instance.otherComponents
-        .map((e) => ComponentMapMapper().toMap(e, $kh))
+        .map((e) => const ComponentMapMapper().toMap(e, $kh))
         .toList();
     ;
     map['secondaryComponents'] = instance.secondaryComponents == null
         ? null
         : instance.secondaryComponents!
-            .map((e) => ComponentMapMapper().toMap(e, $kh))
+            .map((e) => const ComponentMapMapper().toMap(e, $kh))
             .toList();
     ;
 
@@ -69,12 +68,56 @@ class CategoryMapMapper extends MapMapper<Category> {
 
 extension CategoryMapExtension on Category {
   Map<String, dynamic> toMap([KeyHandler? keyHandler]) =>
-      CategoryMapMapper().toMap(this, keyHandler);
+      const CategoryMapMapper().toMap(this, keyHandler);
   static Category fromMap(Map<String, dynamic> map, [KeyHandler? keyHandler]) =>
-      CategoryMapMapper().fromMap(map, keyHandler);
+      const CategoryMapMapper().fromMap(map, keyHandler);
 }
 
 extension MapCategoryExtension on Map<String, dynamic> {
   Category toCategory([KeyHandler? keyHandler]) =>
-      CategoryMapMapper().fromMap(this, keyHandler);
+      const CategoryMapMapper().fromMap(this, keyHandler);
+}
+
+class $CategoryFieldNames {
+  final KeyHandler keyHandler;
+  final String fieldName;
+  final String prefix;
+
+  $CategoryFieldNames({
+    KeyHandler? keyHandler,
+    this.fieldName = '',
+  })  : prefix = fieldName.isEmpty ? '' : fieldName + '.',
+        keyHandler = keyHandler ?? KeyHandler.fromDefault();
+
+  static const _id = 'id';
+  String get id => prefix + keyHandler.fieldNameToMapKey(_id);
+  static const _title = 'title';
+  String get title => prefix + _title;
+  static const _mainComponentId = 'mainComponentId';
+  String get mainComponentId =>
+      prefix + keyHandler.fieldNameToMapKey(_mainComponentId);
+  static const _mainComponent = 'mainComponent';
+  $ComponentFieldNames get mainComponent => $ComponentFieldNames(
+        keyHandler: keyHandler,
+        fieldName: prefix + _mainComponent,
+      );
+  static const _alternativeComponent = 'alternativeComponent';
+  $ComponentFieldNames get alternativeComponent => $ComponentFieldNames(
+        keyHandler: keyHandler,
+        fieldName: prefix + _alternativeComponent,
+      );
+  static const _otherComponents = 'otherComponents';
+  $ComponentFieldNames get otherComponents => $ComponentFieldNames(
+        keyHandler: keyHandler,
+        fieldName: prefix + _otherComponents,
+      );
+
+  static const _secondaryComponents = 'secondaryComponents';
+  $ComponentFieldNames get secondaryComponents => $ComponentFieldNames(
+        keyHandler: keyHandler,
+        fieldName: prefix + _secondaryComponents,
+      );
+
+  @override
+  String toString() => fieldName;
 }
