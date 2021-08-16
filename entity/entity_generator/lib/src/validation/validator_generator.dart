@@ -2,6 +2,7 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:squarealfa_entity_annotations/squarealfa_entity_annotations.dart';
+import 'package:squarealfa_entity_generator/src/validation/validators/regular_expression_validator.dart';
 import 'package:squarealfa_generators_common/squarealfa_generators_common.dart';
 
 import 'field_descriptor.dart';
@@ -137,6 +138,7 @@ class ValidatorGenerator extends GeneratorForAnnotation<Validatable> {
     final validators = <PropertyValidator>[
       RequiredValidator(),
       StringLengthValidator(),
+      RegularExpressionValidator(),
       RangeValidator(),
       DoubleRangeValidator(),
       EmailAddressValidator(),
