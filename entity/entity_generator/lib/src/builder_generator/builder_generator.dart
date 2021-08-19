@@ -47,6 +47,7 @@ class BuilderGenerator extends GeneratorForAnnotation<BuildBuilder> {
     final fieldBuffer = StringBuffer();
     final assignmentBuffer = StringBuffer();
     final constructorBuffer = StringBuffer();
+    final constructorAssignmentBuffer = StringBuffer();
     final constructorStatementBuffer = StringBuffer();
     final entityConstructorBuffer = StringBuffer();
     var usesDefaultsProvider = false;
@@ -65,6 +66,12 @@ class BuilderGenerator extends GeneratorForAnnotation<BuildBuilder> {
       if (constructorStatement.isNotEmpty) {
         constructorStatementBuffer.writeln(constructorStatement);
       }
+      final constructorAssignment = gen.constructorAssignment;
+      if (constructorAssignment.isNotEmpty) {
+        constructorAssignmentBuffer.write(
+            '''${constructorAssignmentBuffer.length == 0 ? ':' : ','} $constructorAssignment''');
+      }
+
       assignmentBuffer.writeln(gen.toBuilderMap);
       entityConstructorBuffer.writeln(gen.entityConstructorMap);
     }
@@ -99,17 +106,38 @@ class BuilderGenerator extends GeneratorForAnnotation<BuildBuilder> {
 
         $fieldBuffer
 
-        $builderClassName({ $constructorBuffer }) $constructorStatement
+        $builderClassName({ $constructorBuffer }) 
+          $constructorAssignmentBuffer
+          $constructorStatement
 
         $builderClassName.from$className($className entity) 
           : this($assignmentBuffer);        
         
+
         @override
         $className build() {
+          final entity = _build();
+          const ${className}Validator().validateThrowing(entity);
+          return entity;
+        }
+
+        @override
+        BuildResult<$className> tryBuild() {
+          try {
+            final entity = _build();
+            final errors = ${className}Validator().validate(entity);
+            final result =
+                BuildResult<$className>(result: entity, validationErrors: errors);
+            return result;
+          } catch (ex) {
+            return BuildResult<$className>(exception: ex);
+          }
+        }
+
+        $className _build() {
           var entity = $className(
             $entityConstructorBuffer
           );
-          const ${className}Validator().validateThrowing(entity);
           return entity;
         }
 

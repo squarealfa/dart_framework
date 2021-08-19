@@ -33,11 +33,29 @@ class AssetBuilder implements Builder<Asset> {
 
   @override
   Asset build() {
+    final entity = _build();
+    const AssetValidator().validateThrowing(entity);
+    return entity;
+  }
+
+  @override
+  BuildResult<Asset> tryBuild() {
+    try {
+      final entity = _build();
+      final errors = AssetValidator().validate(entity);
+      final result =
+          BuildResult<Asset>(result: entity, validationErrors: errors);
+      return result;
+    } catch (ex) {
+      return BuildResult<Asset>(exception: ex);
+    }
+  }
+
+  Asset _build() {
     var entity = Asset(
       description: description,
       value: value,
     );
-    const AssetValidator().validateThrowing(entity);
     return entity;
   }
 }

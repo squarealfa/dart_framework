@@ -13,9 +13,21 @@ class EntityFieldCodeGenerator extends FieldCodeGenerator {
   String get fieldType => '${fieldDescriptor.fieldElementTypeName}Builder';
 
   @override
+  String get fieldDeclaration =>
+      '  $fieldType${fieldDescriptor.nullSuffix} ${fieldDescriptor.name};';
+
+  @override
   String get toBuilderExpression => fieldDescriptor.isNullable
       ? '''entity.${fieldDescriptor.name} == null ? null : ${fieldDescriptor.fieldElementTypeName}Builder.from${fieldDescriptor.fieldElementTypeName}(entity.${fieldDescriptor.name}!)'''
       : '''${fieldDescriptor.fieldElementTypeName}Builder.from${fieldDescriptor.fieldElementTypeName}(entity.${fieldDescriptor.name})''';
+
+  @override
+  String get constructorAssignment => fieldDescriptor.isNullable
+      ? ''
+      : '${fieldDescriptor.name} = ${fieldDescriptor.name} ?? $fieldType()';
+
+  @override
+  String get constructorStatement => '';
 
   @override
   String get constructorExpression =>

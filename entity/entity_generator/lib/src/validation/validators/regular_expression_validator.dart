@@ -38,14 +38,15 @@ class RegularExpressionValidator extends PropertyValidator {
     }
 
     final buffer = StringBuffer();
-    final expression = annotation.expression.replaceAll('\'', '\\\'');
+    final expression = annotation
+        .expression; //.replaceAll('\'', '\\\'').replaceAll('\$', '\\\$');
     final nullEscape = fieldDescriptor.isNullable && !previousNullCheck
         ? 'value != null && '
         : '';
     buffer.writeln('''
-          if ($nullEscape RegExp(\'$expression\').stringMatch(value) != value) {
+          if ($nullEscape RegExp(r\'$expression\').stringMatch(value) != value) {
             return RegularExpressionValidationError(\'${fieldDescriptor.name}\', 
-              expression: \'$expression\');
+              expression: r\'$expression\');
           }
       ''');
     return createResult(buffer.toString());

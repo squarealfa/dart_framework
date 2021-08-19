@@ -1,6 +1,7 @@
 /// Validation annotations and classes
 export 'src/annotations/build_builder.dart';
 export 'src/annotations/copy_with.dart';
+export 'src/build_result.dart';
 export 'src/builder.dart';
 export 'src/validations/annotations/double_range.dart';
 export 'src/validations/annotations/email_address.dart';

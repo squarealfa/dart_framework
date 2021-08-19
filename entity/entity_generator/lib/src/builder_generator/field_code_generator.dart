@@ -3,11 +3,14 @@ import 'package:squarealfa_entity_annotations/squarealfa_entity_annotations.dart
 import 'field_code_generators/entity_field_code_generator.dart';
 import 'field_code_generators/generic_field_code_generator.dart';
 import 'field_code_generators/list_field_code_generator.dart';
+import 'field_code_generators/set_field_code_generator.dart';
 import 'field_descriptor.dart';
 
 abstract class FieldCodeGenerator {
   final FieldDescriptor fieldDescriptor;
   final BuildBuilder buildBuilder;
+
+  String get constructorAssignment => '';
 
   FieldCodeGenerator(this.fieldDescriptor, this.buildBuilder);
 
@@ -51,6 +54,9 @@ abstract class FieldCodeGenerator {
       FieldDescriptor fieldDescriptor, BuildBuilder buildBuilder) {
     if (fieldDescriptor.fieldElement.type.isDartCoreList) {
       return ListFieldCodeGenerator(fieldDescriptor, buildBuilder);
+    }
+    if (fieldDescriptor.fieldElement.type.isDartCoreSet) {
+      return SetFieldCodeGenerator(fieldDescriptor, buildBuilder);
     }
     if (!fieldDescriptor.typeIsEnum &&
         fieldDescriptor.typeHasEntityMapAnnotation) {

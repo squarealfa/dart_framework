@@ -28,11 +28,29 @@ class RecipeBuilder implements Builder<Recipe> {
 
   @override
   Recipe build() {
+    final entity = _build();
+    const RecipeValidator().validateThrowing(entity);
+    return entity;
+  }
+
+  @override
+  BuildResult<Recipe> tryBuild() {
+    try {
+      final entity = _build();
+      final errors = RecipeValidator().validate(entity);
+      final result =
+          BuildResult<Recipe>(result: entity, validationErrors: errors);
+      return result;
+    } catch (ex) {
+      return BuildResult<Recipe>(exception: ex);
+    }
+  }
+
+  Recipe _build() {
     var entity = Recipe(
       title: title,
       description: description,
     );
-    const RecipeValidator().validateThrowing(entity);
     return entity;
   }
 }

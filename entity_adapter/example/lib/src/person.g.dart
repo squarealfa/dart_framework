@@ -9,19 +9,15 @@ part of 'person.dart';
 class PersonBuilder implements Builder<Person> {
   final _defaultsProvider = PersonDefaultsProvider();
 
-  List<AssetBuilder>? $assets;
-  List<AssetBuilder> get assets => $assets ?? [];
-  set assets(List<AssetBuilder> value) => $assets = value;
-
+  List<AssetBuilder> assets;
   String? $name;
   String get name => $name ?? _defaultsProvider.name;
   set name(String value) => $name = value;
 
   PersonBuilder({
-    List<AssetBuilder>? assets,
+    this.assets = const [],
     String? name,
   }) {
-    $assets = assets;
     $name = name;
   }
 
@@ -33,11 +29,29 @@ class PersonBuilder implements Builder<Person> {
 
   @override
   Person build() {
+    final entity = _build();
+    const PersonValidator().validateThrowing(entity);
+    return entity;
+  }
+
+  @override
+  BuildResult<Person> tryBuild() {
+    try {
+      final entity = _build();
+      final errors = PersonValidator().validate(entity);
+      final result =
+          BuildResult<Person>(result: entity, validationErrors: errors);
+      return result;
+    } catch (ex) {
+      return BuildResult<Person>(exception: ex);
+    }
+  }
+
+  Person _build() {
     var entity = Person(
       assets: assets.map((e) => e.build()).toList(),
       name: name,
     );
-    const PersonValidator().validateThrowing(entity);
     return entity;
   }
 }

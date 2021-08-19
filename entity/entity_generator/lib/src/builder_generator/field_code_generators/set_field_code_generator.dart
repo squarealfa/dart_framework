@@ -3,8 +3,8 @@ import 'package:squarealfa_entity_annotations/squarealfa_entity_annotations.dart
 import '../field_code_generator.dart';
 import '../field_descriptor.dart';
 
-class ListFieldCodeGenerator extends FieldCodeGenerator {
-  ListFieldCodeGenerator(
+class SetFieldCodeGenerator extends FieldCodeGenerator {
+  SetFieldCodeGenerator(
       FieldDescriptor fieldDescriptor, BuildBuilder buildBuilder)
       : super(fieldDescriptor, buildBuilder);
 
@@ -15,25 +15,25 @@ class ListFieldCodeGenerator extends FieldCodeGenerator {
   @override
   String get fieldType => fieldDescriptor.parameterTypeHasEntityMapAnnotation &&
           !fieldDescriptor.parameterTypeIsEnum
-      ? 'List<${fieldDescriptor.parameterTypeName}Builder>'
+      ? 'Set<${fieldDescriptor.parameterTypeName}Builder>'
       : super.fieldType;
 
-  String get _listExpression => '''
+  String get _setExpression => '''
         ${fieldDescriptor.isNullable ? 'entity.${fieldDescriptor.name} == null  ? null :' : ''}
         entity.${fieldDescriptor.valueName}.map((e) => 
-          ${fieldDescriptor.parameterTypeName}Builder.from${fieldDescriptor.parameterTypeName}(e)).toList()''';
+          ${fieldDescriptor.parameterTypeName}Builder.from${fieldDescriptor.parameterTypeName}(e)).toSet()''';
 
   @override
   String get toBuilderExpression =>
       fieldDescriptor.parameterTypeHasEntityMapAnnotation &&
               !fieldDescriptor.parameterTypeIsEnum
-          ? _listExpression
+          ? _setExpression
           : 'entity.${fieldDescriptor.name}';
 
   @override
   String get constructorDeclaration => fieldDescriptor.isNullable
       ? 'this.${fieldDescriptor.name},'
-      : 'this.${fieldDescriptor.name} = const[],';
+      : 'this.${fieldDescriptor.name} = const {},';
 
   @override
   String get constructorStatement => '';
@@ -42,11 +42,11 @@ class ListFieldCodeGenerator extends FieldCodeGenerator {
   String get constructorExpression => fieldDescriptor
               .parameterTypeHasEntityMapAnnotation &&
           !fieldDescriptor.parameterTypeIsEnum
-      ? '''${fieldDescriptor.isNullable ? '${fieldDescriptor.name} == null ? null : ' : ''} ${fieldDescriptor.valueName}.map((e) => e.build()).toList()'''
+      ? '''${fieldDescriptor.isNullable ? '${fieldDescriptor.name} == null ? null : ' : ''} ${fieldDescriptor.valueName}.map((e) => e.build()).toSet()'''
       : '${fieldDescriptor.name}';
 
   @override
-  String get defaultProvided => ' ?? []';
+  String get defaultProvided => ' ?? {}';
 
   @override
   bool get usesDefaultsProvided => false;
