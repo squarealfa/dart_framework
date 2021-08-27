@@ -31,9 +31,8 @@ class ListFieldCodeGenerator extends FieldCodeGenerator {
           : 'entity.${fieldDescriptor.name}';
 
   @override
-  String get constructorDeclaration => fieldDescriptor.isNullable
-      ? 'this.${fieldDescriptor.name},'
-      : 'this.${fieldDescriptor.name} = const[],';
+  String get constructorAssignment =>
+      fieldDescriptor.isNullable ? '' : '${fieldDescriptor.name} = []';
 
   @override
   String get constructorStatement => '';

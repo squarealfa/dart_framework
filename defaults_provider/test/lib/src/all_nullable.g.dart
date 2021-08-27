@@ -7,6 +7,8 @@ part of 'all_nullable.dart';
 // **************************************************************************
 
 class AllNullableDefaultsProvider {
+  const AllNullableDefaultsProvider();
+
   AllNullable createWithDefaults() {
     return AllNullable();
   }

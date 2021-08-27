@@ -7,6 +7,8 @@ part of 'recipe.dart';
 // **************************************************************************
 
 abstract class RecipeDefaultsProviderBase {
+  const RecipeDefaultsProviderBase();
+
   Recipe createWithDefaults({
     String? key,
     String? title,
