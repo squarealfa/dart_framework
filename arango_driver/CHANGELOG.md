@@ -187,3 +187,7 @@ Fix pedantic warning again
 ## 1.1.1
 
 - Added reference to integrating framework.
+
+## 1.1.2
+
+- Updated dev dependencies
