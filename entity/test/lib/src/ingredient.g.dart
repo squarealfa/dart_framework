@@ -50,11 +50,13 @@ class IngredientValidator implements Validator {
 
   ValidationError? validateQuantity(double value, {Ingredient? entity}) {
     if (value < 10.0) {
-      return RangeValidationError('quantity');
+      return RangeValidationError('quantity',
+          value: value, minValue: 10.0, maxValue: 20);
     }
 
-    if (value > 20.0) {
-      return RangeValidationError('quantity');
+    if (value > 20) {
+      return RangeValidationError('quantity',
+          value: value, minValue: 10.0, maxValue: 20);
     }
 
     return null;
@@ -62,7 +64,8 @@ class IngredientValidator implements Validator {
 
   ValidationError? validatePrecision(Decimal value, {Ingredient? entity}) {
     if (value < Decimal.fromInt(10)) {
-      return RangeValidationError('precision');
+      return RangeValidationError('precision',
+          value: value, minValue: Decimal.fromInt(10), maxValue: null);
     }
 
     return null;
@@ -70,11 +73,13 @@ class IngredientValidator implements Validator {
 
   ValidationError? validateIntQuantity(int value, {Ingredient? entity}) {
     if (value < 10) {
-      return RangeValidationError('intQuantity');
+      return RangeValidationError('intQuantity',
+          value: value, minValue: 10, maxValue: 20);
     }
 
     if (value > 20) {
-      return RangeValidationError('intQuantity');
+      return RangeValidationError('intQuantity',
+          value: value, minValue: 10, maxValue: 20);
     }
 
     return null;
@@ -82,11 +87,13 @@ class IngredientValidator implements Validator {
 
   ValidationError? validateNintQuantity(int? value, {Ingredient? entity}) {
     if (value != null && value < 10) {
-      return RangeValidationError('nintQuantity');
+      return RangeValidationError('nintQuantity',
+          value: value, minValue: 10, maxValue: 20);
     }
 
     if (value != null && value > 20) {
-      return RangeValidationError('nintQuantity');
+      return RangeValidationError('nintQuantity',
+          value: value, minValue: 10, maxValue: 20);
     }
 
     return null;
@@ -98,11 +105,13 @@ class IngredientValidator implements Validator {
     }
 
     if (value < 10) {
-      return RangeValidationError('rInt');
+      return RangeValidationError('rInt',
+          value: value, minValue: 10, maxValue: 20);
     }
 
     if (value > 20) {
-      return RangeValidationError('rInt');
+      return RangeValidationError('rInt',
+          value: value, minValue: 10, maxValue: 20);
     }
 
     return null;

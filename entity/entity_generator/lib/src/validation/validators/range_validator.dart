@@ -1,3 +1,4 @@
+import 'package:analyzer/dart/constant/value.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:squarealfa_entity_annotations/squarealfa_entity_annotations.dart';
 import 'package:tuple/tuple.dart';
@@ -14,13 +15,31 @@ class RangeValidator extends PropertyValidator {
     if (annotation == null) {
       return null;
     }
-    final minValue = annotation.getField('minValue')?.toIntValue();
-    final maxValue = annotation.getField('maxValue')?.toIntValue();
+
+    final minValue = getFieldValue(annotation, 'minValue');
+    final maxValue = getFieldValue(annotation, 'maxValue');
     var ret = Range(
       minValue: minValue,
       maxValue: maxValue,
     );
     return ret;
+  }
+
+  dynamic getFieldValue(DartObject annotation, String fieldName) {
+    final fieldValue = annotation.getField(fieldName);
+    if (fieldValue == null) {
+      return null;
+    }
+    final type = fieldValue.type;
+    if (type == null) return null;
+
+    if (type.isDartCoreInt) {
+      return fieldValue.toIntValue();
+    }
+    if (type.isDartCoreDouble) {
+      return fieldValue.toDoubleValue();
+    }
+    return null;
   }
 
   @override
@@ -36,21 +55,25 @@ class RangeValidator extends PropertyValidator {
     final nullEscape = fieldDescriptor.isNullable && !previousNullCheck
         ? 'value != null && '
         : '';
+
+    final minFieldLiteral = annotation.minValue == null
+        ? 'null'
+        : _createFieldLiteral(fieldDescriptor, annotation.minValue!);
+    final maxFieldLiteral = annotation.maxValue == null
+        ? 'null'
+        : _createFieldLiteral(fieldDescriptor, annotation.maxValue!);
+
     if (annotation.minValue != null) {
-      final fieldLiteral =
-          _createFieldLiteral(fieldDescriptor, annotation.minValue!);
       buffer.writeln('''
-          if ($nullEscape value < $fieldLiteral) {
-            return RangeValidationError(\'${fieldDescriptor.name}\');
+          if ($nullEscape value < $minFieldLiteral) {
+            return RangeValidationError(\'${fieldDescriptor.name}\', value: value, minValue: $minFieldLiteral, maxValue: $maxFieldLiteral);
           }
       ''');
     }
     if (annotation.maxValue != null) {
-      final fieldLiteral =
-          _createFieldLiteral(fieldDescriptor, annotation.maxValue!);
       buffer.writeln('''
-          if ($nullEscape value > $fieldLiteral) {
-            return RangeValidationError(\'${fieldDescriptor.name}\');
+          if ($nullEscape value > $maxFieldLiteral) {
+            return RangeValidationError(\'${fieldDescriptor.name}\', value: value, minValue: $minFieldLiteral, maxValue: $maxFieldLiteral);
           }
       ''');
     }
@@ -58,7 +81,7 @@ class RangeValidator extends PropertyValidator {
   }
 }
 
-String _createFieldLiteral(FieldDescriptor fieldDescriptor, int value) =>
+String _createFieldLiteral(FieldDescriptor fieldDescriptor, Object value) =>
     fieldDescriptor.fieldElementTypeName == 'Decimal'
         ? 'Decimal.fromInt($value)'
         : '$value';

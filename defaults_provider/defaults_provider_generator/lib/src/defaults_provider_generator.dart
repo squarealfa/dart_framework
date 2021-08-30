@@ -70,7 +70,7 @@ class DefaultsProviderGenerator
         '${className}DefaultsProvider${createBaseClass ? 'Base' : ''}';
 
     final superDeclaration = superClassHasDefaultsProvider
-        ? '''const _superDefaultsProvider = ${superTypeElement.name}DefaultsProvider();'''
+        ? '''static const _superDefaultsProvider = ${superTypeElement.name}DefaultsProvider();'''
         : '';
 
     final constructor = classElement.isAbstract
