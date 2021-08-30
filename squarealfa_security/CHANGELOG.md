@@ -29,3 +29,7 @@
 ## 1.0.4
 
 - Added reference to integrating framework.
+
+## 1.0.5
+
+- Updated dev dependencies

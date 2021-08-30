@@ -40,7 +40,7 @@ void main() {
       var map = jsonDecode(body) as Map<String, dynamic>;
 
       expect(map['name'], 'John Doe');
-      expect(map['email'], 'user@domain.com');
+      expect(map['username'], 'user@domain.com');
     });
   });
 
