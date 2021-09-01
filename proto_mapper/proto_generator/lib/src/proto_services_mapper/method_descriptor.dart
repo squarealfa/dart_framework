@@ -4,32 +4,32 @@ import 'package:squarealfa_generators_common/squarealfa_generators_common.dart';
 import 'package:source_gen/source_gen.dart';
 
 class MethodDescriptor extends MethodDescriptorBase {
-  final Proto protoAnnotation;
+  final MapProtoServices protoServicesAnnotation;
   final ProtoIgnore? protoIgnoreAnnotation;
 
   MethodDescriptor._(
     ClassElement classElement,
     MethodElement methodElement,
-    this.protoAnnotation, {
+    this.protoServicesAnnotation, {
     this.protoIgnoreAnnotation,
   }) : super(classElement, methodElement);
 
   factory MethodDescriptor.fromMethodElement(
     ClassElement classElement,
     MethodElement methodElement,
-    Proto protoAnnotation,
+    MapProtoServices protoServicesAnnotation,
   ) {
     final protoIgnoreAnnotation = _getProtoIgnoreAnnotation(methodElement);
 
     return MethodDescriptor._(
       classElement,
       methodElement,
-      protoAnnotation,
+      protoServicesAnnotation,
       protoIgnoreAnnotation: protoIgnoreAnnotation,
     );
   }
 
-  String get prefix => protoAnnotation.prefix ?? '';
+  String get prefix => protoServicesAnnotation.prefix ?? '';
 
   @override
   bool get isRepeated => returnListParameterType != null;

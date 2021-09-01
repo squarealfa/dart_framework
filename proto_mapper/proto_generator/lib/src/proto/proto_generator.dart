@@ -1,5 +1,4 @@
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/dart/element/type.dart';
 import 'package:build/build.dart';
 import 'package:proto_annotations/proto_annotations.dart';
 import 'package:squarealfa_generators_common/squarealfa_generators_common.dart';
@@ -8,7 +7,6 @@ import 'package:source_gen/source_gen.dart';
 import 'field_code_generator.dart';
 import 'field_code_generators/external_proto_name.dart';
 import 'field_descriptor.dart';
-import 'method_descriptor.dart';
 
 class ProtoGenerator extends GeneratorForAnnotation<Proto> {
   final BuilderOptions options;
@@ -55,9 +53,6 @@ class ProtoGenerator extends GeneratorForAnnotation<Proto> {
     var fieldDescriptors = _getFieldDescriptors(classElement, annotation);
     final fieldDeclarations =
         _createFieldDeclarations(fieldDescriptors, externalProtoNames);
-    var methodDescriptors = _getMethodDescriptors(classElement, annotation);
-    final methodDeclarations =
-        _createMethodDeclarations(methodDescriptors, externalProtoNames);
 
     var imports = StringBuffer();
     for (var externalProtoName in externalProtoNames) {
@@ -65,15 +60,8 @@ class ProtoGenerator extends GeneratorForAnnotation<Proto> {
     }
 
     final className = classElement.name;
-    final serviceClassName = className.endsWith('Base')
-        ? className.substring(0, className.length - 4)
-        : className.endsWith('Interface')
-            ? className.substring(0, className.length - 'Interface'.length)
-            : className;
 
-    final messages = fieldDeclarations == '' && methodDeclarations != ''
-        ? ''
-        : '''
+    final messages = '''
 message $_prefix$className
 {
 $fieldDeclarations
@@ -85,15 +73,6 @@ message ${_prefix}ListOf$className
 }   
     ''';
 
-    final services = methodDeclarations == ''
-        ? ''
-        : '''
-service $_prefix$serviceClassName
-{
-$methodDeclarations
-}   
-    ''';
-
     var ret = '''
 syntax = "proto3";
 
@@ -101,7 +80,6 @@ $imports
 
 $packageDeclaration
 
-$services
 $messages
 
  
@@ -139,59 +117,6 @@ $messages
     }
 
     return fieldBuffer.toString();
-  }
-
-  String _createMethodDeclarations(
-    Iterable<MethodDescriptor> methodDescriptors,
-    List<String> externalProtoNames,
-  ) {
-    var methodBuffer = StringBuffer();
-
-    for (var methodDescriptor in methodDescriptors) {
-      final methodName = methodDescriptor.pascalName;
-      final parameterType = _getTypeName(methodDescriptor.parameterType);
-      final returnType = _getTypeName(methodDescriptor.returnType);
-
-      methodBuffer.writeln(
-          '''    rpc $methodName ($parameterType) returns ($returnType);''');
-
-      final returnExternalProtoName =
-          _getExternalProtoName(methodDescriptor.returnType);
-      if (returnExternalProtoName != '' &&
-          !externalProtoNames.contains(returnExternalProtoName)) {
-        externalProtoNames.add(returnExternalProtoName);
-      }
-      final parmExternalProtoName =
-          _getExternalProtoName(methodDescriptor.parameterType);
-      if (parmExternalProtoName != '' &&
-          !externalProtoNames.contains(parmExternalProtoName)) {
-        externalProtoNames.add(parmExternalProtoName);
-      }
-    }
-    return methodBuffer.toString();
-  }
-
-  String _getExternalProtoName(DartType type) {
-    var fieldElementType = type.finalType;
-    var segments = fieldElementType.element?.source?.uri.pathSegments.toList();
-    if (segments == null) {
-      return '';
-    }
-    var lastSrc = segments.lastIndexOf('src');
-    if (lastSrc != -1) segments.removeRange(0, lastSrc + 1);
-    var fileName = segments[segments.length - 1];
-    fileName = fileName.substring(0, fileName.length - 4) + 'proto';
-    segments[segments.length - 1] = fileName;
-    final ret = segments.join('/');
-    return ret;
-  }
-
-  String _getTypeName(DartType type) {
-    final itemType = type.finalType;
-    final listOf = type.isList ? 'ListOf' : '';
-    final displayName = itemType.getDisplayString(withNullability: false);
-    final ret = '$_prefix$listOf$displayName';
-    return ret;
   }
 
   String _generateForEnum(
@@ -244,21 +169,6 @@ Iterable<FieldDescriptor> _getFieldDescriptors(
           ))
       .where((element) => element.isProtoIncluded);
   return fieldDescriptors;
-}
-
-Iterable<MethodDescriptor> _getMethodDescriptors(
-  ClassElement classElement,
-  Proto annotation,
-) {
-  final methods = classElement.getSortedMethods();
-  final methodDescriptors = methods
-      .map((fieldElement) => MethodDescriptor.fromMethodElement(
-            classElement,
-            fieldElement,
-            annotation,
-          ))
-      .where((element) => element.isProtoIncluded);
-  return methodDescriptors;
 }
 
 Proto _hydrateAnnotation(ConstantReader reader, {String prefix = ''}) {

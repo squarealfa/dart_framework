@@ -8,7 +8,7 @@ import 'package:source_gen/source_gen.dart';
 import 'method_descriptor.dart';
 
 class ProtoServicesClientGenerator
-    extends GeneratorForAnnotation<ProtoServices> {
+    extends GeneratorForAnnotation<MapProtoServices> {
   final BuilderOptions options;
   late String _prefix;
 
@@ -94,7 +94,7 @@ abstract class ${serviceClassName}ClientBase implements $className {
 
 Iterable<MethodDescriptor> _getMethodDescriptors(
   ClassElement classElement,
-  ProtoServices annotation,
+  MapProtoServices annotation,
 ) {
   final methods = classElement.getSortedMethods();
   final methodDescriptors = methods
@@ -107,8 +107,9 @@ Iterable<MethodDescriptor> _getMethodDescriptors(
   return methodDescriptors;
 }
 
-ProtoServices _hydrateAnnotation(ConstantReader reader, {String prefix = ''}) {
-  var ret = ProtoServices(
+MapProtoServices _hydrateAnnotation(ConstantReader reader,
+    {String prefix = ''}) {
+  var ret = MapProtoServices(
     prefix: reader.read('prefix').literalValue as String? ?? prefix,
   );
 

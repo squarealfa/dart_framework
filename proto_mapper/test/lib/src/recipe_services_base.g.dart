@@ -3,7 +3,7 @@
 part of 'recipe_services_base.dart';
 
 // **************************************************************************
-// ProtoServicesGenerator
+// ProtoServicesServiceGenerator
 // **************************************************************************
 
 typedef RecipeServiceFactory = RecipeServiceBase Function(ServiceCall call);

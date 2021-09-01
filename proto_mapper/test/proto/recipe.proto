@@ -13,7 +13,6 @@ import 'appliance_type.proto';
 
 
 
-
 message GRecipe
 {
   string title = 1;

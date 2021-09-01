@@ -11,7 +11,6 @@ import 'component.proto';
 
 
 
-
 message GIngredient
 {
   string description = 1;

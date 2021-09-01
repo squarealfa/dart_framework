@@ -1,6 +1,6 @@
 ///
 //  Generated code. Do not modify.
-//  source: recipe_services_base.proto
+//  source: recipe_services_base.services.proto
 //
 // @dart = 2.12
 // ignore_for_file: annotate_overrides,camel_case_types,unnecessary_const,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type,unnecessary_this,prefer_final_fields
@@ -15,7 +15,7 @@ import 'key.pb.dart' as $1;
 import 'empty.pb.dart' as $2;
 import 'calc_parameters.pb.dart' as $3;
 import 'calc_result.pb.dart' as $4;
-export 'recipe_services_base.pb.dart';
+export 'recipe_services_base.services.pb.dart';
 
 class GRecipeServiceClient extends $grpc.Client {
   static final _$create = $grpc.ClientMethod<$0.GRecipe, $0.GRecipe>(

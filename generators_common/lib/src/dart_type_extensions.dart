@@ -19,4 +19,15 @@ extension TypeExtensions on DartType {
     }
     return false;
   }
+
+  bool get isSet {
+    var type = this;
+    while (type is ParameterizedType && type.typeArguments.isNotEmpty) {
+      if (type.isDartCoreSet) {
+        return true;
+      }
+      type = type.typeArguments.first;
+    }
+    return false;
+  }
 }
