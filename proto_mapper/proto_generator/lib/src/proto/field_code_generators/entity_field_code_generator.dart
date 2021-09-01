@@ -23,13 +23,23 @@ class EntityFieldCodeGenerator extends FieldCodeGenerator
         ? '$packageName.$fieldElementTypeName'
         : fieldElementTypeName;
 
+    _externalProtoName = _initExternalProtoName(fieldDescriptor);
+  }
+
+  String? _initExternalProtoName(FieldDescriptor fieldDescriptor) {
+    final fieldElementType = fieldDescriptor.itemType;
+
+    // if (fieldDescriptor.classElement ==
+    //     fieldDescriptor.fieldElement.enclosingElement) {
+    //   return null;
+    // }
     var segments = fieldElementType.element!.source!.uri.pathSegments.toList();
     var lastSrc = segments.lastIndexOf('src');
     if (lastSrc != -1) segments.removeRange(0, lastSrc + 1);
     var fileName = segments[segments.length - 1];
     fileName = fileName.substring(0, fileName.length - 4) + 'proto';
     segments[segments.length - 1] = fileName;
-    _externalProtoName = segments.join('/');
+    return segments.join('/');
   }
 
   String? _externalProtoName;
