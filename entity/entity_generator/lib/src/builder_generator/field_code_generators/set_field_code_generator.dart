@@ -31,8 +31,9 @@ class SetFieldCodeGenerator extends FieldCodeGenerator {
           : 'entity.${fieldDescriptor.name}';
 
   @override
-  String get constructorAssignment =>
-      fieldDescriptor.isNullable ? '' : '${fieldDescriptor.name} = {}';
+  String get constructorAssignment => fieldDescriptor.isNullable
+      ? ''
+      : '${fieldDescriptor.name} = ${fieldDescriptor.name} ?? {}';
 
   @override
   String get constructorStatement => '';
