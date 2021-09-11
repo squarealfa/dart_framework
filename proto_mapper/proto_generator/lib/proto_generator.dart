@@ -5,10 +5,10 @@ library proto_generator;
 
 import 'package:build/build.dart';
 import 'package:proto_generator/src/proto/proto_generator.dart';
-import 'package:proto_generator/src/proto_services/proto_services_generator.dart';
-import 'package:proto_generator/src/proto_services_mapper/proto_services_service_generator.dart';
-import 'package:proto_generator/src/proto_services_mapper/proto_services_client_generator.dart';
 import 'package:proto_generator/src/proto_mapper/proto_mapper_generator.dart';
+import 'package:proto_generator/src/proto_services/proto_services_generator.dart';
+import 'package:proto_generator/src/proto_services_mapper/proto_services_client_generator.dart';
+import 'package:proto_generator/src/proto_services_mapper/proto_services_service_generator.dart';
 import 'package:source_gen/source_gen.dart';
 
 export 'src/proto/proto_generator.dart';

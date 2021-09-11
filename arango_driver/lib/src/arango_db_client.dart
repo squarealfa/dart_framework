@@ -5,10 +5,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:arango_driver/arango_driver.dart';
-import 'package:arango_driver/src/results/document_response.dart';
-import 'package:arango_driver/src/results/key_options.dart';
 import 'package:arango_driver/src/results/create_database_info.dart';
+import 'package:arango_driver/src/results/document_response.dart';
 import 'package:arango_driver/src/results/identifier.dart';
+import 'package:arango_driver/src/results/key_options.dart';
 import 'package:arango_driver/src/results/operation_result.dart';
 import 'package:arango_driver/src/results/result.dart';
 import 'package:arango_driver/src/transactions/transaction_response.dart';

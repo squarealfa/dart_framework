@@ -1,7 +1,7 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:proto_annotations/proto_annotations.dart';
-import 'package:squarealfa_generators_common/squarealfa_generators_common.dart';
 import 'package:source_gen/source_gen.dart';
+import 'package:squarealfa_generators_common/squarealfa_generators_common.dart';
 
 class FieldDescriptor extends FieldDescriptorBase {
   final Proto protoAnnotation;
