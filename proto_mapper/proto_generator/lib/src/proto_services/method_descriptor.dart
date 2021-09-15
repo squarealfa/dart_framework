@@ -39,7 +39,7 @@ class MethodDescriptor extends MethodDescriptorBase {
 
   bool get typeHasProtoAnnotation {
     var annotation = TypeChecker.fromRuntime(MapProto)
-        .firstAnnotationOf(methodElement.type.aliasElement!);
+        .firstAnnotationOf(methodElement.type.alias!.element);
     return annotation != null;
   }
 

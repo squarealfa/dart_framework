@@ -1,7 +1,11 @@
-## 1.0.0
+## 1.0.2-dev
 
-- Initial published version
+- Updated dependencies
 
 ## 1.0.1
 
 - Updated dependencies
+
+## 1.0.0
+
+- Initial published version

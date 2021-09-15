@@ -79,9 +79,8 @@ Recipe _$RecipeFromProto(GRecipe instance) => Recipe(
       description:
           (instance.descriptionHasValue ? (instance.description) : null),
       category: const CategoryProtoMapper().fromProto(instance.category),
-      ingredients: instance.ingredients
-          .map((e) => const IngredientProtoMapper().fromProto(e))
-          .toList(),
+      ingredients: List<Ingredient>.unmodifiable(instance.ingredients
+          .map((e) => const IngredientProtoMapper().fromProto(e))),
       publishDate:
           DateTime.fromMillisecondsSinceEpoch(instance.publishDate.toInt()),
       expiryDate: (instance.expiryDateHasValue
@@ -99,9 +98,9 @@ Recipe _$RecipeFromProto(GRecipe instance) => Recipe(
       secondaryApplianceType: (instance.secondaryApplianceTypeHasValue
           ? (ApplianceType.values[instance.secondaryApplianceType.value])
           : null),
-      tags: instance.tags.map((e) => e).toList(),
+      tags: List<String>.unmodifiable(instance.tags.map((e) => e)),
       extraTags: (instance.extraTagsHasValue
-          ? (instance.extraTags.map((e) => e).toList())
+          ? (List<String>.unmodifiable(instance.extraTags.map((e) => e)))
           : null),
     );
 
