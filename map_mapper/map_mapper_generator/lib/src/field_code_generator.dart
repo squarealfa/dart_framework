@@ -78,11 +78,12 @@ abstract class FieldCodeGenerator {
     if (fieldDescriptor.typeHasMapMapAnnotation) {
       return EntityFieldCodeGenerator(fieldDescriptor, hasDefaultsProvider);
     }
-    if (fieldDescriptor.fieldElement.type.isDartCoreList) {
-      return ListFieldCodeGenerator(fieldDescriptor, hasDefaultsProvider);
-    }
     if (fieldDescriptor.fieldElement.type.isDartCoreSet) {
       return SetFieldCodeGenerator(fieldDescriptor, hasDefaultsProvider);
+    }
+    if (fieldDescriptor.fieldElement.type.isDartCoreList ||
+        fieldDescriptor.fieldElement.type.isDartCoreIterable) {
+      return ListFieldCodeGenerator(fieldDescriptor, hasDefaultsProvider);
     }
     return GenericFieldCodeGenerator(fieldDescriptor, hasDefaultsProvider);
   }

@@ -32,6 +32,11 @@ class FieldDescriptorBase {
           ? (fieldElementType as ParameterizedType).typeArguments.first
           : null;
 
+  DartType? get iterableParameterType => fieldElementType.isDartCoreIterable &&
+          fieldElementType is ParameterizedType
+      ? (fieldElementType as ParameterizedType).typeArguments.first
+      : null;
+
   DartType? get setParameterType =>
       fieldElementType.isDartCoreSet && fieldElementType is ParameterizedType
           ? (fieldElementType as ParameterizedType).typeArguments.first
@@ -40,7 +45,10 @@ class FieldDescriptorBase {
   /// Returns the list element type when the field is a list and
   /// returns the field element when otherwise
   DartType get itemType =>
-      listParameterType ?? setParameterType ?? fieldElementType;
+      listParameterType ??
+      setParameterType ??
+      iterableParameterType ??
+      fieldElementType;
 
   /// Returns true when the field is a list
   bool get isRepeated => listParameterType != null || setParameterType != null;

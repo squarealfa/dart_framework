@@ -173,20 +173,31 @@ class ValidatorGenerator extends GeneratorForAnnotation<Validatable> {
   }
 
   static String _createListCode(FieldDescriptor fieldDescriptor) {
-    if (!fieldDescriptor.fieldElementType.isDartCoreList ||
+    if ((!fieldDescriptor.fieldElementType.isDartCoreIterable &&
+            !fieldDescriptor.fieldElementType.isDartCoreList &&
+            !fieldDescriptor.fieldElementType.isDartCoreSet) ||
         !fieldDescriptor.parameterTypeIsValidatable ||
         fieldDescriptor.parameterTypeIsEnum) return '';
 
-    var nullEscape =
+    final nullEscape =
         fieldDescriptor.isNullable ? 'if (value == null) return null;' : '';
 
-    var code = '''     
+    final asList = fieldDescriptor.fieldElementType.isDartCoreList
+        ? ''
+        : 'final asList = value.toList();';
+
+    final parmType = fieldDescriptor.iterableParameterType ??
+        fieldDescriptor.listParameterType ??
+        fieldDescriptor.setParameterType;
+
+    final code = '''     
 
       $nullEscape
+      $asList
   
       var errorLists = value.map((entity) {
-        var errors = ${fieldDescriptor.listParameterType!.getDisplayString(withNullability: false)}Validator().validate(entity);
-        var itemErrors = ListItemErrorList(value, entity, errors);
+        var errors = ${parmType!.getDisplayString(withNullability: false)}Validator().validate(entity);
+        var itemErrors = ListItemErrorList(${asList.isEmpty ? 'value' : 'asList'}, entity, errors);
         return itemErrors;
       }).where((p) => p.errorList.validationErrors.isNotEmpty).toList();
       

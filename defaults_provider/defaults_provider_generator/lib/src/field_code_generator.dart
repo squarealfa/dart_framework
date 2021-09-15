@@ -51,6 +51,9 @@ abstract class FieldCodeGenerator {
     if (fieldDescriptor.fieldElementTypeName == (Duration).toString()) {
       return DurationFieldCodeGenerator(fieldDescriptor, isAbstract);
     }
+    if (fieldDescriptor.fieldElement.type.isDartCoreIterable) {
+      return ListFieldCodeGenerator(fieldDescriptor, isAbstract);
+    }
     return GenericFieldCodeGenerator(fieldDescriptor, isAbstract);
   }
 }

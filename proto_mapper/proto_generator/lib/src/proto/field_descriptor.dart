@@ -36,7 +36,10 @@ class FieldDescriptor extends FieldDescriptorBase {
   String get prefix => protoAnnotation.prefix ?? '';
 
   @override
-  bool get isRepeated => listParameterType != null || setParameterType != null;
+  bool get isRepeated =>
+      listParameterType != null ||
+      setParameterType != null ||
+      iterableParameterType != null;
   bool get _hasProtoIgnore => protoIgnoreAnnotation != null;
   bool get _hasProtoField => protoFieldAnnotation != null;
 

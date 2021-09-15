@@ -9,6 +9,7 @@ import 'field_code_generators/entity_field_code_generator.dart';
 import 'field_code_generators/enum_field_code_generator.dart';
 import 'field_code_generators/generic_field_code_generator.dart';
 import 'field_code_generators/int_field_code_generator.dart';
+import 'field_code_generators/iterable_field_code_generator.dart';
 import 'field_code_generators/list_field_code_generator.dart';
 import 'field_code_generators/set_field_code_generator.dart';
 import 'field_code_generators/string_field_code_generator.dart';
@@ -88,6 +89,11 @@ abstract class FieldCodeGenerator {
     if (fieldDescriptor.typeHasMapProtoAnnotation) {
       return EntityFieldCodeGenerator(fieldDescriptor);
     }
+    if (fieldDescriptor.fieldElement.type.isDartCoreIterable &&
+        fieldDescriptor.iterableParameterType != null) {
+      return IterableFieldCodeGenerator(fieldDescriptor);
+    }
+
     return GenericFieldCodeGenerator(fieldDescriptor);
   }
 }
