@@ -4,29 +4,20 @@ class Principal implements DbPrincipal {
   static const _unauthenticated = Principal(
     userKey: '',
     tenantKey: '',
-    name: '',
-    username: '',
-    permissions: [],
-    isAdministrator: false,
+    permissions: {},
   );
 
   @override
   final String userKey;
   @override
   final String tenantKey;
-  final String name;
-  final String username;
-  final List<String> permissions;
-  final bool isAdministrator;
+  final Set<String> permissions;
   final bool isAuthenticated;
 
   const Principal({
     required this.userKey,
     required this.tenantKey,
-    required this.name,
-    required this.username,
     required this.permissions,
-    required this.isAdministrator,
     this.isAuthenticated = false,
   });
 
@@ -34,9 +25,6 @@ class Principal implements DbPrincipal {
 
   @override
   bool hasPermission(String permission) {
-    if (isAdministrator) {
-      return true;
-    }
     if (permission == '') {
       return true;
     }

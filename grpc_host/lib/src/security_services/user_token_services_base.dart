@@ -5,9 +5,8 @@ import 'package:security_repository/security_repository.dart';
 import 'package:squarealfa_entity_adapter/squarealfa_entity_adapter.dart';
 import 'package:squarealfa_security/squarealfa_security.dart';
 
-abstract class UserTokenServicesBase<TUser extends UserBase<TUserCache>,
-    TUserCache extends UserCacheBase> {
-  final TokenServicesParameters<TUser, TUserCache> parameters;
+abstract class UserTokenServicesBase<TUser extends UserBase> {
+  final TokenServicesParameters<TUser> parameters;
   final MapMapper<TUser> mapMapper;
 
   UserTokenServicesBase(
@@ -17,14 +16,8 @@ abstract class UserTokenServicesBase<TUser extends UserBase<TUserCache>,
 
   int? get maxNumberOfFailedLoginAttempts => null;
 
-  TUserCache createUserCache({
-    required UserPermissionSet permissionSet,
-    required DateTime updateTimestamp,
-  });
-
   TUser copyUserWith(
     TUser user, {
-    TUserCache? cache,
     int? numberOfFailedAttempts,
     bool? isLocked,
   });
@@ -50,8 +43,6 @@ abstract class UserTokenServicesBase<TUser extends UserBase<TUserCache>,
       throw GrpcError.unauthenticated('username or password is invalid');
     }
 
-    user = await _updateUserCache(user);
-
     var payload = user.toJwtPayload(
       issuer: parameters.tokenIssuer,
       audience: parameters.tokenAudience,
@@ -72,8 +63,6 @@ abstract class UserTokenServicesBase<TUser extends UserBase<TUserCache>,
       throw GrpcError.notFound('User is not found');
     }
 
-    user = await _updateUserCache(user);
-
     final newPayload = payload.CopyWith(
       notBefore: DateTime.now(),
       expires: DateTime.now().add(parameters.tokenTimeToLive).toUtc(),
@@ -84,15 +73,10 @@ abstract class UserTokenServicesBase<TUser extends UserBase<TUserCache>,
 
   UserToken _generateToken(JwtPayload payload, TUser user) {
     final token = _tokenHandler.generate(payload);
-    final permissions = user.cache?.permissions ?? [];
-    final isAdministrator =
-        (user.cache?.isAdministrator ?? false) || user.isAdministrator;
 
-    var ret = UserToken<TUser, TUserCache>(
+    var ret = UserToken<TUser>(
       user: user,
-      isAdministrator: isAdministrator,
       token: token,
-      permissions: permissions,
       expires: payload.expires,
     );
     return ret;
@@ -104,30 +88,6 @@ abstract class UserTokenServicesBase<TUser extends UserBase<TUserCache>,
     return user;
   }
 
-  Future<TUser> _updateUserCache(TUser user) async {
-    final permissionSet = await _userRepository.getUserPermissionSet(user.key);
-
-    var newCache = createUserCache(
-      permissionSet: permissionSet,
-      updateTimestamp: DateTime.now(),
-    );
-
-    final userCache = user.cache;
-    if (userCache != null &&
-        areEqual(userCache, newCache) &&
-        user.numberOfFailedAttempts == 0) {
-      return user;
-    }
-
-    user = copyUserWith(user, cache: newCache, numberOfFailedAttempts: 0);
-
-    var userMap = mapMapper.toMap(user);
-    userMap = await _userRepository.updateUser(user.key, userMap);
-
-    user = mapMapper.fromMap(userMap);
-
-    return user;
-  }
 
   Future<TUser> _handleFailedAuthentication(TUser user) async {
     final failedAttempts = user.numberOfFailedAttempts + 1;
@@ -146,21 +106,4 @@ abstract class UserTokenServicesBase<TUser extends UserBase<TUserCache>,
     return user;
   }
 
-  bool areEqual(TUserCache cache, TUserCache otherCache) {
-    if (otherCache.isAdministrator != cache.isAdministrator) {
-      return false;
-    }
-
-    if (otherCache.permissions.length != cache.permissions.length) {
-      return false;
-    }
-
-    for (var permission in cache.permissions) {
-      if (!otherCache.permissions.any((p) => p == permission)) return false;
-    }
-    for (var permission in otherCache.permissions) {
-      if (!cache.permissions.any((p) => p == permission)) return false;
-    }
-    return true;
-  }
 }

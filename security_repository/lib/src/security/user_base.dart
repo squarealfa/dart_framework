@@ -1,8 +1,6 @@
 //import 'package:squarealfa_sec'
 
-import 'user_cache_base.dart';
-
-class UserBase<TUserCache extends UserCacheBase> {
+class UserBase {
   const UserBase({
     this.key = '',
     required this.username,
@@ -12,7 +10,6 @@ class UserBase<TUserCache extends UserCacheBase> {
     required this.isAdministrator,
     required this.isLocked,
     required this.numberOfFailedAttempts,
-    this.cache,
   });
 
   final String tenantKey;
@@ -21,10 +18,8 @@ class UserBase<TUserCache extends UserCacheBase> {
 
   final String friendlyName;
 
-  final List<String> roles;
+  final Iterable<String> roles;
   final bool isAdministrator;
   final bool isLocked;
   final int numberOfFailedAttempts;
-
-  final TUserCache? cache;
 }

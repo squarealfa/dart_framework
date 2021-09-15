@@ -1,18 +1,16 @@
 import 'user_base.dart';
-import 'user_cache_base.dart';
 
-class BasicUserBase<TUserCache extends UserCacheBase>
-    extends UserBase<TUserCache> {
+class BasicUserBase
+    extends UserBase {
   BasicUserBase({
     String key = '',
     required String username,
     required String tenantKey,
     required String friendlyName,
-    required List<String> roles,
+    required Iterable<String> roles,
     required bool isAdministrator,
     required bool isLocked,
     required int numberOfFailedAttempts,
-    TUserCache? cache,
     this.passwordHash = '',
     this.passwordSalt = '',
   }) : super(
@@ -22,7 +20,6 @@ class BasicUserBase<TUserCache extends UserCacheBase>
           friendlyName: friendlyName,
           roles: roles,
           isAdministrator: isAdministrator,
-          cache: cache,
           isLocked: isLocked,
           numberOfFailedAttempts: numberOfFailedAttempts,
         );

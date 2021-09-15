@@ -4,11 +4,10 @@ import 'package:security_repository/security_repository.dart';
 import 'package:squarealfa_entity_adapter/squarealfa_entity_adapter.dart';
 import 'package:squarealfa_security/squarealfa_security.dart';
 
-abstract class BasicUserTokenServices<TUser extends BasicUserBase<TUserCache>,
-        TUserCache extends UserCacheBase>
-    extends UserTokenServicesBase<TUser, TUserCache> {
+abstract class BasicUserTokenServices<TUser extends BasicUserBase>
+    extends UserTokenServicesBase<TUser> {
   BasicUserTokenServices(
-    TokenServicesParameters<TUser, TUserCache> parameters,
+    TokenServicesParameters<TUser> parameters,
     ServiceCall call,
     MapMapper<TUser> mapMapper,
   ) : super(parameters, mapMapper);

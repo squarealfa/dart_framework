@@ -3,28 +3,14 @@ import 'dart:async';
 import 'package:grpc/grpc.dart';
 import 'package:grpc_host/grpc_host.dart';
 import 'package:security_repository/security_repository.dart';
-import 'package:squarealfa_entity_adapter/squarealfa_entity_adapter.dart';
 import 'package:squarealfa_security/squarealfa_security.dart';
 
 import 'principal.dart';
-import 'user_extensions.dart';
 
 part 'service_call_extra.dart';
 
 extension AuthenticationExtensions on ServiceCall {
   static final Expando _storage = Expando();
-
-  Future<Principal> _createPrincipal<TUser extends UserBase<TUserCache>,
-      TUserCache extends UserCacheBase>(
-    String subject,
-    UserRepositoryBase userRepository,
-    MapMapper<TUser> mapMapper,
-  ) async {
-    final userMap = await userRepository.getFromKey(subject);
-    final user = mapMapper.fromMap(userMap);
-    final principal = user.toPrincipal();
-    return principal;
-  }
 
   Principal get principal {
     return _extra.principal ?? Principal.unauthenticated();
@@ -37,12 +23,10 @@ extension AuthenticationExtensions on ServiceCall {
     return ret as _ServiceCallExtra;
   }
 
-  Future authenticate<TUser extends UserBase<TUserCache>,
-      TUserCache extends UserCacheBase>(
-    TokenServicesParameters tokenServicesParameters,
-    UserRepositoryBase userRepository,
-    MapMapper<TUser> mapMapper,
-  ) async {
+  Future authenticate<TUser extends UserBase>({
+    required JwtPayload Function(String token) getTokenPayload,
+    required Future<Principal> Function(JwtPayload payload) createPrincipal,
+  }) async {
     Principal? local_principal;
     try {
       var token = clientMetadata?['authorization'];
@@ -51,16 +35,14 @@ extension AuthenticationExtensions on ServiceCall {
         _extra.principal = null;
         return;
       }
-      var payload = tokenServicesParameters.tokenHandler.load(token);
-      _extra.jwtPayload = payload;
+
+      var payload = getTokenPayload(token);
       if (payload.expires.difference(DateTime.now()).isNegative) {
         throw 'Expired token';
       }
-      local_principal = await _createPrincipal(
-        payload.subject,
-        userRepository,
-        mapMapper,
-      );
+
+      _extra.jwtPayload = payload;
+      local_principal = await createPrincipal(payload);
     } catch (e) {
       throw GrpcError.unauthenticated();
     } finally {

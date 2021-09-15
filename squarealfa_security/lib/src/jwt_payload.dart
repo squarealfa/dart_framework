@@ -7,6 +7,7 @@ class JwtPayload {
   final String audience;
   final DateTime notBefore;
   final DateTime expires;
+  
 
   /// any other extra fields that are
   /// not represented in the available properties
