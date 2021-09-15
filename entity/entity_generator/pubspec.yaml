@@ -1,5 +1,5 @@
 name: squarealfa_entity_generator
-description: 
+description:
   Code generators that augment classes that are meant to be used as business entities
 homepage: https://github.com/squarealfa/dart_framework/tree/entity/entity/entity_generator
 repository: https://github.com/squarealfa/dart_framework
@@ -12,7 +12,7 @@ publish_to: none
 
 
 dependencies:
-  analyzer: ^1.2.0
+  analyzer: ^2.0.0
   build: ^2.0.0
   decimal: ^1.0.0
   source_gen: ^1.0.0
