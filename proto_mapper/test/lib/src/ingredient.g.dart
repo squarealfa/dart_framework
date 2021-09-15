@@ -60,17 +60,15 @@ Ingredient _$IngredientFromProto(GIngredient instance) => Ingredient(
       cookingDuration: Duration(milliseconds: instance.cookingDuration.toInt()),
       mainComponent:
           const ComponentProtoMapper().fromProto(instance.mainComponent),
-      otherComponents: instance.otherComponents
-          .map((e) => const ComponentProtoMapper().fromProto(e))
-          .toList(),
+      otherComponents: List<Component>.unmodifiable(instance.otherComponents
+          .map((e) => const ComponentProtoMapper().fromProto(e))),
       alternativeComponent: (instance.alternativeComponentHasValue
           ? (const ComponentProtoMapper()
               .fromProto(instance.alternativeComponent))
           : null),
       secondaryComponents: (instance.secondaryComponentsHasValue
-          ? (instance.secondaryComponents
-              .map((e) => const ComponentProtoMapper().fromProto(e))
-              .toList())
+          ? (List<Component>.unmodifiable(instance.secondaryComponents
+              .map((e) => const ComponentProtoMapper().fromProto(e))))
           : null),
     );
 

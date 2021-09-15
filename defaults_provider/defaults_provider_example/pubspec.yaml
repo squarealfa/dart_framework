@@ -16,8 +16,13 @@ dependencies:
 
 dev_dependencies:
   defaults_provider_generator:
-    path: ../defaults_provider_generator
 
-  build_runner: ^1.12.2
+  build_runner: ^2.0.0
   pedantic: ^1.9.0
   test: ^1.14.4
+
+dependency_overrides:
+  defaults_provider_annotations:
+    path: ../defaults_provider_annotations
+  defaults_provider_generator:
+    path: ../defaults_provider_generator
