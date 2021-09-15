@@ -49,7 +49,7 @@ class SetFieldCodeGenerator extends FieldCodeGenerator {
 
   @override
   String fromMapExpression(String sourceExpression) =>
-      '''Set<${fieldDescriptor.parameterTypeName}>.from($sourceExpression$_fromMapConversion)''';
+      '''Set<${fieldDescriptor.parameterTypeName}>.unmodifiable($sourceExpression$_fromMapConversion)''';
 
   @override
   String get fromNullableMapExpression =>

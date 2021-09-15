@@ -49,7 +49,7 @@ class ListFieldCodeGenerator extends FieldCodeGenerator {
 
   @override
   String fromMapExpression(String sourceExpression) =>
-      '''List<${fieldDescriptor.parameterTypeName}>.from($sourceExpression$_fromMapConversion)''';
+      '''List<${fieldDescriptor.parameterTypeName}>.unmodifiable($sourceExpression$_fromMapConversion)''';
 
   @override
   String get fromNullableMapExpression =>

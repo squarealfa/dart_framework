@@ -42,7 +42,7 @@ class ListFieldCodeGenerator extends FieldCodeGenerator {
   String get constructorExpression => fieldDescriptor
               .parameterTypeHasEntityMapAnnotation &&
           !fieldDescriptor.parameterTypeIsEnum
-      ? '''${fieldDescriptor.isNullable ? '${fieldDescriptor.name} == null ? null : ' : ''} ${fieldDescriptor.valueName}.map((e) => e.build()).toList()'''
+      ? '''${fieldDescriptor.isNullable ? '${fieldDescriptor.name} == null ? null : ' : ''} List.unmodifiable(${fieldDescriptor.valueName}.map((e) => e.build()))'''
       : '${fieldDescriptor.name}';
 
   @override

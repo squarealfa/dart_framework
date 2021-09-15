@@ -6,5 +6,5 @@ class ListFieldCodeGenerator extends FieldCodeGenerator {
       : super(fieldDescriptor, isAbstract);
 
   @override
-  String get defaultExpression => '[]';
+  String get defaultExpression => 'const []';
 }
