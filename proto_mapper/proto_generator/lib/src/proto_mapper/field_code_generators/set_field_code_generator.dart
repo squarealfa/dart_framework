@@ -75,5 +75,5 @@ class SetFieldCodeGenerator extends FieldCodeGenerator {
 
   @override
   String get fromProtoNonNullableExpression =>
-      'instance.$protoFieldName.map((e) => $_protoToValue).toSet()';
+      '''Set<${fieldDescriptor.parameterTypeName}>.unmodifiable(instance.$protoFieldName.map((e) => $_protoToValue))''';
 }

@@ -42,7 +42,7 @@ class SetFieldCodeGenerator extends FieldCodeGenerator {
   String get constructorExpression => fieldDescriptor
               .parameterTypeHasEntityMapAnnotation &&
           !fieldDescriptor.parameterTypeIsEnum
-      ? '''${fieldDescriptor.isNullable ? '${fieldDescriptor.name} == null ? null : ' : ''} ${fieldDescriptor.valueName}.map((e) => e.build()).toSet()'''
+      ? '''${fieldDescriptor.isNullable ? '${fieldDescriptor.name} == null ? null : ' : ''} Set.unmodifiable(${fieldDescriptor.valueName}.map((e) => e.build()))'''
       : '${fieldDescriptor.name}';
 
   @override
