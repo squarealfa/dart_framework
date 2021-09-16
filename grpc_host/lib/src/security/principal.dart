@@ -1,12 +1,7 @@
+import 'package:grpc/grpc.dart';
 import 'package:nosql_repository/nosql_repository.dart';
 
 class Principal implements DbPrincipal {
-  static const _unauthenticated = Principal(
-    userKey: '',
-    tenantKey: '',
-    permissions: {},
-  );
-
   @override
   final String userKey;
   @override
@@ -21,7 +16,11 @@ class Principal implements DbPrincipal {
     this.isAuthenticated = false,
   });
 
-  factory Principal.unauthenticated() => _unauthenticated;
+  const Principal.unauthenticated()
+      : userKey = '',
+        tenantKey = '',
+        isAuthenticated = false,
+        permissions = const {};
 
   @override
   bool hasPermission(String permission) {
@@ -30,5 +29,11 @@ class Principal implements DbPrincipal {
     }
     var hasPermission = permissions.contains(permission);
     return hasPermission;
+  }
+
+  void throwIfUnauthenticated() {
+    if (!isAuthenticated) {
+      throw GrpcError.unauthenticated();
+    }
   }
 }

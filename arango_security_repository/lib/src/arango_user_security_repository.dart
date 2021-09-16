@@ -2,17 +2,17 @@ import 'package:arango_driver/arango_driver.dart';
 import 'package:nosql_repository/nosql_repository.dart';
 import 'package:security_repository/security_repository.dart';
 
-class ArangoUserRepository extends UserRepositoryBase {
+class ArangoUserSecurityRepository implements UserSecurityRepository {
   final ArangoDBClient _dbClient;
 
-  ArangoUserRepository(ArangoDBClient dbClient) : _dbClient = dbClient;
+  ArangoUserSecurityRepository(ArangoDBClient dbClient) : _dbClient = dbClient;
 
   @override
   Future<UserPermissionSet> getUserPermissionSet(String userKey) async {
     var query = '''
-        let user = document(users, @user_key)
+        let user = document(users, @user_id)
         let uroles =  user.roles == null ? [] : 
-          document(users, @user_key).roles
+          document(users, @user_id).roles
 
         let lroles = (for role in roles
             for urole in uroles
@@ -35,34 +35,21 @@ class ArangoUserRepository extends UserRepositoryBase {
     var lst = (await _dbClient
         .newQuery()
         .addLine(query)
-        .addBindVar('user_key', 'users/$userKey')
+        .addBindVar('user_id', 'users/$userKey')
         .runAndReturnFutureList());
 
     var result = lst.first;
 
     var isAdministrator = result['isAdministrator'];
     var permissions =
-        (result['permissions'] as List?)?.map((i) => i as String).toList() ??
-            [];
+        (result['permissions'] as List?)?.map((i) => i as String).toSet() ?? {};
 
     final ret = UserPermissionSet(
-        isAdministrator: isAdministrator, permissions: permissions);
-    return ret;
-  }
+      isAdministrator: isAdministrator,
+      permissions: permissions,
+    );
 
-  @override
-  Future<Map<String, dynamic>> getFromKey(String key) async {
-    var userList = await _dbClient.newQuery().addLine('''
-            for u in users
-            filter u._key == @key
-            limit 1
-            return u
-          ''').addBindVar('key', key).runAndReturnFutureList();
-    if (userList.isEmpty) {
-      throw NotFound();
-    }
-    final userMap = userList.first;
-    return userMap;
+    return ret;
   }
 
   @override
@@ -82,7 +69,9 @@ class ArangoUserRepository extends UserRepositoryBase {
 
   @override
   Future<Map<String, dynamic>> updateUser(
-      String key, Map<String, dynamic> userMap) async {
+    String key,
+    Map<String, dynamic> userMap,
+  ) async {
     final opResult = await _dbClient.replaceDocument('users', key, userMap);
     final result = opResult.result;
     if (result.error) {

@@ -1,5 +1,5 @@
 class UserPermissionSet {
-  final List<String> permissions;
+  final Set<String> permissions;
   final bool isAdministrator;
 
   UserPermissionSet({

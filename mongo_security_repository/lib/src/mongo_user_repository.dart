@@ -3,7 +3,7 @@ import 'package:nosql_repository/nosql_repository.dart';
 import 'package:security_repository/security_repository.dart';
 import 'package:mongo_repository/mongo_repository.dart';
 
-class MongoUserRepository extends UserRepositoryBase {
+class MongoUserRepository implements UserSecurityRepository {
   final Db db;
   final EntityDb entityDb;
   Future<DbCollection> get usersCollection async => await entityDb.collection;
@@ -51,7 +51,7 @@ class MongoUserRepository extends UserRepositoryBase {
     final str = await collection.aggregateToStream(query).toList();
 
     var permissions =
-        (str[0]['permissions'] as List).map((p) => p.toString()).toList();
+        (str[0]['permissions'] as List).map((p) => p.toString()).toSet();
     var isAdministrator = str[0]['isAdministrator'] as bool;
 
     final permissionSet = UserPermissionSet(
@@ -71,20 +71,6 @@ class MongoUserRepository extends UserRepositoryBase {
       throw NotFound();
     }
 
-    return userMap;
-  }
-
-  @override
-  Future<Map<String, dynamic>> getFromKey(String key) async {
-    final kh = MongoKeyHandler();
-    final id = kh.keyToId(key);
-
-    final collection = await usersCollection;
-    final userMap = await collection.findOne({'_id', id});
-
-    if (userMap == null) {
-      throw NotFound();
-    }
     return userMap;
   }
 

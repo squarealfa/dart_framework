@@ -36,6 +36,13 @@ class SearchPolicy extends EntityPermissionPolicy {
           filterByTenant,
         );
 
+  const SearchPolicy.root()
+      : this(
+          permission: '',
+          filterByTenant: false,
+          actionToDemand: '',
+        );
+
   /// Determines the action that shares the entity has
   /// for the user.
   ///
