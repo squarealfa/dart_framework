@@ -23,7 +23,7 @@ class ArangoUserSecurityRepository implements UserSecurityRepository {
             for v, e, p in 1..100 outbound role role_assignments
             return v), lroles])
 
-        let permissions = unique(flatten(for role in allroles return role.permissions))
+        let permissions = unique(flatten(for role in allroles filter role.permissions != null return role.permissions))
         let isAdministrator = (first(for role in allroles filter role.isAdministrator == true limit 1 return role) != null ) || user.isAdministrator
 
         return {

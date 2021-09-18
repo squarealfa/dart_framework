@@ -16,18 +16,20 @@ class EntityAdapterGenerator extends GeneratorForAnnotation<EntityAdapted> {
     ConstantReader reader,
     BuildStep buildStep,
   ) {
-    var classElement = element.asClassElement();
+    final classElement = element.asClassElement();
 
     if (classElement.kind.name == 'ENUM') return '';
 
-    var type = reader.read('rootEntityType').typeValue;
+    final type = reader.read('rootEntityType').typeValue;
     if (!classElement.allSupertypes.any((st) => st.element == type.element)) {
       return '';
     }
 
-    var className = classElement.name;
+    final className = classElement.name;
+    final permName = className.replaceAllMapped(
+        RegExp('[A-Z]'), (m) => '_' + m.group(0).toString().toLowerCase());
 
-    var ret = '''
+    final ret = '''
 
 
 class \$${className}Permissions extends EntityPermissions {
@@ -35,16 +37,16 @@ class \$${className}Permissions extends EntityPermissions {
   const \$${className}Permissions();
 
   @override
-  String get create => 'create$className';
+  String get create => 'create$permName';
 
   @override
-  String get delete => 'delete$className';
+  String get delete => 'delete$permName';
 
   @override
-  String get read => 'read$className';
+  String get read => 'read$permName';
 
   @override
-  String get update => 'update$className';
+  String get update => 'update$permName';
 }
 
 

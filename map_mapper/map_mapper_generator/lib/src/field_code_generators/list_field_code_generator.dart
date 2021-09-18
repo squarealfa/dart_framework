@@ -16,9 +16,9 @@ class ListFieldCodeGenerator extends FieldCodeGenerator {
       final nullEscape = isNullable
           ? 'instance.$fieldName == null ? null : instance.$fieldName!'
           : 'instance.$fieldName';
-      return '''$nullEscape.map((e) => const \$${fieldDescriptor.parameterTypeName}MapMapper().toMap(e ${fieldDescriptor.parameterTypeIsEnum ? '' : ', \$kh'})).toList();''';
+      return '''$nullEscape.map((e) => const \$${fieldDescriptor.parameterTypeName}MapMapper().toMap(e ${fieldDescriptor.parameterTypeIsEnum ? '' : ', \$kh'})).toList()''';
     }
-    return 'instance.$fieldName;';
+    return '''instance.$fieldName${fieldDescriptor.fieldElementType.isDartCoreList ? '' : isNullable ? '?.toList()' : '.toList()'}''';
   }
 
   @override

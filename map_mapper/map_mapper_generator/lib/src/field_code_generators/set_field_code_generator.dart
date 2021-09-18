@@ -16,9 +16,9 @@ class SetFieldCodeGenerator extends FieldCodeGenerator {
       final nullEscape = isNullable
           ? 'instance.$fieldName == null ? null : instance.$fieldName!'
           : 'instance.$fieldName';
-      return '''$nullEscape.map((e) => const \$${fieldDescriptor.parameterTypeName}MapMapper().toMap(e ${fieldDescriptor.parameterTypeIsEnum ? '' : ', \$kh'})).toSet();''';
+      return '''$nullEscape.map((e) => const \$${fieldDescriptor.parameterTypeName}MapMapper().toMap(e ${fieldDescriptor.parameterTypeIsEnum ? '' : ', \$kh'})).toList()''';
     }
-    return 'instance.$fieldName;';
+    return 'instance.$fieldName${isNullable ? '?' : ''}.toList()';
   }
 
   @override
@@ -49,7 +49,7 @@ class SetFieldCodeGenerator extends FieldCodeGenerator {
 
   @override
   String fromMapExpression(String sourceExpression) =>
-      '''Set<${fieldDescriptor.parameterTypeName}>.unmodifiable($sourceExpression$_fromMapConversion)''';
+      '''Set<${fieldDescriptor.parameterTypeName}>.unmodifiable(List<${fieldDescriptor.parameterTypeName}>.from($sourceExpression$_fromMapConversion))''';
 
   @override
   String get fromNullableMapExpression =>
