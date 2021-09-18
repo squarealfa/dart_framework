@@ -16,7 +16,7 @@ class SetFieldCodeGenerator extends FieldCodeGenerator {
       final nullEscape = isNullable
           ? 'instance.$fieldName == null ? null : instance.$fieldName!'
           : 'instance.$fieldName';
-      return '''$nullEscape.map((e) => const ${fieldDescriptor.parameterTypeName}MapMapper().toMap(e ${fieldDescriptor.parameterTypeIsEnum ? '' : ', \$kh'})).toSet();''';
+      return '''$nullEscape.map((e) => const \$${fieldDescriptor.parameterTypeName}MapMapper().toMap(e ${fieldDescriptor.parameterTypeIsEnum ? '' : ', \$kh'})).toSet();''';
     }
     return 'instance.$fieldName;';
   }
@@ -42,7 +42,7 @@ class SetFieldCodeGenerator extends FieldCodeGenerator {
 
   String get _fromMapConversion {
     if (fieldDescriptor.parameterTypeHasMapMapAnnotation) {
-      return '''.map((e) => const ${fieldDescriptor.parameterTypeName}MapMapper().fromMap(e ${fieldDescriptor.parameterTypeIsEnum ? '' : ', \$kh'}))''';
+      return '''.map((e) => const \$${fieldDescriptor.parameterTypeName}MapMapper().fromMap(e ${fieldDescriptor.parameterTypeIsEnum ? '' : ', \$kh'}))''';
     }
     return '';
   }

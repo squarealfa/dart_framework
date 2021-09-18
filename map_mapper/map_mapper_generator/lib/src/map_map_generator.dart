@@ -89,8 +89,8 @@ class MapMapGenerator extends GeneratorForAnnotation<MapMap> {
         declareKh ? 'final \$kh = keyHandler ?? KeyHandler.fromDefault();' : '';
     return '''
 
-      class ${className}MapMapper extends MapMapper<$className> {
-        const ${className}MapMapper();
+      class \$${className}MapMapper extends MapMapper<$className> {
+        const \$${className}MapMapper();
 
 
         @override
@@ -121,13 +121,13 @@ class MapMapGenerator extends GeneratorForAnnotation<MapMap> {
       }
 
 
-      extension ${className}MapExtension on $className {
-        Map<String, dynamic> toMap([KeyHandler? keyHandler]) => const ${className}MapMapper().toMap(this, keyHandler);
-        static $className fromMap(Map<String, dynamic> map, [KeyHandler? keyHandler]) => const ${className}MapMapper().fromMap(map, keyHandler);
+      extension \$${className}MapExtension on $className {
+        Map<String, dynamic> toMap([KeyHandler? keyHandler]) => const \$${className}MapMapper().toMap(this, keyHandler);
+        static $className fromMap(Map<String, dynamic> map, [KeyHandler? keyHandler]) => const \$${className}MapMapper().fromMap(map, keyHandler);
       }
       
-      extension Map${className}Extension on Map<String, dynamic> {
-        $className to$className([KeyHandler? keyHandler]) => const ${className}MapMapper().fromMap(this, keyHandler);
+      extension \$Map${className}Extension on Map<String, dynamic> {
+        $className to$className([KeyHandler? keyHandler]) => const \$${className}MapMapper().fromMap(this, keyHandler);
       }
   
 
@@ -155,9 +155,9 @@ class MapMapGenerator extends GeneratorForAnnotation<MapMap> {
   String renderEnumMapper() {
     var className = _className;
     return '''
-    class ${className}MapMapper
+    class \$${className}MapMapper
     {
-      const ${className}MapMapper();
+      const \$${className}MapMapper();
       $className fromMap(dynamic e) => $className.values[e];
       dynamic toMap($className e) => e.index;
     }

@@ -30,9 +30,9 @@ class EntityAdapterGenerator extends GeneratorForAnnotation<EntityAdapted> {
     var ret = '''
 
 
-class ${className}Permissions extends EntityPermissions {
+class \$${className}Permissions extends EntityPermissions {
 
-  const ${className}Permissions();
+  const \$${className}Permissions();
 
   @override
   String get create => 'create$className';
@@ -50,13 +50,13 @@ class ${className}Permissions extends EntityPermissions {
 
 class ${className}EntityAdapter implements EntityAdapter<$className> {
   @override
-  final MapMapper<$className> mapMapper = const ${className}MapMapper();
+  final MapMapper<$className> mapMapper = const \$${className}MapMapper();
 
   @override
   final Validator validator = const ${className}Validator();
 
   @override
-  final EntityPermissions permissions = const ${className}Permissions();
+  final EntityPermissions permissions = const \$${className}Permissions();
 }
 
 
