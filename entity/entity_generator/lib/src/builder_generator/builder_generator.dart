@@ -42,7 +42,7 @@ class BuilderGenerator extends GeneratorForAnnotation<BuildBuilder> {
   ) {
     final className = _className;
     final builderClassName =
-        '${className}Builder${builder.createBuilderBaseClass ? 'Base' : ''}';
+        '\$${className}Builder${builder.createBuilderBaseClass ? 'Base' : ''}';
 
     final fieldBuffer = StringBuffer();
     final assignmentBuffer = StringBuffer();
@@ -78,9 +78,9 @@ class BuilderGenerator extends GeneratorForAnnotation<BuildBuilder> {
 
     final extensionClass = builder.createBuilderBaseClass
         ? '''
-          extension ${className}BuilderExtension on $className {
+          extension \$${className}BuilderExtension on $className {
         $className rebuild() {
-          final builder = ${className}Builder.from$className(this);
+          final builder = \$${className}Builder.from$className(this);
           final entity = builder.build();
           return entity;
         }

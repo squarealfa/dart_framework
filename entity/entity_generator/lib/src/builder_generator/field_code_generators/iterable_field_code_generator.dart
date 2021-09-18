@@ -15,13 +15,13 @@ class IterableFieldCodeGenerator extends FieldCodeGenerator {
   @override
   String get fieldType => fieldDescriptor.parameterTypeHasEntityMapAnnotation &&
           !fieldDescriptor.parameterTypeIsEnum
-      ? 'List<${fieldDescriptor.parameterTypeName}Builder>'
+      ? 'List<\$${fieldDescriptor.parameterTypeName}Builder>'
       : 'List<${fieldDescriptor.parameterTypeName}>';
 
   String get _listExpression => '''
         ${fieldDescriptor.isNullable ? 'entity.${fieldDescriptor.name} == null  ? null :' : ''}
         entity.${fieldDescriptor.valueName}.map((e) => 
-          ${fieldDescriptor.parameterTypeName}Builder.from${fieldDescriptor.parameterTypeName}(e)).toList()''';
+          \$${fieldDescriptor.parameterTypeName}Builder.from${fieldDescriptor.parameterTypeName}(e)).toList()''';
 
   @override
   String get toBuilderExpression =>

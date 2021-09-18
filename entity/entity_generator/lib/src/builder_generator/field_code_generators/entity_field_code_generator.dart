@@ -10,7 +10,7 @@ class EntityFieldCodeGenerator extends FieldCodeGenerator {
   ) : super(fieldDescriptor, buildBuilder);
 
   @override
-  String get fieldType => '${fieldDescriptor.fieldElementTypeName}Builder';
+  String get fieldType => '\$${fieldDescriptor.fieldElementTypeName}Builder';
 
   @override
   String get fieldDeclaration =>
@@ -18,8 +18,8 @@ class EntityFieldCodeGenerator extends FieldCodeGenerator {
 
   @override
   String get toBuilderExpression => fieldDescriptor.isNullable
-      ? '''entity.${fieldDescriptor.name} == null ? null : ${fieldDescriptor.fieldElementTypeName}Builder.from${fieldDescriptor.fieldElementTypeName}(entity.${fieldDescriptor.name}!)'''
-      : '''${fieldDescriptor.fieldElementTypeName}Builder.from${fieldDescriptor.fieldElementTypeName}(entity.${fieldDescriptor.name})''';
+      ? '''entity.${fieldDescriptor.name} == null ? null : \$${fieldDescriptor.fieldElementTypeName}Builder.from${fieldDescriptor.fieldElementTypeName}(entity.${fieldDescriptor.name}!)'''
+      : '''\$${fieldDescriptor.fieldElementTypeName}Builder.from${fieldDescriptor.fieldElementTypeName}(entity.${fieldDescriptor.name})''';
 
   @override
   String get constructorAssignment => fieldDescriptor.isNullable
@@ -35,7 +35,7 @@ class EntityFieldCodeGenerator extends FieldCodeGenerator {
 
   @override
   String get defaultProvided =>
-      ' ?? ${fieldDescriptor.fieldElementTypeName}Builder()';
+      ' ?? \$${fieldDescriptor.fieldElementTypeName}Builder()';
 
   @override
   bool get usesDefaultsProvided => false;

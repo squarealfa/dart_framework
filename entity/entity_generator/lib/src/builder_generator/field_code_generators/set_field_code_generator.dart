@@ -15,13 +15,13 @@ class SetFieldCodeGenerator extends FieldCodeGenerator {
   @override
   String get fieldType => fieldDescriptor.parameterTypeHasEntityMapAnnotation &&
           !fieldDescriptor.parameterTypeIsEnum
-      ? 'Set<${fieldDescriptor.parameterTypeName}Builder>'
+      ? 'Set<\$${fieldDescriptor.parameterTypeName}Builder>'
       : super.fieldType;
 
   String get _setExpression => '''
         ${fieldDescriptor.isNullable ? 'entity.${fieldDescriptor.name} == null  ? null :' : ''}
         entity.${fieldDescriptor.valueName}.map((e) => 
-          ${fieldDescriptor.parameterTypeName}Builder.from${fieldDescriptor.parameterTypeName}(e)).toSet()''';
+          \$${fieldDescriptor.parameterTypeName}Builder.from${fieldDescriptor.parameterTypeName}(e)).toSet()''';
 
   @override
   String get toBuilderExpression =>

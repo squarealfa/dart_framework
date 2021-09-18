@@ -6,21 +6,21 @@ part of 'recipe.dart';
 // BuilderGenerator
 // **************************************************************************
 
-class RecipeBuilder implements Builder<Recipe> {
+class $RecipeBuilder implements Builder<Recipe> {
   String? $title;
   String get title => $title!;
   set title(String value) => $title = value;
 
   String? description;
 
-  RecipeBuilder({
+  $RecipeBuilder({
     String? title,
     this.description,
   }) {
     $title = title;
   }
 
-  RecipeBuilder.fromRecipe(Recipe entity)
+  $RecipeBuilder.fromRecipe(Recipe entity)
       : this(
           title: entity.title,
           description: entity.description,
