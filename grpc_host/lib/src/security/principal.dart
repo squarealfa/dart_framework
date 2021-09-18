@@ -8,11 +8,13 @@ class Principal implements DbPrincipal {
   final String tenantKey;
   final Set<String> permissions;
   final bool isAuthenticated;
+  final bool isAdministrator;
 
   const Principal({
     required this.userKey,
     required this.tenantKey,
     required this.permissions,
+    required this.isAdministrator,
     this.isAuthenticated = false,
   });
 
@@ -20,11 +22,12 @@ class Principal implements DbPrincipal {
       : userKey = '',
         tenantKey = '',
         isAuthenticated = false,
+        isAdministrator = false,
         permissions = const {};
 
   @override
   bool hasPermission(String permission) {
-    if (permission == '') {
+    if (isAdministrator || permission == '') {
       return true;
     }
     var hasPermission = permissions.contains(permission);
