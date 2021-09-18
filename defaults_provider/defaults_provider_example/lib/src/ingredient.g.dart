@@ -6,14 +6,19 @@ part of 'ingredient.dart';
 // DefaultsProviderGenerator
 // **************************************************************************
 
-class IngredientDefaultsProvider {
-  Ingredient createWithDefaults() {
+class $IngredientDefaultsProvider {
+  const $IngredientDefaultsProvider();
+
+  Ingredient createWithDefaults({
+    String? description,
+    double? quantity,
+  }) {
     return Ingredient(
-      description: description,
-      quantity: quantity,
+      description: description ?? this.description,
+      quantity: quantity ?? this.quantity,
     );
   }
 
   String get description => '';
-  double get quantity => throw UnimplementedError();
+  double get quantity => 0;
 }

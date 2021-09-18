@@ -36,7 +36,7 @@ class Recipe {
   });
 }
 
-class RecipeDefaultsProvider extends RecipeDefaultsProviderBase {
+class $RecipeDefaultsProvider extends $RecipeDefaultsProviderBase {
   @override
   Category get category => Category(title: 'my category');
 }
