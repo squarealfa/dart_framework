@@ -24,9 +24,6 @@ class ProtoMapperGenerator extends GeneratorForAnnotation<MapProto> {
     _prefix = config['prefix'] as String? ?? 'G';
   }
 
-  // TProtoMapperAnnotation? hydrateAnnotation(ConstantReader constantReader,
-  //     {String? prefix});
-
   @override
   String generateForAnnotatedElement(
     Element element,
@@ -82,8 +79,8 @@ class ProtoMapperGenerator extends GeneratorForAnnotation<MapProto> {
 
     return '''
   
-      class ${className}ProtoMapper implements ProtoMapper<$className, $prefix$className> {
-        const ${className}ProtoMapper();
+      class \$${className}ProtoMapper implements ProtoMapper<$className, $prefix$className> {
+        const \$${className}ProtoMapper();
 
         @override
         $className fromProto($prefix$className proto) => _\$${className}FromProto(proto);
@@ -118,7 +115,7 @@ class ProtoMapperGenerator extends GeneratorForAnnotation<MapProto> {
         $className($constructorFieldBuffer)
           $fromProtoFieldBuffer;  
 
-      extension ${className}ProtoExtension on $className {
+      extension \$${className}ProtoExtension on $className {
         $prefix$className toProto() => _\$${className}ToProto(this);
         String toJson() => _\$${className}ToProto(this).writeToJson();
       
@@ -127,7 +124,7 @@ class ProtoMapperGenerator extends GeneratorForAnnotation<MapProto> {
       }
       
       
-      extension $prefix${className}ProtoExtension on $prefix$className {
+      extension \$$prefix${className}ProtoExtension on $prefix$className {
         $className to$className() => _\$${className}FromProto(this);
       }
      
@@ -137,8 +134,8 @@ class ProtoMapperGenerator extends GeneratorForAnnotation<MapProto> {
 
   String renderEnumMapper() {
     return '''
-      class ${className}ProtoMapper implements ProtoMapper<$className, $prefix$className> {
-        const ${className}ProtoMapper();
+      class \$${className}ProtoMapper implements ProtoMapper<$className, $prefix$className> {
+        const \$${className}ProtoMapper();
 
         @override
         $className fromProto($prefix$className proto) => 

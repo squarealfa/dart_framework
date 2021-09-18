@@ -19,7 +19,7 @@ class IterableFieldCodeGenerator extends FieldCodeGenerator {
     if (fieldTypeName == (Duration).toString()) {
       return 'e.inMilliseconds.toDouble()';
     }
-    return ''' const ${fieldDescriptor.parameterTypeName}ProtoMapper().toProto(e)''';
+    return ''' const \$${fieldDescriptor.parameterTypeName}ProtoMapper().toProto(e)''';
   }
 
   String get _toProtoConversion {
@@ -67,7 +67,7 @@ class IterableFieldCodeGenerator extends FieldCodeGenerator {
       return 'Duration(milliseconds: e.toInt())';
     }
 
-    return ''' const ${fieldDescriptor.parameterTypeName}ProtoMapper().fromProto(e)''';
+    return ''' const \$${fieldDescriptor.parameterTypeName}ProtoMapper().fromProto(e)''';
   }
 
   @override

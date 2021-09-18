@@ -52,7 +52,7 @@ class CopyWithGenerator extends GeneratorForAnnotation<CopyWith> {
     }
 
     var copyWithExtension = '''
-          extension ${className}CopyWithExtension on $className {
+          extension \$${className}CopyWithExtension on $className {
         $className copyWith({
           $copyWithParameterFieldBuffer
         }) {
