@@ -67,10 +67,10 @@ class DefaultsProviderGenerator
     }
 
     final providerClassName =
-        '${className}DefaultsProvider${createBaseClass ? 'Base' : ''}';
+        '\$${className}DefaultsProvider${createBaseClass ? 'Base' : ''}';
 
     final superDeclaration = superClassHasDefaultsProvider
-        ? '''static const _superDefaultsProvider = ${superTypeElement.name}DefaultsProvider();'''
+        ? '''static const _superDefaultsProvider = \$${superTypeElement.name}DefaultsProvider();'''
         : '';
 
     final constructor = classElement.isAbstract

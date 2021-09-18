@@ -175,7 +175,7 @@ class MapMapGenerator extends GeneratorForAnnotation<MapMap> {
     if (!fieldDescriptors.any((element) => !element.isNullable)) {
       return null;
     }
-    return '${classElement!.name}DefaultsProvider';
+    return '\$${classElement!.name}DefaultsProvider';
   }
 }
 

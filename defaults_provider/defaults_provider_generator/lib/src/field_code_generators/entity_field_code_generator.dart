@@ -7,5 +7,5 @@ class EntityFieldCodeGenerator extends FieldCodeGenerator {
 
   @override
   String get defaultExpression =>
-      '''${fieldDescriptor.fieldElementTypeName}DefaultsProvider().createWithDefaults()''';
+      '''\$${fieldDescriptor.fieldElementTypeName}DefaultsProvider().createWithDefaults()''';
 }

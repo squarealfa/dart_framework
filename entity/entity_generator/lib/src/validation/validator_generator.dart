@@ -67,15 +67,16 @@ class ValidatorGenerator extends GeneratorForAnnotation<Validatable> {
       }
     }
 
-    var validatorClassName =
-        createBaseClass ? '${className}ValidatorBase' : '${className}Validator';
+    var validatorClassName = createBaseClass
+        ? '\$${className}ValidatorBase'
+        : '\$${className}Validator';
 
     var construction =
-        '''const ${className}Validator${createBaseClass ? 'Base' : ''}();''';
+        '''const \$${className}Validator${createBaseClass ? 'Base' : ''}();''';
 
     var extendsClause = !superClassIsValidatable
         ? ''
-        : 'extends ${superTypeElement.name}Validator';
+        : 'extends \$${superTypeElement.name}Validator';
 
     var returnStatement = !superClassIsValidatable
         ? 'return ErrorList(errors);'
@@ -196,7 +197,7 @@ class ValidatorGenerator extends GeneratorForAnnotation<Validatable> {
       $asList
   
       var errorLists = value.map((entity) {
-        var errors = ${parmType!.getDisplayString(withNullability: false)}Validator().validate(entity);
+        var errors = \$${parmType!.getDisplayString(withNullability: false)}Validator().validate(entity);
         var itemErrors = ListItemErrorList(${asList.isEmpty ? 'value' : 'asList'}, entity, errors);
         return itemErrors;
       }).where((p) => p.errorList.validationErrors.isNotEmpty).toList();
@@ -222,7 +223,7 @@ class ValidatorGenerator extends GeneratorForAnnotation<Validatable> {
         $nullEscape
 
         var errors = 
-          ${fieldDescriptor.fieldElementType.getDisplayString(withNullability: false)}Validator().validate(value);
+          \$${fieldDescriptor.fieldElementType.getDisplayString(withNullability: false)}Validator().validate(value);
         var errorListValidation = PropertyValidation(\'${fieldDescriptor.name}\', errors);
 
         if (errorListValidation.errorList.validationErrors.isNotEmpty) {

@@ -89,7 +89,7 @@ class BuilderGenerator extends GeneratorForAnnotation<BuildBuilder> {
         : '';
 
     final defaultsProvider = usesDefaultsProvider
-        ? 'final _defaultsProvider = ${className}DefaultsProvider();'
+        ? 'final _defaultsProvider = \$${className}DefaultsProvider();'
         : '';
 
     final constructorStatement = constructorStatementBuffer.isEmpty
@@ -117,7 +117,7 @@ class BuilderGenerator extends GeneratorForAnnotation<BuildBuilder> {
         @override
         $className build() {
           final entity = _build();
-          const ${className}Validator().validateThrowing(entity);
+          const \$${className}Validator().validateThrowing(entity);
           return entity;
         }
 
@@ -125,7 +125,7 @@ class BuilderGenerator extends GeneratorForAnnotation<BuildBuilder> {
         BuildResult<$className> tryBuild() {
           try {
             final entity = _build();
-            final errors = ${className}Validator().validate(entity);
+            final errors = \$${className}Validator().validate(entity);
             final result =
                 BuildResult<$className>(result: entity, validationErrors: errors);
             return result;

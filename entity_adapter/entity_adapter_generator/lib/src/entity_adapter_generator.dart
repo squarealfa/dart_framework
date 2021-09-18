@@ -48,12 +48,12 @@ class \$${className}Permissions extends EntityPermissions {
 }
 
 
-class ${className}EntityAdapter implements EntityAdapter<$className> {
+class \$${className}EntityAdapter implements EntityAdapter<$className> {
   @override
   final MapMapper<$className> mapMapper = const \$${className}MapMapper();
 
   @override
-  final Validator validator = const ${className}Validator();
+  final Validator validator = const \$${className}Validator();
 
   @override
   final EntityPermissions permissions = const \$${className}Permissions();
