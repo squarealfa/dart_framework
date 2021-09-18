@@ -6,8 +6,8 @@ part of 'empty.dart';
 // ProtoMapperGenerator
 // **************************************************************************
 
-class EmptyProtoMapper implements ProtoMapper<Empty, GEmpty> {
-  const EmptyProtoMapper();
+class $EmptyProtoMapper implements ProtoMapper<Empty, GEmpty> {
+  const $EmptyProtoMapper();
 
   @override
   Empty fromProto(GEmpty proto) => _$EmptyFromProto(proto);
@@ -33,7 +33,7 @@ GEmpty _$EmptyToProto(Empty instance) {
 
 Empty _$EmptyFromProto(GEmpty instance) => Empty();
 
-extension EmptyProtoExtension on Empty {
+extension $EmptyProtoExtension on Empty {
   GEmpty toProto() => _$EmptyToProto(this);
   String toJson() => _$EmptyToProto(this).writeToJson();
 
@@ -41,6 +41,6 @@ extension EmptyProtoExtension on Empty {
   static Empty fromJson(String json) => _$EmptyFromProto(GEmpty.fromJson(json));
 }
 
-extension GEmptyProtoExtension on GEmpty {
+extension $GEmptyProtoExtension on GEmpty {
   Empty toEmpty() => _$EmptyFromProto(this);
 }

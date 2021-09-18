@@ -9,7 +9,7 @@ void main() {
   group('main group', () {
     test('no error', () {
       var recipe = Recipe(title: 'something', description: 'something');
-      var validator = RecipeValidator();
+      var validator = $RecipeValidator();
       var titleError = validator.validateTitle(recipe.title);
       var descritionError = validator.validateDescription(recipe.description);
       var recipeErrors = validator.validate(recipe);
@@ -22,7 +22,7 @@ void main() {
 
     test('missing title', () {
       var recipe = Recipe(title: '', description: 'something');
-      var validator = RecipeValidator();
+      var validator = $RecipeValidator();
       var titleError = validator.validateTitle(recipe.title);
       var descritionError = validator.validateDescription(recipe.description);
       var recipeErrors = validator.validate(recipe);
@@ -36,7 +36,7 @@ void main() {
 
     test('null description', () {
       var recipe = Recipe(title: 'something', description: null);
-      var validator = RecipeValidator();
+      var validator = $RecipeValidator();
       var titleError = validator.validateTitle(recipe.title);
       var descritionError = validator.validateDescription(recipe.description);
       var recipeErrors = validator.validate(recipe);
@@ -50,7 +50,7 @@ void main() {
 
     test('empty description', () {
       var recipe = Recipe(title: 'something', description: '');
-      var validator = RecipeValidator();
+      var validator = $RecipeValidator();
       var titleError = validator.validateTitle(recipe.title);
       var descritionError = validator.validateDescription(recipe.description);
       var recipeErrors = validator.validate(recipe);
@@ -64,7 +64,7 @@ void main() {
 
     test('missing title and description', () {
       var recipe = Recipe(title: '', description: null);
-      var validator = RecipeValidator();
+      var validator = $RecipeValidator();
       var titleError = validator.validateTitle(recipe.title);
       var descritionError = validator.validateDescription(recipe.description);
       var recipeErrors = validator.validate(recipe);
@@ -84,7 +84,7 @@ void main() {
         rInt: 15,
       );
 
-      final validator = IngredientValidator();
+      final validator = $IngredientValidator();
       final errors = validator.validate(ingredient);
 
       expect(errors.hasErrors, false);
@@ -99,7 +99,7 @@ void main() {
         rInt: 15,
       );
 
-      final validator = IngredientValidator();
+      final validator = $IngredientValidator();
       final errors = validator.validate(ingredient);
 
       expect(errors.validationErrors.first.propertyName, 'description');
@@ -115,7 +115,7 @@ void main() {
         rInt: 15,
       );
 
-      final validator = IngredientValidator();
+      final validator = $IngredientValidator();
       final errors = validator.validate(ingredient);
 
       expect(errors.validationErrors.first.propertyName, 'notes');
@@ -131,7 +131,7 @@ void main() {
         rInt: 15,
       );
 
-      final validator = IngredientValidator();
+      final validator = $IngredientValidator();
       final errors = validator.validate(ingredient);
 
       expect(errors.validationErrors.first.propertyName, 'tag');
@@ -146,7 +146,7 @@ void main() {
         rInt: 15,
       );
 
-      final validator = IngredientValidator();
+      final validator = $IngredientValidator();
       final errors = validator.validate(ingredient);
 
       expect(errors.validationErrors.first.propertyName, 'quantity');
@@ -161,7 +161,7 @@ void main() {
         rInt: 15,
       );
 
-      final validator = IngredientValidator();
+      final validator = $IngredientValidator();
       final errors = validator.validate(ingredient);
 
       expect(errors.validationErrors.first.propertyName, 'quantity');
@@ -176,7 +176,7 @@ void main() {
         rInt: 15,
       );
 
-      final validator = IngredientValidator();
+      final validator = $IngredientValidator();
       final errors = validator.validate(ingredient);
 
       expect(errors.validationErrors.first.propertyName, 'precision');
@@ -191,7 +191,7 @@ void main() {
         rInt: 15,
       );
 
-      final validator = IngredientValidator();
+      final validator = $IngredientValidator();
       final errors = validator.validate(ingredient);
 
       expect(errors.validationErrors.first.propertyName, 'intQuantity');
@@ -206,7 +206,7 @@ void main() {
         rInt: 15,
       );
 
-      final validator = IngredientValidator();
+      final validator = $IngredientValidator();
       final errors = validator.validate(ingredient);
 
       expect(errors.validationErrors.first.propertyName, 'intQuantity');
@@ -220,7 +220,7 @@ void main() {
         intQuantity: 15,
       );
 
-      final validator = IngredientValidator();
+      final validator = $IngredientValidator();
       final errors = validator.validate(ingredient);
 
       expect(errors.validationErrors.first.propertyName, 'rInt');
@@ -235,7 +235,7 @@ void main() {
         rInt: 5,
       );
 
-      final validator = IngredientValidator();
+      final validator = $IngredientValidator();
       final errors = validator.validate(ingredient);
 
       expect(errors.validationErrors.first.propertyName, 'rInt');
@@ -250,7 +250,7 @@ void main() {
         rInt: 25,
       );
 
-      final validator = IngredientValidator();
+      final validator = $IngredientValidator();
       final errors = validator.validate(ingredient);
 
       expect(errors.validationErrors.first.propertyName, 'rInt');
@@ -265,7 +265,7 @@ void main() {
           rInt: 15,
           nintQuantity: 5);
 
-      final validator = IngredientValidator();
+      final validator = $IngredientValidator();
       final errors = validator.validate(ingredient);
 
       expect(errors.validationErrors.first.propertyName, 'nintQuantity');
@@ -280,7 +280,7 @@ void main() {
           rInt: 15,
           nintQuantity: 25);
 
-      final validator = IngredientValidator();
+      final validator = $IngredientValidator();
       final errors = validator.validate(ingredient);
 
       expect(errors.validationErrors.first.propertyName, 'nintQuantity');
@@ -289,7 +289,7 @@ void main() {
     test('too empty', () {
       final empty = Empty();
 
-      final validator = EmptyValidator();
+      final validator = $EmptyValidator();
       final errors = validator.validate(empty);
 
       expect(errors.validationErrors.isEmpty, true);

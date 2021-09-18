@@ -6,8 +6,8 @@ part of 'ingredient.dart';
 // ProtoMapperGenerator
 // **************************************************************************
 
-class IngredientProtoMapper implements ProtoMapper<Ingredient, GIngredient> {
-  const IngredientProtoMapper();
+class $IngredientProtoMapper implements ProtoMapper<Ingredient, GIngredient> {
+  const $IngredientProtoMapper();
 
   @override
   Ingredient fromProto(GIngredient proto) => _$IngredientFromProto(proto);
@@ -41,7 +41,7 @@ Ingredient _$IngredientFromProto(GIngredient instance) => Ingredient(
       quantity: instance.quantity,
     );
 
-extension IngredientProtoExtension on Ingredient {
+extension $IngredientProtoExtension on Ingredient {
   GIngredient toProto() => _$IngredientToProto(this);
   String toJson() => _$IngredientToProto(this).writeToJson();
 
@@ -51,6 +51,6 @@ extension IngredientProtoExtension on Ingredient {
       _$IngredientFromProto(GIngredient.fromJson(json));
 }
 
-extension GIngredientProtoExtension on GIngredient {
+extension $GIngredientProtoExtension on GIngredient {
   Ingredient toIngredient() => _$IngredientFromProto(this);
 }

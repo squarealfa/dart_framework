@@ -56,7 +56,10 @@ extension RecipeCopyWithExtension on Recipe {
 // **************************************************************************
 
 class RecipeValidator implements Validator {
-  const RecipeValidator();
+  RecipeValidator.create();
+
+  static final RecipeValidator _singleton = RecipeValidator.create();
+  factory RecipeValidator() => _singleton;
 
   ValidationError? validateTitle(String value) {
     if (value.isEmpty) {
@@ -77,6 +80,7 @@ class RecipeValidator implements Validator {
   @override
   ErrorList validate(covariant Recipe entity) {
     var errors = <ValidationError>[];
+
     ValidationError? error;
     if ((error = validateTitle(entity.title)) != null) {
       errors.add(error!);

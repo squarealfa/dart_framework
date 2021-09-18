@@ -6,8 +6,8 @@ part of 'recipe.dart';
 // ProtoMapperGenerator
 // **************************************************************************
 
-class RecipeProtoMapper implements ProtoMapper<Recipe, GRecipe> {
-  const RecipeProtoMapper();
+class $RecipeProtoMapper implements ProtoMapper<Recipe, GRecipe> {
+  const $RecipeProtoMapper();
 
   @override
   Recipe fromProto(GRecipe proto) => _$RecipeFromProto(proto);
@@ -34,9 +34,9 @@ GRecipe _$RecipeToProto(Recipe instance) {
   }
   proto.descriptionHasValue = instance.description != null;
 
-  proto.category = const CategoryProtoMapper().toProto(instance.category);
+  proto.category = const $CategoryProtoMapper().toProto(instance.category);
   proto.ingredients.addAll(instance.ingredients
-      .map((e) => const IngredientProtoMapper().toProto(e)));
+      .map((e) => const $IngredientProtoMapper().toProto(e)));
 
   proto.publishDate = Int64(instance.publishDate.millisecondsSinceEpoch);
   if (instance.expiryDate != null) {
@@ -78,10 +78,9 @@ Recipe _$RecipeFromProto(GRecipe instance) => Recipe(
       title: instance.title,
       description:
           (instance.descriptionHasValue ? (instance.description) : null),
-      category: const CategoryProtoMapper().fromProto(instance.category),
-      ingredients: instance.ingredients
-          .map((e) => const IngredientProtoMapper().fromProto(e))
-          .toList(),
+      category: const $CategoryProtoMapper().fromProto(instance.category),
+      ingredients: List<Ingredient>.unmodifiable(instance.ingredients
+          .map((e) => const $IngredientProtoMapper().fromProto(e))),
       publishDate:
           DateTime.fromMillisecondsSinceEpoch(instance.publishDate.toInt()),
       expiryDate: (instance.expiryDateHasValue
@@ -99,13 +98,13 @@ Recipe _$RecipeFromProto(GRecipe instance) => Recipe(
       secondaryApplianceType: (instance.secondaryApplianceTypeHasValue
           ? (ApplianceType.values[instance.secondaryApplianceType.value])
           : null),
-      tags: instance.tags.map((e) => e).toList(),
+      tags: List<String>.unmodifiable(instance.tags.map((e) => e)),
       extraTags: (instance.extraTagsHasValue
-          ? (instance.extraTags.map((e) => e).toList())
+          ? (List<String>.unmodifiable(instance.extraTags.map((e) => e)))
           : null),
     );
 
-extension RecipeProtoExtension on Recipe {
+extension $RecipeProtoExtension on Recipe {
   GRecipe toProto() => _$RecipeToProto(this);
   String toJson() => _$RecipeToProto(this).writeToJson();
 
@@ -114,6 +113,6 @@ extension RecipeProtoExtension on Recipe {
       _$RecipeFromProto(GRecipe.fromJson(json));
 }
 
-extension GRecipeProtoExtension on GRecipe {
+extension $GRecipeProtoExtension on GRecipe {
   Recipe toRecipe() => _$RecipeFromProto(this);
 }

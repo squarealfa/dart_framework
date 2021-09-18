@@ -6,8 +6,8 @@ part of 'empty.dart';
 // ValidatorGenerator
 // **************************************************************************
 
-class EmptyValidator implements Validator {
-  const EmptyValidator();
+class $EmptyValidator implements Validator {
+  const $EmptyValidator();
 
   @override
   ErrorList validate(covariant Empty entity) {

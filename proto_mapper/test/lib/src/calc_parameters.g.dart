@@ -6,9 +6,9 @@ part of 'calc_parameters.dart';
 // ProtoMapperGenerator
 // **************************************************************************
 
-class CalcParametersProtoMapper
+class $CalcParametersProtoMapper
     implements ProtoMapper<CalcParameters, GCalcParameters> {
-  const CalcParametersProtoMapper();
+  const $CalcParametersProtoMapper();
 
   @override
   CalcParameters fromProto(GCalcParameters proto) =>
@@ -46,7 +46,7 @@ CalcParameters _$CalcParametersFromProto(GCalcParameters instance) =>
       parameter2: instance.parameter2,
     );
 
-extension CalcParametersProtoExtension on CalcParameters {
+extension $CalcParametersProtoExtension on CalcParameters {
   GCalcParameters toProto() => _$CalcParametersToProto(this);
   String toJson() => _$CalcParametersToProto(this).writeToJson();
 
@@ -56,6 +56,6 @@ extension CalcParametersProtoExtension on CalcParameters {
       _$CalcParametersFromProto(GCalcParameters.fromJson(json));
 }
 
-extension GCalcParametersProtoExtension on GCalcParameters {
+extension $GCalcParametersProtoExtension on GCalcParameters {
   CalcParameters toCalcParameters() => _$CalcParametersFromProto(this);
 }

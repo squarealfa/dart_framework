@@ -6,9 +6,9 @@ part of 'appliance_type.dart';
 // ProtoMapperGenerator
 // **************************************************************************
 
-class ApplianceTypeProtoMapper
+class $ApplianceTypeProtoMapper
     implements ProtoMapper<ApplianceType, GApplianceType> {
-  const ApplianceTypeProtoMapper();
+  const $ApplianceTypeProtoMapper();
 
   @override
   ApplianceType fromProto(GApplianceType proto) =>

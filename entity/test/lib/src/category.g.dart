@@ -6,8 +6,8 @@ part of 'category.dart';
 // ValidatorGenerator
 // **************************************************************************
 
-class CategoryValidator implements Validator {
-  const CategoryValidator();
+class $CategoryValidator implements Validator {
+  const $CategoryValidator();
 
   ValidationError? validateTitle(String value, {Category? entity}) {
     if (value.isEmpty) {

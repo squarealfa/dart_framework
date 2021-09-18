@@ -6,8 +6,8 @@ part of 'recipe.dart';
 // ProtoMapperGenerator
 // **************************************************************************
 
-class RecipeProtoMapper implements ProtoMapper<Recipe, GRecipe> {
-  const RecipeProtoMapper();
+class $RecipeProtoMapper implements ProtoMapper<Recipe, GRecipe> {
+  const $RecipeProtoMapper();
 
   @override
   Recipe fromProto(GRecipe proto) => _$RecipeFromProto(proto);
@@ -31,7 +31,7 @@ GRecipe _$RecipeToProto(Recipe instance) {
   proto.key = instance.key;
   proto.ptitle = instance.title;
   proto.ingredients.addAll(instance.ingredients
-      .map((e) => const IngredientProtoMapper().toProto(e)));
+      .map((e) => const $IngredientProtoMapper().toProto(e)));
 
   return proto;
 }
@@ -39,12 +39,11 @@ GRecipe _$RecipeToProto(Recipe instance) {
 Recipe _$RecipeFromProto(GRecipe instance) => Recipe(
       key: instance.key,
       title: instance.ptitle,
-      ingredients: instance.ingredients
-          .map((e) => const IngredientProtoMapper().fromProto(e))
-          .toList(),
+      ingredients: List<Ingredient>.unmodifiable(instance.ingredients
+          .map((e) => const $IngredientProtoMapper().fromProto(e))),
     );
 
-extension RecipeProtoExtension on Recipe {
+extension $RecipeProtoExtension on Recipe {
   GRecipe toProto() => _$RecipeToProto(this);
   String toJson() => _$RecipeToProto(this).writeToJson();
 
@@ -53,6 +52,6 @@ extension RecipeProtoExtension on Recipe {
       _$RecipeFromProto(GRecipe.fromJson(json));
 }
 
-extension GRecipeProtoExtension on GRecipe {
+extension $GRecipeProtoExtension on GRecipe {
   Recipe toRecipe() => _$RecipeFromProto(this);
 }

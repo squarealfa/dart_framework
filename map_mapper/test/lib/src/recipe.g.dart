@@ -6,8 +6,8 @@ part of 'recipe.dart';
 // MapMapGenerator
 // **************************************************************************
 
-class RecipeMapMapper extends MapMapper<Recipe> {
-  const RecipeMapMapper();
+class $RecipeMapMapper extends MapMapper<Recipe> {
+  const $RecipeMapMapper();
 
   @override
   Recipe fromMap(
@@ -24,9 +24,9 @@ class RecipeMapMapper extends MapMapper<Recipe> {
       secondaryCategoryKey: map['secondaryCategoryKey'] == null
           ? null
           : $kh.keyFromMap(map, 'secondaryCategoryKey'),
-      category: const CategoryMapMapper().fromMap(map['category'], $kh),
-      ingredients: List<Ingredient>.from(map['ingredients']
-          .map((e) => const IngredientMapMapper().fromMap(e, $kh))),
+      category: const $CategoryMapMapper().fromMap(map['category'], $kh),
+      ingredients: List<Ingredient>.unmodifiable(map['ingredients']
+          .map((e) => const $IngredientMapMapper().fromMap(e, $kh))),
       publishDate: DateTime.parse(map['publishDate']),
       expiryDate:
           map['expiryDate'] == null ? null : DateTime.parse(map['expiryDate']),
@@ -40,9 +40,10 @@ class RecipeMapMapper extends MapMapper<Recipe> {
       secondaryApplianceType: map['secondaryApplianceType'] == null
           ? null
           : ApplianceType.values[map['secondaryApplianceType'] as int],
-      tags: List<String>.from(map['tags']),
-      extraTags:
-          map['extraTags'] == null ? null : List<String>.from(map['extraTags']),
+      tags: List<String>.unmodifiable(map['tags']),
+      extraTags: map['extraTags'] == null
+          ? null
+          : List<String>.unmodifiable(map['extraTags']),
     );
   }
 
@@ -60,9 +61,9 @@ class RecipeMapMapper extends MapMapper<Recipe> {
     $kh.keyToMap(map, instance.categoryKey, 'categoryKey');
     $kh.keyToMap(
         map, instance.secondaryCategoryKey ?? '', 'secondaryCategoryKey');
-    map['category'] = const CategoryMapMapper().toMap(instance.category, $kh);
+    map['category'] = const $CategoryMapMapper().toMap(instance.category, $kh);
     map['ingredients'] = instance.ingredients
-        .map((e) => const IngredientMapMapper().toMap(e, $kh))
+        .map((e) => const $IngredientMapMapper().toMap(e, $kh))
         .toList();
     ;
     map['publishDate'] = instance.publishDate.toIso8601String();
@@ -82,16 +83,16 @@ class RecipeMapMapper extends MapMapper<Recipe> {
   }
 }
 
-extension RecipeMapExtension on Recipe {
+extension $RecipeMapExtension on Recipe {
   Map<String, dynamic> toMap([KeyHandler? keyHandler]) =>
-      const RecipeMapMapper().toMap(this, keyHandler);
+      const $RecipeMapMapper().toMap(this, keyHandler);
   static Recipe fromMap(Map<String, dynamic> map, [KeyHandler? keyHandler]) =>
-      const RecipeMapMapper().fromMap(map, keyHandler);
+      const $RecipeMapMapper().fromMap(map, keyHandler);
 }
 
-extension MapRecipeExtension on Map<String, dynamic> {
+extension $MapRecipeExtension on Map<String, dynamic> {
   Recipe toRecipe([KeyHandler? keyHandler]) =>
-      const RecipeMapMapper().fromMap(this, keyHandler);
+      const $RecipeMapMapper().fromMap(this, keyHandler);
 }
 
 class $RecipeFieldNames {

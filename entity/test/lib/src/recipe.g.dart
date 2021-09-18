@@ -29,7 +29,7 @@ class RecipeBuilder implements Builder<Recipe> {
   @override
   Recipe build() {
     final entity = _build();
-    const RecipeValidator().validateThrowing(entity);
+    const $RecipeValidator().validateThrowing(entity);
     return entity;
   }
 
@@ -37,7 +37,7 @@ class RecipeBuilder implements Builder<Recipe> {
   BuildResult<Recipe> tryBuild() {
     try {
       final entity = _build();
-      final errors = RecipeValidator().validate(entity);
+      final errors = $RecipeValidator().validate(entity);
       final result =
           BuildResult<Recipe>(result: entity, validationErrors: errors);
       return result;
@@ -59,7 +59,7 @@ class RecipeBuilder implements Builder<Recipe> {
 // CopyWithGenerator
 // **************************************************************************
 
-extension RecipeCopyWithExtension on Recipe {
+extension $RecipeCopyWithExtension on Recipe {
   Recipe copyWith({
     String? title,
     String? description,
@@ -77,8 +77,8 @@ extension RecipeCopyWithExtension on Recipe {
 // ValidatorGenerator
 // **************************************************************************
 
-class RecipeValidator implements Validator {
-  const RecipeValidator();
+class $RecipeValidator implements Validator {
+  const $RecipeValidator();
 
   ValidationError? validateTitle(String value, {Recipe? entity}) {
     if (value.isEmpty) {

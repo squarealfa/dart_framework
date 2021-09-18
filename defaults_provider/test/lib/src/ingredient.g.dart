@@ -6,8 +6,8 @@ part of 'ingredient.dart';
 // DefaultsProviderGenerator
 // **************************************************************************
 
-class IngredientDefaultsProvider {
-  const IngredientDefaultsProvider();
+class $IngredientDefaultsProvider {
+  const $IngredientDefaultsProvider();
 
   Ingredient createWithDefaults({
     String? description,

@@ -6,8 +6,8 @@ part of 'ingredient.dart';
 // ProtoMapperGenerator
 // **************************************************************************
 
-class IngredientProtoMapper implements ProtoMapper<Ingredient, GIngredient> {
-  const IngredientProtoMapper();
+class $IngredientProtoMapper implements ProtoMapper<Ingredient, GIngredient> {
+  const $IngredientProtoMapper();
 
   @override
   Ingredient fromProto(GIngredient proto) => _$IngredientFromProto(proto);
@@ -35,18 +35,18 @@ GIngredient _$IngredientToProto(Ingredient instance) {
   proto.precision = instance.precision;
   proto.cookingDuration = instance.cookingDuration.inMilliseconds.toDouble();
   proto.mainComponent =
-      const ComponentProtoMapper().toProto(instance.mainComponent);
+      const $ComponentProtoMapper().toProto(instance.mainComponent);
   proto.otherComponents.addAll(instance.otherComponents
-      .map((e) => const ComponentProtoMapper().toProto(e)));
+      .map((e) => const $ComponentProtoMapper().toProto(e)));
 
   if (instance.alternativeComponent != null) {
     proto.alternativeComponent =
-        const ComponentProtoMapper().toProto(instance.alternativeComponent!);
+        const $ComponentProtoMapper().toProto(instance.alternativeComponent!);
   }
   proto.alternativeComponentHasValue = instance.alternativeComponent != null;
 
   proto.secondaryComponents.addAll(instance.secondaryComponents
-          ?.map((e) => const ComponentProtoMapper().toProto(e)) ??
+          ?.map((e) => const $ComponentProtoMapper().toProto(e)) ??
       []);
   proto.secondaryComponentsHasValue = instance.secondaryComponents != null;
 
@@ -59,22 +59,20 @@ Ingredient _$IngredientFromProto(GIngredient instance) => Ingredient(
       precision: instance.precision,
       cookingDuration: Duration(milliseconds: instance.cookingDuration.toInt()),
       mainComponent:
-          const ComponentProtoMapper().fromProto(instance.mainComponent),
-      otherComponents: instance.otherComponents
-          .map((e) => const ComponentProtoMapper().fromProto(e))
-          .toList(),
+          const $ComponentProtoMapper().fromProto(instance.mainComponent),
+      otherComponents: List<Component>.unmodifiable(instance.otherComponents
+          .map((e) => const $ComponentProtoMapper().fromProto(e))),
       alternativeComponent: (instance.alternativeComponentHasValue
-          ? (const ComponentProtoMapper()
+          ? (const $ComponentProtoMapper()
               .fromProto(instance.alternativeComponent))
           : null),
       secondaryComponents: (instance.secondaryComponentsHasValue
-          ? (instance.secondaryComponents
-              .map((e) => const ComponentProtoMapper().fromProto(e))
-              .toList())
+          ? (List<Component>.unmodifiable(instance.secondaryComponents
+              .map((e) => const $ComponentProtoMapper().fromProto(e))))
           : null),
     );
 
-extension IngredientProtoExtension on Ingredient {
+extension $IngredientProtoExtension on Ingredient {
   GIngredient toProto() => _$IngredientToProto(this);
   String toJson() => _$IngredientToProto(this).writeToJson();
 
@@ -84,6 +82,6 @@ extension IngredientProtoExtension on Ingredient {
       _$IngredientFromProto(GIngredient.fromJson(json));
 }
 
-extension GIngredientProtoExtension on GIngredient {
+extension $GIngredientProtoExtension on GIngredient {
   Ingredient toIngredient() => _$IngredientFromProto(this);
 }

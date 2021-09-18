@@ -6,8 +6,8 @@ part of 'component.dart';
 // ProtoMapperGenerator
 // **************************************************************************
 
-class ComponentProtoMapper implements ProtoMapper<Component, GComponent> {
-  const ComponentProtoMapper();
+class $ComponentProtoMapper implements ProtoMapper<Component, GComponent> {
+  const $ComponentProtoMapper();
 
   @override
   Component fromProto(GComponent proto) => _$ComponentFromProto(proto);
@@ -38,7 +38,7 @@ Component _$ComponentFromProto(GComponent instance) => Component(
       description: instance.description,
     );
 
-extension ComponentProtoExtension on Component {
+extension $ComponentProtoExtension on Component {
   GComponent toProto() => _$ComponentToProto(this);
   String toJson() => _$ComponentToProto(this).writeToJson();
 
@@ -47,6 +47,6 @@ extension ComponentProtoExtension on Component {
       _$ComponentFromProto(GComponent.fromJson(json));
 }
 
-extension GComponentProtoExtension on GComponent {
+extension $GComponentProtoExtension on GComponent {
   Component toComponent() => _$ComponentFromProto(this);
 }

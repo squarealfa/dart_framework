@@ -6,8 +6,8 @@ part of 'ingredient.dart';
 // ValidatorGenerator
 // **************************************************************************
 
-class IngredientValidator implements Validator {
-  const IngredientValidator();
+class $IngredientValidator implements Validator {
+  const $IngredientValidator();
 
   ValidationError? validateDescription(String value, {Ingredient? entity}) {
     if (value.length < 10) {

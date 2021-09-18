@@ -6,8 +6,8 @@ part of 'lists_host.dart';
 // ProtoMapperGenerator
 // **************************************************************************
 
-class ListsHostProtoMapper implements ProtoMapper<ListsHost, GListsHost> {
-  const ListsHostProtoMapper();
+class $ListsHostProtoMapper implements ProtoMapper<ListsHost, GListsHost> {
+  const $ListsHostProtoMapper();
 
   @override
   ListsHost fromProto(GListsHost proto) => _$ListsHostFromProto(proto);
@@ -69,10 +69,10 @@ GListsHost _$ListsHostToProto(ListsHost instance) {
   proto.nvdoublesHasValue = instance.nvdoubles != null;
 
   proto.vapplianceTypes.addAll(instance.vapplianceTypes
-      .map((e) => const ApplianceTypeProtoMapper().toProto(e)));
+      .map((e) => const $ApplianceTypeProtoMapper().toProto(e)));
 
   proto.nvapplianceTypes.addAll(instance.nvapplianceTypes
-          ?.map((e) => const ApplianceTypeProtoMapper().toProto(e)) ??
+          ?.map((e) => const $ApplianceTypeProtoMapper().toProto(e)) ??
       []);
   proto.nvapplianceTypesHasValue = instance.nvapplianceTypes != null;
 
@@ -80,53 +80,49 @@ GListsHost _$ListsHostToProto(ListsHost instance) {
 }
 
 ListsHost _$ListsHostFromProto(GListsHost instance) => ListsHost(
-      vbools: instance.vbools.map((e) => e).toList(),
+      vbools: List<bool>.unmodifiable(instance.vbools.map((e) => e)),
       nvbools: (instance.nvboolsHasValue
-          ? (instance.nvbools.map((e) => e).toList())
+          ? (List<bool>.unmodifiable(instance.nvbools.map((e) => e)))
           : null),
-      vstrings: instance.vstrings.map((e) => e).toList(),
+      vstrings: List<String>.unmodifiable(instance.vstrings.map((e) => e)),
       nvstrings: (instance.nvstringsHasValue
-          ? (instance.nvstrings.map((e) => e).toList())
+          ? (List<String>.unmodifiable(instance.nvstrings.map((e) => e)))
           : null),
-      vdurations: instance.vdurations
-          .map((e) => Duration(milliseconds: e.toInt()))
-          .toList(),
+      vdurations: List<Duration>.unmodifiable(
+          instance.vdurations.map((e) => Duration(milliseconds: e.toInt()))),
       nvdurations: (instance.nvdurationsHasValue
-          ? (instance.nvdurations
-              .map((e) => Duration(milliseconds: e.toInt()))
-              .toList())
+          ? (List<Duration>.unmodifiable(instance.nvdurations
+              .map((e) => Duration(milliseconds: e.toInt()))))
           : null),
-      vdatetimes: instance.vdatetimes
-          .map((e) => DateTime.fromMillisecondsSinceEpoch(e.toInt()))
-          .toList(),
+      vdatetimes: List<DateTime>.unmodifiable(instance.vdatetimes
+          .map((e) => DateTime.fromMillisecondsSinceEpoch(e.toInt()))),
       nvdatetimes: (instance.nvdatetimesHasValue
-          ? (instance.nvdatetimes
-              .map((e) => DateTime.fromMillisecondsSinceEpoch(e.toInt()))
-              .toList())
+          ? (List<DateTime>.unmodifiable(instance.nvdatetimes
+              .map((e) => DateTime.fromMillisecondsSinceEpoch(e.toInt()))))
           : null),
-      vdecimals: instance.vdecimals.map((e) => Decimal.parse(e)).toList(),
+      vdecimals: List<Decimal>.unmodifiable(
+          instance.vdecimals.map((e) => Decimal.parse(e))),
       nvdecimals: (instance.nvdecimalsHasValue
-          ? (instance.nvdecimals.map((e) => Decimal.parse(e)).toList())
+          ? (List<Decimal>.unmodifiable(
+              instance.nvdecimals.map((e) => Decimal.parse(e))))
           : null),
-      vints: instance.vints.map((e) => e).toList(),
+      vints: List<int>.unmodifiable(instance.vints.map((e) => e)),
       nvints: (instance.nvintsHasValue
-          ? (instance.nvints.map((e) => e).toList())
+          ? (List<int>.unmodifiable(instance.nvints.map((e) => e)))
           : null),
-      vdoubles: instance.vdoubles.map((e) => e).toList(),
+      vdoubles: List<double>.unmodifiable(instance.vdoubles.map((e) => e)),
       nvdoubles: (instance.nvdoublesHasValue
-          ? (instance.nvdoubles.map((e) => e).toList())
+          ? (List<double>.unmodifiable(instance.nvdoubles.map((e) => e)))
           : null),
-      vapplianceTypes: instance.vapplianceTypes
-          .map((e) => const ApplianceTypeProtoMapper().fromProto(e))
-          .toList(),
+      vapplianceTypes: List<ApplianceType>.unmodifiable(instance.vapplianceTypes
+          .map((e) => const $ApplianceTypeProtoMapper().fromProto(e))),
       nvapplianceTypes: (instance.nvapplianceTypesHasValue
-          ? (instance.nvapplianceTypes
-              .map((e) => const ApplianceTypeProtoMapper().fromProto(e))
-              .toList())
+          ? (List<ApplianceType>.unmodifiable(instance.nvapplianceTypes
+              .map((e) => const $ApplianceTypeProtoMapper().fromProto(e))))
           : null),
     );
 
-extension ListsHostProtoExtension on ListsHost {
+extension $ListsHostProtoExtension on ListsHost {
   GListsHost toProto() => _$ListsHostToProto(this);
   String toJson() => _$ListsHostToProto(this).writeToJson();
 
@@ -135,6 +131,6 @@ extension ListsHostProtoExtension on ListsHost {
       _$ListsHostFromProto(GListsHost.fromJson(json));
 }
 
-extension GListsHostProtoExtension on GListsHost {
+extension $GListsHostProtoExtension on GListsHost {
   ListsHost toListsHost() => _$ListsHostFromProto(this);
 }

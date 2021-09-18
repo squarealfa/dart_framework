@@ -6,8 +6,8 @@ part of 'component.dart';
 // MapMapGenerator
 // **************************************************************************
 
-class ComponentMapMapper extends MapMapper<Component> {
-  const ComponentMapMapper();
+class $ComponentMapMapper extends MapMapper<Component> {
+  const $ComponentMapMapper();
 
   @override
   Component fromMap(
@@ -32,17 +32,17 @@ class ComponentMapMapper extends MapMapper<Component> {
   }
 }
 
-extension ComponentMapExtension on Component {
+extension $ComponentMapExtension on Component {
   Map<String, dynamic> toMap([KeyHandler? keyHandler]) =>
-      const ComponentMapMapper().toMap(this, keyHandler);
+      const $ComponentMapMapper().toMap(this, keyHandler);
   static Component fromMap(Map<String, dynamic> map,
           [KeyHandler? keyHandler]) =>
-      const ComponentMapMapper().fromMap(map, keyHandler);
+      const $ComponentMapMapper().fromMap(map, keyHandler);
 }
 
-extension MapComponentExtension on Map<String, dynamic> {
+extension $MapComponentExtension on Map<String, dynamic> {
   Component toComponent([KeyHandler? keyHandler]) =>
-      const ComponentMapMapper().fromMap(this, keyHandler);
+      const $ComponentMapMapper().fromMap(this, keyHandler);
 }
 
 class $ComponentFieldNames {

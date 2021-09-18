@@ -6,8 +6,8 @@ part of 'recipe.dart';
 // DefaultsProviderGenerator
 // **************************************************************************
 
-abstract class RecipeDefaultsProviderBase {
-  const RecipeDefaultsProviderBase();
+abstract class $RecipeDefaultsProviderBase {
+  const $RecipeDefaultsProviderBase();
 
   Recipe createWithDefaults({
     String? key,
@@ -33,11 +33,11 @@ abstract class RecipeDefaultsProviderBase {
 
   String get key => '';
   String get title => '';
-  List<Ingredient> get ingredients => [];
+  List<Ingredient> get ingredients => const [];
   int get numPosts => 0;
   double get doubleNumPosts => 0;
   Decimal get decimalNumPosts => Decimal.zero;
   Ingredient get mainIngredient =>
-      IngredientDefaultsProvider().createWithDefaults();
+      $IngredientDefaultsProvider().createWithDefaults();
   Category get category;
 }

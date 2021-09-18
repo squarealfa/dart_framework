@@ -6,8 +6,8 @@ part of 'calc_result.dart';
 // ProtoMapperGenerator
 // **************************************************************************
 
-class CalcResultProtoMapper implements ProtoMapper<CalcResult, GCalcResult> {
-  const CalcResultProtoMapper();
+class $CalcResultProtoMapper implements ProtoMapper<CalcResult, GCalcResult> {
+  const $CalcResultProtoMapper();
 
   @override
   CalcResult fromProto(GCalcResult proto) => _$CalcResultFromProto(proto);
@@ -39,7 +39,7 @@ CalcResult _$CalcResultFromProto(GCalcResult instance) => CalcResult(
       result: instance.result,
     );
 
-extension CalcResultProtoExtension on CalcResult {
+extension $CalcResultProtoExtension on CalcResult {
   GCalcResult toProto() => _$CalcResultToProto(this);
   String toJson() => _$CalcResultToProto(this).writeToJson();
 
@@ -49,6 +49,6 @@ extension CalcResultProtoExtension on CalcResult {
       _$CalcResultFromProto(GCalcResult.fromJson(json));
 }
 
-extension GCalcResultProtoExtension on GCalcResult {
+extension $GCalcResultProtoExtension on GCalcResult {
   CalcResult toCalcResult() => _$CalcResultFromProto(this);
 }

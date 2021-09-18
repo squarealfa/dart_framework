@@ -6,8 +6,8 @@ part of 'ingredient.dart';
 // MapMapGenerator
 // **************************************************************************
 
-class IngredientMapMapper extends MapMapper<Ingredient> {
-  const IngredientMapMapper();
+class $IngredientMapMapper extends MapMapper<Ingredient> {
+  const $IngredientMapMapper();
 
   @override
   Ingredient fromMap(
@@ -24,16 +24,17 @@ class IngredientMapMapper extends MapMapper<Ingredient> {
       cookingDuration: Duration(milliseconds: map['cookingDuration']),
       mainComponentKey: $kh.keyFromMap(map, 'mainComponentKey'),
       mainComponent:
-          const ComponentMapMapper().fromMap(map['mainComponent'], $kh),
-      otherComponents: List<Component>.from(map['otherComponents']
-          .map((e) => const ComponentMapMapper().fromMap(e, $kh))),
+          const $ComponentMapMapper().fromMap(map['mainComponent'], $kh),
+      otherComponents: List<Component>.unmodifiable(map['otherComponents']
+          .map((e) => const $ComponentMapMapper().fromMap(e, $kh))),
       alternativeComponent: (map['alternativeComponent'] != null
-          ? const ComponentMapMapper().fromMap(map['alternativeComponent'], $kh)
+          ? const $ComponentMapMapper()
+              .fromMap(map['alternativeComponent'], $kh)
           : null),
       secondaryComponents: map['secondaryComponents'] == null
           ? null
-          : List<Component>.from(map['secondaryComponents']
-              .map((e) => const ComponentMapMapper().fromMap(e, $kh))),
+          : List<Component>.unmodifiable(map['secondaryComponents']
+              .map((e) => const $ComponentMapMapper().fromMap(e, $kh))),
     );
   }
 
@@ -52,19 +53,19 @@ class IngredientMapMapper extends MapMapper<Ingredient> {
     map['cookingDuration'] = instance.cookingDuration.inMilliseconds;
     $kh.keyToMap(map, instance.mainComponentKey, 'mainComponentKey');
     map['mainComponent'] =
-        const ComponentMapMapper().toMap(instance.mainComponent, $kh);
+        const $ComponentMapMapper().toMap(instance.mainComponent, $kh);
     map['otherComponents'] = instance.otherComponents
-        .map((e) => const ComponentMapMapper().toMap(e, $kh))
+        .map((e) => const $ComponentMapMapper().toMap(e, $kh))
         .toList();
     ;
     map['alternativeComponent'] = (instance.alternativeComponent == null
         ? null
-        : const ComponentMapMapper()
+        : const $ComponentMapMapper()
             .toMap(instance.alternativeComponent!, $kh));
     map['secondaryComponents'] = instance.secondaryComponents == null
         ? null
         : instance.secondaryComponents!
-            .map((e) => const ComponentMapMapper().toMap(e, $kh))
+            .map((e) => const $ComponentMapMapper().toMap(e, $kh))
             .toList();
     ;
 
@@ -72,17 +73,17 @@ class IngredientMapMapper extends MapMapper<Ingredient> {
   }
 }
 
-extension IngredientMapExtension on Ingredient {
+extension $IngredientMapExtension on Ingredient {
   Map<String, dynamic> toMap([KeyHandler? keyHandler]) =>
-      const IngredientMapMapper().toMap(this, keyHandler);
+      const $IngredientMapMapper().toMap(this, keyHandler);
   static Ingredient fromMap(Map<String, dynamic> map,
           [KeyHandler? keyHandler]) =>
-      const IngredientMapMapper().fromMap(map, keyHandler);
+      const $IngredientMapMapper().fromMap(map, keyHandler);
 }
 
-extension MapIngredientExtension on Map<String, dynamic> {
+extension $MapIngredientExtension on Map<String, dynamic> {
   Ingredient toIngredient([KeyHandler? keyHandler]) =>
-      const IngredientMapMapper().fromMap(this, keyHandler);
+      const $IngredientMapMapper().fromMap(this, keyHandler);
 }
 
 class $IngredientFieldNames {

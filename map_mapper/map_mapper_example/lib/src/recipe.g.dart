@@ -6,8 +6,8 @@ part of 'recipe.dart';
 // MapMapGenerator
 // **************************************************************************
 
-class RecipeMapMapper extends MapMapper<Recipe> {
-  const RecipeMapMapper();
+class $RecipeMapMapper extends MapMapper<Recipe> {
+  const $RecipeMapMapper();
 
   @override
   Recipe fromMap(
@@ -19,8 +19,8 @@ class RecipeMapMapper extends MapMapper<Recipe> {
     return Recipe(
       key: $kh.keyFromMap(map, 'key'),
       title: map['ptitle'] as String,
-      ingredients: List<Ingredient>.from(map['ingredients']
-          .map((e) => const IngredientMapMapper().fromMap(e, $kh))),
+      ingredients: List<Ingredient>.unmodifiable(map['ingredients']
+          .map((e) => const $IngredientMapMapper().fromMap(e, $kh))),
     );
   }
 
@@ -35,7 +35,7 @@ class RecipeMapMapper extends MapMapper<Recipe> {
     $kh.keyToMap(map, instance.key, 'key');
     map['ptitle'] = instance.title;
     map['ingredients'] = instance.ingredients
-        .map((e) => const IngredientMapMapper().toMap(e, $kh))
+        .map((e) => const $IngredientMapMapper().toMap(e, $kh))
         .toList();
     ;
 
@@ -43,16 +43,16 @@ class RecipeMapMapper extends MapMapper<Recipe> {
   }
 }
 
-extension RecipeMapExtension on Recipe {
+extension $RecipeMapExtension on Recipe {
   Map<String, dynamic> toMap([KeyHandler? keyHandler]) =>
-      const RecipeMapMapper().toMap(this, keyHandler);
+      const $RecipeMapMapper().toMap(this, keyHandler);
   static Recipe fromMap(Map<String, dynamic> map, [KeyHandler? keyHandler]) =>
-      const RecipeMapMapper().fromMap(map, keyHandler);
+      const $RecipeMapMapper().fromMap(map, keyHandler);
 }
 
-extension MapRecipeExtension on Map<String, dynamic> {
+extension $MapRecipeExtension on Map<String, dynamic> {
   Recipe toRecipe([KeyHandler? keyHandler]) =>
-      const RecipeMapMapper().fromMap(this, keyHandler);
+      const $RecipeMapMapper().fromMap(this, keyHandler);
 }
 
 class $RecipeFieldNames {

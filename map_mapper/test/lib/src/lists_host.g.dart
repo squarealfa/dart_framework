@@ -6,8 +6,8 @@ part of 'lists_host.dart';
 // MapMapGenerator
 // **************************************************************************
 
-class ListsHostMapMapper extends MapMapper<ListsHost> {
-  const ListsHostMapMapper();
+class $ListsHostMapMapper extends MapMapper<ListsHost> {
+  const $ListsHostMapMapper();
 
   @override
   ListsHost fromMap(
@@ -15,34 +15,39 @@ class ListsHostMapMapper extends MapMapper<ListsHost> {
     KeyHandler? keyHandler,
   ]) {
     return ListsHost(
-      vbools: List<bool>.from(map['vbools']),
-      nvbools: map['nvbools'] == null ? null : List<bool>.from(map['nvbools']),
-      vstrings: List<String>.from(map['vstrings']),
-      nvstrings:
-          map['nvstrings'] == null ? null : List<String>.from(map['nvstrings']),
-      vdurations: List<Duration>.from(map['vdurations']),
+      vbools: List<bool>.unmodifiable(map['vbools']),
+      nvbools: map['nvbools'] == null
+          ? null
+          : List<bool>.unmodifiable(map['nvbools']),
+      vstrings: List<String>.unmodifiable(map['vstrings']),
+      nvstrings: map['nvstrings'] == null
+          ? null
+          : List<String>.unmodifiable(map['nvstrings']),
+      vdurations: List<Duration>.unmodifiable(map['vdurations']),
       nvdurations: map['nvdurations'] == null
           ? null
-          : List<Duration>.from(map['nvdurations']),
-      vdatetimes: List<DateTime>.from(map['vdatetimes']),
+          : List<Duration>.unmodifiable(map['nvdurations']),
+      vdatetimes: List<DateTime>.unmodifiable(map['vdatetimes']),
       nvdatetimes: map['nvdatetimes'] == null
           ? null
-          : List<DateTime>.from(map['nvdatetimes']),
-      vdecimals: List<Decimal>.from(map['vdecimals']),
+          : List<DateTime>.unmodifiable(map['nvdatetimes']),
+      vdecimals: List<Decimal>.unmodifiable(map['vdecimals']),
       nvdecimals: map['nvdecimals'] == null
           ? null
-          : List<Decimal>.from(map['nvdecimals']),
-      vints: List<int>.from(map['vints']),
-      nvints: map['nvints'] == null ? null : List<int>.from(map['nvints']),
-      vdoubles: List<double>.from(map['vdoubles']),
-      nvdoubles:
-          map['nvdoubles'] == null ? null : List<double>.from(map['nvdoubles']),
-      vapplianceTypes: List<ApplianceType>.from(map['vapplianceTypes']
-          .map((e) => const ApplianceTypeMapMapper().fromMap(e))),
+          : List<Decimal>.unmodifiable(map['nvdecimals']),
+      vints: List<int>.unmodifiable(map['vints']),
+      nvints:
+          map['nvints'] == null ? null : List<int>.unmodifiable(map['nvints']),
+      vdoubles: List<double>.unmodifiable(map['vdoubles']),
+      nvdoubles: map['nvdoubles'] == null
+          ? null
+          : List<double>.unmodifiable(map['nvdoubles']),
+      vapplianceTypes: List<ApplianceType>.unmodifiable(map['vapplianceTypes']
+          .map((e) => const $ApplianceTypeMapMapper().fromMap(e))),
       nvapplianceTypes: map['nvapplianceTypes'] == null
           ? null
-          : List<ApplianceType>.from(map['nvapplianceTypes']
-              .map((e) => const ApplianceTypeMapMapper().fromMap(e))),
+          : List<ApplianceType>.unmodifiable(map['nvapplianceTypes']
+              .map((e) => const $ApplianceTypeMapMapper().fromMap(e))),
     );
   }
 
@@ -82,13 +87,13 @@ class ListsHostMapMapper extends MapMapper<ListsHost> {
     map['nvdoubles'] = instance.nvdoubles;
     ;
     map['vapplianceTypes'] = instance.vapplianceTypes
-        .map((e) => const ApplianceTypeMapMapper().toMap(e))
+        .map((e) => const $ApplianceTypeMapMapper().toMap(e))
         .toList();
     ;
     map['nvapplianceTypes'] = instance.nvapplianceTypes == null
         ? null
         : instance.nvapplianceTypes!
-            .map((e) => const ApplianceTypeMapMapper().toMap(e))
+            .map((e) => const $ApplianceTypeMapMapper().toMap(e))
             .toList();
     ;
 
@@ -96,17 +101,17 @@ class ListsHostMapMapper extends MapMapper<ListsHost> {
   }
 }
 
-extension ListsHostMapExtension on ListsHost {
+extension $ListsHostMapExtension on ListsHost {
   Map<String, dynamic> toMap([KeyHandler? keyHandler]) =>
-      const ListsHostMapMapper().toMap(this, keyHandler);
+      const $ListsHostMapMapper().toMap(this, keyHandler);
   static ListsHost fromMap(Map<String, dynamic> map,
           [KeyHandler? keyHandler]) =>
-      const ListsHostMapMapper().fromMap(map, keyHandler);
+      const $ListsHostMapMapper().fromMap(map, keyHandler);
 }
 
-extension MapListsHostExtension on Map<String, dynamic> {
+extension $MapListsHostExtension on Map<String, dynamic> {
   ListsHost toListsHost([KeyHandler? keyHandler]) =>
-      const ListsHostMapMapper().fromMap(this, keyHandler);
+      const $ListsHostMapMapper().fromMap(this, keyHandler);
 }
 
 class $ListsHostFieldNames {

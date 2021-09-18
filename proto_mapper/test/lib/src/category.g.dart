@@ -6,8 +6,8 @@ part of 'category.dart';
 // ProtoMapperGenerator
 // **************************************************************************
 
-class CategoryProtoMapper implements ProtoMapper<Category, GCategory> {
-  const CategoryProtoMapper();
+class $CategoryProtoMapper implements ProtoMapper<Category, GCategory> {
+  const $CategoryProtoMapper();
 
   @override
   Category fromProto(GCategory proto) => _$CategoryFromProto(proto);
@@ -31,18 +31,18 @@ GCategory _$CategoryToProto(Category instance) {
 
   proto.title = instance.title;
   proto.mainComponent =
-      const ComponentProtoMapper().toProto(instance.mainComponent);
+      const $ComponentProtoMapper().toProto(instance.mainComponent);
   if (instance.alternativeComponent != null) {
     proto.alternativeComponent =
-        const ComponentProtoMapper().toProto(instance.alternativeComponent!);
+        const $ComponentProtoMapper().toProto(instance.alternativeComponent!);
   }
   proto.alternativeComponentHasValue = instance.alternativeComponent != null;
 
   proto.otherComponents.addAll(instance.otherComponents
-      .map((e) => const ComponentProtoMapper().toProto(e)));
+      .map((e) => const $ComponentProtoMapper().toProto(e)));
 
   proto.secondaryComponents.addAll(instance.secondaryComponents
-          ?.map((e) => const ComponentProtoMapper().toProto(e)) ??
+          ?.map((e) => const $ComponentProtoMapper().toProto(e)) ??
       []);
   proto.secondaryComponentsHasValue = instance.secondaryComponents != null;
 
@@ -52,22 +52,20 @@ GCategory _$CategoryToProto(Category instance) {
 Category _$CategoryFromProto(GCategory instance) => Category(
       title: instance.title,
       mainComponent:
-          const ComponentProtoMapper().fromProto(instance.mainComponent),
+          const $ComponentProtoMapper().fromProto(instance.mainComponent),
       alternativeComponent: (instance.alternativeComponentHasValue
-          ? (const ComponentProtoMapper()
+          ? (const $ComponentProtoMapper()
               .fromProto(instance.alternativeComponent))
           : null),
-      otherComponents: instance.otherComponents
-          .map((e) => const ComponentProtoMapper().fromProto(e))
-          .toList(),
+      otherComponents: List<Component>.unmodifiable(instance.otherComponents
+          .map((e) => const $ComponentProtoMapper().fromProto(e))),
       secondaryComponents: (instance.secondaryComponentsHasValue
-          ? (instance.secondaryComponents
-              .map((e) => const ComponentProtoMapper().fromProto(e))
-              .toList())
+          ? (List<Component>.unmodifiable(instance.secondaryComponents
+              .map((e) => const $ComponentProtoMapper().fromProto(e))))
           : null),
     );
 
-extension CategoryProtoExtension on Category {
+extension $CategoryProtoExtension on Category {
   GCategory toProto() => _$CategoryToProto(this);
   String toJson() => _$CategoryToProto(this).writeToJson();
 
@@ -76,6 +74,6 @@ extension CategoryProtoExtension on Category {
       _$CategoryFromProto(GCategory.fromJson(json));
 }
 
-extension GCategoryProtoExtension on GCategory {
+extension $GCategoryProtoExtension on GCategory {
   Category toCategory() => _$CategoryFromProto(this);
 }

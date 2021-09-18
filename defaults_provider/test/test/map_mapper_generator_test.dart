@@ -7,7 +7,7 @@ import 'package:test/test.dart';
 void main() {
   group('basic test', () {
     test('Test Strings', () {
-      var defaultsProvider = RecipeDefaultsProvider();
+      var defaultsProvider = $RecipeDefaultsProvider();
 
       final recipe = defaultsProvider.createWithDefaults();
       expect(recipe.key, '');
@@ -15,36 +15,36 @@ void main() {
     });
 
     test('Test List', () {
-      var defaultsProvider = RecipeDefaultsProvider();
+      var defaultsProvider = $RecipeDefaultsProvider();
 
       final recipe = defaultsProvider.createWithDefaults();
       expect(recipe.ingredients, []);
     });
 
     test('Test int', () {
-      var defaultsProvider = RecipeDefaultsProvider();
+      var defaultsProvider = $RecipeDefaultsProvider();
 
       final recipe = defaultsProvider.createWithDefaults();
       expect(recipe.numPosts, 0);
     });
 
     test('Test double', () {
-      var defaultsProvider = RecipeDefaultsProvider();
+      var defaultsProvider = $RecipeDefaultsProvider();
 
       final recipe = defaultsProvider.createWithDefaults();
       expect(recipe.doubleNumPosts, 0.0);
     });
 
     test('Test decimal', () {
-      var defaultsProvider = RecipeDefaultsProvider();
+      var defaultsProvider = $RecipeDefaultsProvider();
 
       final recipe = defaultsProvider.createWithDefaults();
       expect(recipe.decimalNumPosts, Decimal.zero);
     });
 
     test('Test recursion default', () {
-      var defaultsProvider = RecipeDefaultsProvider();
-      var ingredientDefaultsProvider = IngredientDefaultsProvider();
+      var defaultsProvider = $RecipeDefaultsProvider();
+      var ingredientDefaultsProvider = $IngredientDefaultsProvider();
 
       final recipe = defaultsProvider.createWithDefaults();
       final defaultIngredient = ingredientDefaultsProvider.createWithDefaults();
@@ -53,7 +53,7 @@ void main() {
     });
 
     test('Test override', () {
-      var defaultsProvider = RecipeDefaultsProvider();
+      var defaultsProvider = $RecipeDefaultsProvider();
 
       final recipe = defaultsProvider.createWithDefaults();
 
@@ -61,7 +61,7 @@ void main() {
     });
 
     test('Test all nullable', () {
-      var defaultsProvider = AllNullableDefaultsProvider();
+      var defaultsProvider = $AllNullableDefaultsProvider();
 
       final an = defaultsProvider.createWithDefaults();
 
