@@ -61,10 +61,13 @@ class JsonWebTokenHandler {
   }
 
   JwtPayload _deserializePayload(String payloadBase64) {
-    var json = decodePayload(payloadBase64);
+    var json = decodeB64Json(payloadBase64);
     var map = jsonDecode(json);
 
-    var ret = JwtPayload.fromMap(map);
+    var ret = JwtPayload.fromMap(map).copyWith(
+      emailVerified: true,
+      isVerified: true,
+    );
     return ret;
   }
 
@@ -96,7 +99,7 @@ class JsonWebTokenHandler {
   }
 }
 
-String decodePayload(String payloadBase64) {
+String decodeB64Json(String payloadBase64) {
   var delta4 = payloadBase64.length % 4;
   if (delta4 > 0 && delta4 < 4) {
     payloadBase64 =

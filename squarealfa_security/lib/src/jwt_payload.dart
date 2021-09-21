@@ -7,7 +7,8 @@ class JwtPayload {
   final String audience;
   final DateTime notBefore;
   final DateTime expires;
-  
+  final bool emailVerified;
+  final bool isVerified;
 
   /// any other extra fields that are
   /// not represented in the available properties
@@ -22,6 +23,8 @@ class JwtPayload {
     required this.audience,
     required this.notBefore,
     required this.expires,
+    this.emailVerified = false,
+    this.isVerified = false,
     this.extra = const <String, dynamic>{},
   });
 
@@ -77,7 +80,7 @@ class JwtPayload {
     return payload;
   }
 
-  JwtPayload CopyWith({
+  JwtPayload copyWith({
     String? subject,
     String? username,
     String? name,
@@ -88,6 +91,8 @@ class JwtPayload {
     String? userId,
     String? tenantId,
     List<String>? roles,
+    bool? isVerified,
+    bool? emailVerified,
     Map<String, dynamic>? extra,
   }) {
     var ret = JwtPayload(
@@ -99,6 +104,8 @@ class JwtPayload {
       notBefore: notBefore ?? this.notBefore,
       expires: expires ?? this.expires,
       extra: extra ?? this.extra,
+      isVerified: isVerified ?? this.isVerified,
+      emailVerified: emailVerified ?? this.emailVerified,
     );
     return ret;
   }

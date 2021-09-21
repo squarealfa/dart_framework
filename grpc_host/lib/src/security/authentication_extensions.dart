@@ -23,23 +23,27 @@ extension AuthenticationExtensions on ServiceCall {
   }
 
   Future authenticate({
-    required JwtPayload Function(String token) getTokenPayload,
+    required Future<JwtPayload> Function(String token) getTokenPayload,
     required Future<Principal> Function(JwtPayload payload) createPrincipal,
   }) async {
     Principal? local_principal;
     try {
-      var token = clientMetadata?['authorization'];
-      if (token == null) {
+      var authHeader = clientMetadata?['authorization'];
+      if (authHeader == null) {
         _extra.jwtPayload = null;
         _extra.principal = null;
         return;
       }
 
-      var payload = getTokenPayload(token);
+      final idToken = authHeader.startsWith('Bearer ')
+          ? authHeader.substring(7)
+          : throw 'Invalid auth header';
+      var payload = await getTokenPayload(idToken);
+      if (!payload.isVerified) throw 'Unverified token';
+      if (!payload.emailVerified) throw 'Email is not verified';
       if (payload.expires.difference(DateTime.now()).isNegative) {
         throw 'Expired token';
       }
-
       _extra.jwtPayload = payload;
       local_principal = await createPrincipal(payload);
     } catch (e) {

@@ -36,7 +36,7 @@ void main() {
     test('body should contain claims', () {
       var parts = jwt.split('.');
 
-      var body = decodePayload(parts[1]);
+      var body = decodeB64Json(parts[1]);
       var map = jsonDecode(body) as Map<String, dynamic>;
 
       expect(map['name'], 'John Doe');

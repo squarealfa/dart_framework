@@ -11,6 +11,8 @@ environment:
 dependencies:
   crypto: ^3.0.0
   cryptography: ^2.0.1
+  jose: ^0.3.2
+  http: ^0.13.3
 
 dev_dependencies:
   test: ^1.17.11

@@ -6,3 +6,4 @@ export 'src/jwt_payload.dart';
 export 'src/password.dart';
 export 'src/errors/unauthenticated.dart';
 export 'src/errors/unauthorized.dart';
+export 'src/firebase_token_handler.dart';

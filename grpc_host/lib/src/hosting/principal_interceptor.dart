@@ -5,9 +5,8 @@ import 'package:grpc_host/grpc_host.dart';
 import 'package:squarealfa_security/squarealfa_security.dart';
 
 abstract class PrincipalInterceptor {
-
   /// Loads a JWT and validates it returning the payload.
-  JwtPayload getTokenPayload(String token);
+  Future<JwtPayload> getTokenPayload(String idToken);
 
   /// Creates a principal that contains user identity and authorization
   /// from a JWT payload.
